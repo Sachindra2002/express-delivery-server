@@ -5,7 +5,7 @@ import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@XSlf4j
+@Slf4j
 public class RegistrationService {
 
     private final PasswordEncoder passwordEncoder;
@@ -30,6 +30,9 @@ public class RegistrationService {
             throw new ExpressDeliveryException("Email already in use");
         }
         User user = map(userDto);
+        userDto.setPassword(user.getPassword());
+
+        //save the new user
         userRepository.save(user);
 
         return userDto;

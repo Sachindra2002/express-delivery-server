@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ public class User {
     private String lastName;
 
     @NotEmpty(message = "Location is required")
+    @Column(nullable = false, length = 20)
     private String location;
 
     @NotEmpty(message = "Phone number is required")
