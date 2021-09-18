@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.config;
 
+import com.sachindrarodrigo.express_delivery_server.security.AuthFilter;
 import com.sachindrarodrigo.express_delivery_server.service.AppUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AppUserDetailsService appUserDetailsService;
+    private final AuthFilter authFilter;
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -38,10 +41,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/utils/**").permitAll()
+                .antMatchers("/modals/**").permitAll()
+                .antMatchers("/login*").permitAll()
+                .antMatchers("/errors").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/")
+                .and()
+                .logout().logoutSuccessUrl("/login")
+                .permitAll();
+
+        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Autowired
