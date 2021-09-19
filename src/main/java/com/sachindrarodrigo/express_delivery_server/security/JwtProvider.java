@@ -1,8 +1,8 @@
 package com.sachindrarodrigo.express_delivery_server.security;
 
 import com.fasterxml.classmate.AnnotationOverrides;
-import com.sachindrarodrigo.express_delivery_server.domain.User;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -29,10 +29,10 @@ public class JwtProvider {
         try{
             keyStore = KeyStore.getInstance("JKS");
             InputStream resourceAsStream = getClass().getResourceAsStream("/expressdelivery.jks");
-            keyStore.load(resourceAsStream, "secret".toCharArray());
+            keyStore.load(resourceAsStream, "sachindra".toCharArray());
 
         }catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e){
-            throw new RuntimeException("Something went wrong when loading keystore");
+            throw new RuntimeException("Something went wrong while loading keystore");
         }
     }
 
@@ -40,7 +40,7 @@ public class JwtProvider {
     public String generateToken(Authentication authentication) {
         User principle = (User) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject(principle.getEmail())
+                .setSubject(principle.getUsername())
                 .signWith(getPrivateKey())
                 .setExpiration(Date.from(Instant.now().plusSeconds(3600)))
                 .compact();
@@ -48,7 +48,7 @@ public class JwtProvider {
 
     private PrivateKey getPrivateKey(){
         try{
-            return (PrivateKey) keyStore.getKey("expressdelivery", "secret".toCharArray());
+            return (PrivateKey) keyStore.getKey("expressdelivery", "sachindra".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             throw new RuntimeException("Exception occurred while retrieving public key from keystore ");
         }
@@ -69,7 +69,7 @@ public class JwtProvider {
     }
 
     public String getEmailFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(getPrivateKey()).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(getPublicKey()).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
