@@ -5,17 +5,32 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%@ include file="utils/head_imports.jsp" %>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
     <title>Express Delivery</title>
 </head>
 <body class="body-login">
     <div class="container">
-        <div>
-            <img
-                src="./images/logo.png"
-                class="card-img-top"
-                alt="logo"
-                style="width: 50%"
-            />
+        <%@ include file="utils/error_alert.jsp" %>
+        <div class="row content">
+            <div class="col-md-6 mb-3">
+                <img src="images/logo.png" class="img-fluid" alt="logo"/>
+            </div>
+            <div class="col-md-6">
+                <h3 class="signin-text mb-3">Sign In</h3>
+                <form method="POST" action="/login">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                    </div>
+                    <p class="errors" style="margin-top: 10px; color: red">${error}</p>
+                    <button type="submit" class="btn btn-class">Login</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
