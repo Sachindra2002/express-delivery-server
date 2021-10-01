@@ -1,6 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,27 @@ public class UserWebController {
         System.out.println(error);
 
         mv.setViewName("login.jsp");
+        return mv;
+    }
+
+    @GetMapping("/home-admin")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ModelAndView homeAdmin() {
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("home_admin.jsp");
+
+        return mv;
+    }
+
+    @GetMapping("/home-customer")
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
+    public ModelAndView homeCustomer(){
+        //Direct customer to homepage
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("home_customer.jsp");
+
         return mv;
     }
 }

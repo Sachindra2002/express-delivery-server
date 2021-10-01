@@ -1,43 +1,45 @@
-//package com.sachindrarodrigo.express_delivery_server.interceptor;
-//
-//import org.slf4j.LoggerFactory;
-//import org.springframework.web.servlet.HandlerInterceptor;
-//
-//import org.slf4j.Logger;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class RestLoggerInterceptor implements HandlerInterceptor {
-////
-////    private static final Logger log = LoggerFactory.getLogger(RestLoggerInterceptor.class);
-////
-////    private List<String> blacklistedIps = new ArrayList<>();
-////
-////    @Override
-////    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-////
-////        //Add demo ip to blacklisted ips
-////        blacklistedIps.add("175.157.122.164");
-////
-////        String requestIP = ExtraUtilities.getRemoteAddr(request);
-////
-////        //Check if user's ip is blacklisted
-////        if(blacklistedIps.contains(requestIP)) {
-////
-////            String statement = String.format("[PREVENTING REST REQUEST FROM BLACKLISTED IP] [%s] [%s] [%s]", request.getRequestURI(), request.getMethod(), requestIP);
-////
-////            log.info(statement);
-////
-////            throw new UnauthorizedException("Blacklisted IP");
-////        }
-////
-////        String statement = String.format("[HANDLING REST REQUEST] [%s] [%s] [%s]", request.getRequestURI(), request.getMethod(), requestIP);
-////
-////        log.info(statement);
-////
-////        return true;
-////    }
-//}
+package com.sachindrarodrigo.express_delivery_server.interceptor;
+
+
+import com.sachindrarodrigo.express_delivery_server.exception.UnauthorizedException;
+import com.sachindrarodrigo.express_delivery_server.utils.ExtraUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RestLoggerInterceptor implements HandlerInterceptor {
+
+    private static final Logger log = LoggerFactory.getLogger(RestLoggerInterceptor.class);
+
+    private List<String> blackListedIps = new ArrayList<>();
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        //Add demo ip to blacklisted ips
+        blackListedIps.add("175.157.122.164");
+
+        String requestIP = ExtraUtilities.getRemoteAddr(request);
+
+        //Check if user's ip is blacklisted
+        if(blackListedIps.contains(requestIP)) {
+
+            String statement = String.format("[PREVENTING REST REQUEST FROM BLACKLISTED IP] [%s] [%s] [%s]", request.getRequestURI(), request.getMethod(), requestIP);
+
+            log.info(statement);
+
+            throw new UnauthorizedException("Blacklisted IP");
+        }
+
+        String statement = String.format("[HANDLING REST REQUEST] [%s] [%s] [%s]", request.getRequestURI(), request.getMethod(), requestIP);
+
+        log.info(statement);
+
+        return true;
+    }
+}

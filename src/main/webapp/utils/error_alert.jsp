@@ -1,7 +1,7 @@
 <%@ page import="com.sachindrarodrigo.express_delivery_server.exception.APIException" %><%
     APIException error = null;
     try {
-        error = (APIException) request.getAttribute("error");
+        error = (APIException)request.getAttribute("error");
     } catch (Exception e) {
         e.printStackTrace();
     }
