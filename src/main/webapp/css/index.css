@@ -20,11 +20,11 @@ body {
 .signin-text {
     font-style: normal;
     font-weight: 600 !important;
-    margin-top: 20px;
+    margin-top: 17px;
 }
 
 .form-control {
-    margin-top: 2px;
+    margin-top: -4px;
 }
 
 .form-control:focus {

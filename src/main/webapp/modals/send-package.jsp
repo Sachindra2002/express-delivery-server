@@ -20,20 +20,20 @@
                             <div class="form-row">
                                 <div class="col">
                                     <label for="inputSenderAddress">Pickup  Address</label>
-                                    <input type="text" class="form-control select-filter" name="senderaddress"
+                                    <input type="text" class="form-control select-filter" name="senderAddress"
                                            id="inputSenderAddress" required>
                                 </div>
                                 <div class="col">
                                     <label for="inputReceiverAddress">Receivers' Address</label>
-                                    <input type="text" class="form-control select-filter" name="receiveraddress"
+                                    <input type="text" class="form-control select-filter" name="receiverAddress"
                                            id="inputReceiverAddress" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="inputRecieverPhonenumber">Receivers' Phone Number</label>
-                                    <input type="text" class="form-control select-filter" name="receiverphonenumber"
-                                           id="inputRecieverPhonenumber" required>
+                                    <label for="inputReceiverPhoneNumber">Receivers' Phone Number</label>
+                                    <input type="text" class="form-control select-filter" name="receiverPhoneNumber"
+                                           id="inputReceiverPhoneNumber" required>
                                 </div>
                                 <div class="col">
                                     <label for="inputReceiverEmail">Receivers' Email</label>
