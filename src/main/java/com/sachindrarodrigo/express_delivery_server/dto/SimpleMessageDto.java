@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
-public class SimpleMesageDto {
+public class SimpleMessageDto {
     private String message;
     private HttpStatus type;
 
-    public SimpleMesageDto(String message) {
+    public SimpleMessageDto(String message) {
         this.message = message;
     }
 

@@ -16,17 +16,20 @@
             <div class="modal-body">
                 <div class="card-body">
                     <div class="form-body">
-                        <form method="post" action="/send-package">
+                        <form method="POST" action="/send-package">
                             <div class="form-row">
                                 <div class="col">
                                     <label for="inputSenderAddress">Pickup  Address</label>
-                                    <input type="text" class="form-control select-filter" name="senderAddress"
-                                           id="inputSenderAddress" required>
+                                    <textarea class="form-control select-filter" name="pickupAddress"
+                                              id="inputSenderAddress" required></textarea>
                                 </div>
+
+                            </div>
+                            <div class="form-row">
                                 <div class="col">
                                     <label for="inputReceiverAddress">Receivers' Address</label>
-                                    <input type="text" class="form-control select-filter" name="receiverAddress"
-                                           id="inputReceiverAddress" required>
+                                    <textarea class="form-control select-filter" name="receiverAddress"
+                                              id="inputReceiverAddress" required></textarea>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -37,33 +40,28 @@
                                 </div>
                                 <div class="col">
                                     <label for="inputReceiverEmail">Receivers' Email</label>
-                                    <input type="text" class="form-control select-filter" name="receiveremail"
+                                    <input type="text" class="form-control select-filter" name="receiverEmail"
                                            id="inputReceiverEmail" required>
                                 </div>
                             </div>
                             <hr />
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="inputTypeofParcel">Receivers' Phone Number</label>
-                                    <input type="text" class="form-control select-filter" name="typeofparcel"
-                                           id="inputTypeofParcel" required>
-                                </div>
-                                <div class="col">
-                                    <label for="inputTypeofParcel">Select City of Receiver</label>
-                                    <select class="custom-select" aria-label="Default select example" required>
-                                        <option value="small">Colombo</option>
-                                        <option value="medium">Negombo</option>
-                                        <option value="medium">Galle</option>
+                                    <label for="inputReceiverCity">Select City of Receiver</label>
+                                    <select name="receiverCity" id="inputReceiverCity" class="custom-select" aria-label="Default select example" required>
+                                        <option value="Colombo">Colombo</option>
+                                        <option value="Negombo">Negombo</option>
+                                        <option value="Galle">Galle</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="inputTypeofParcel">Select Type of Parcel</label>
-                                    <select class="custom-select" aria-label="Default select example" required>
+                                    <select name="parcelType" id="inputTypeofParcel" class="custom-select" aria-label="Default select example" required>
                                         <option value="small">Small 20CM X 20CM</option>
                                         <option value="medium">Medium 45CM X 45CM</option>
                                         <option value="large">Large 80CM X 80CM</option>
-                                        <option value="large">Card Envelop</option>
-                                        <option value="large">Express Delivery Flyer</option>
+                                        <option value="card">Card Envelop</option>
+                                        <option value="flyer">Express Delivery Flyer</option>
                                     </select>
                                 </div>
                             </div>
@@ -79,29 +77,29 @@
                                            id="inputPieces" value="1" required>
                                 </div>
                                 <div class="col">
-                                    <label for="inputTypeofParcel">Payment Method</label>
-                                    <select class="custom-select" aria-label="Default select example" required>
-                                        <option value="small">Credit Card</option>
-                                        <option value="medium">Cash on Delivery</option>
+                                    <label for="inputTypeofPayment">Payment Method</label>
+                                    <select name="paymentMethod" id="inputTypeofPayment" class="custom-select" aria-label="Default select example" required>
+                                        <option value="card">Credit Card</option>
+                                        <option value="cash">Cash on Delivery</option>
                                     </select>
                                 </div>
                             </div>
                             <hr />
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="inputWeight">Preferred Date to Pickup</label>
-                                    <input type="date" class="form-control select-filter" name="weight"
-                                           id="inputWeight" required>
+                                    <label for="inputDate">Preferred Date to Pickup</label>
+                                    <input type="date" class="form-control select-filter" name="date"
+                                           id="inputDate" required>
                                 </div>
                                 <div class="col">
-                                    <label for="inputPieces">Preferred Time to Pickup</label>
-                                    <input type="time" class="form-control select-filter" name="pieces"
-                                           id="inputPieces" required>
+                                    <label for="inputTime">Preferred Time to Pickup</label>
+                                    <input type="time" class="form-control select-filter" name="time"
+                                           id="inputTime" required>
                                 </div>
                                 <div class="col">
-                                    <label for="inputPieces">Estimated Total Cost</label>
-                                    <input type="text" class="form-control select-filter" name="pieces"
-                                           id="inputPieces" required>
+                                    <label for="cost">Estimated Total Cost</label>
+                                    <input type="text" class="form-control select-filter" name="totalCost"
+                                           id="cost" required>
                                 </div>
                             </div>
                             <hr />

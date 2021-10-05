@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -22,11 +21,8 @@ public class MailService {
     private final MailRepository mailRepository;
     private final UserRepository userRepository;
 
-    @Transactional
-    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
-
+    public MailDto sendMail(MailDto dto){
         Mail mail = map(dto);
-
         mailRepository.save(mail);
         return dto;
     }
@@ -35,16 +31,16 @@ public class MailService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         //Find user from database
-        Optional<User> userOptional = userRepository.findById(auth.getPrincipal().toString());
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        Optional<User> userOptional = userRepository.findById(auth.getPrincipal().toString());
+//        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return Mail.builder().pickupAddress(dto.getPickupAddress())
-                .receiverAddress(dto.getSenderAddress())
-                .senderPhoneNumber(user.getPhoneNumber())
-                .receiverPhoneNumber(dto.getReceiverNumber())
-                .senderEmail(auth.getPrincipal().toString())
+                .receiverAddress(dto.getPickupAddress())
+                .senderPhoneNumber("aaaaa")
+                .receiverPhoneNumber(dto.getReceiverPhoneNumber())
+                .senderEmail("aaaaa ")
                 .receiverEmail(dto.getReceiverEmail())
-                .senderCity(user.getLocation())
+                .senderCity("aaaaa")
                 .receiverCity(dto.getReceiverCity())
                 .parcelType(dto.getParcelType())
                 .weight(dto.getWeight())

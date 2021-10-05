@@ -1,7 +1,7 @@
-<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.SimpleMesageDto" %><%
-    SimpleMesageDto success = null;
+<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto" %><%
+    SimpleMessageDto success = null;
     try {
-        success = (SimpleMesageDto) request.getAttribute("success");
+        success = (SimpleMessageDto) request.getAttribute("success");
     } catch (Exception e) {
         e.printStackTrace();
     }

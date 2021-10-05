@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -22,11 +23,11 @@ public class Mail {
     private int mailId;
 
     @NotEmpty(message = "Pickup address is required")
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 60)
     private String pickupAddress;
 
     @NotEmpty(message = "Receiver address is required")
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 60)
     private String receiverAddress;
 
     @NotEmpty(message = "Sender phone number is required")
@@ -38,11 +39,11 @@ public class Mail {
     private String receiverPhoneNumber;
 
     @NotEmpty(message = "Sender email number is required")
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 60)
     private String senderEmail;
 
     @NotEmpty(message = "Receiver email is required")
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 60)
     private String receiverEmail;
 
     @NotEmpty(message = "Sender city is required")
@@ -81,7 +82,9 @@ public class Mail {
     @Column(nullable = false, length = 20)
     private String totalCost;
 
-    @NotEmpty(message = "status number is required")
+    @NotEmpty(message = "status is required")
     @Column(nullable = false, length = 20)
     private String status;
+
+    private Instant createdAt;
 }

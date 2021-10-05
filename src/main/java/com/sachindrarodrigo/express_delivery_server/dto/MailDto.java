@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class MailDto {
     private int mailId;
     private String pickupAddress,
-            senderAddress,
-            receiverNumber,
-            senderNumber,
-            receiverEmail,
+            receiverAddress,
+            senderPhoneNumber,
+            receiverPhoneNumber,
             senderEmail,
-            receiverCity,
+            receiverEmail,
             senderCity,
+            receiverCity,
             parcelType,
             weight,
             pieces,

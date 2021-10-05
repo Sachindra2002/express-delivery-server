@@ -1,8 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.controller.api_controller;
 
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
-import com.sachindrarodrigo.express_delivery_server.exception.APIException;
-import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +21,8 @@ public class ParcelController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/send-package")
-    public ResponseEntity<Object> sendMail(@RequestBody MailDto dto){
-        try{
-            MailDto result = mailService.sendMail(dto);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        }catch (ExpressDeliveryException e){
-            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Object> sendMail(@RequestBody MailDto dto) {
+        MailDto result = mailService.sendMail(dto);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }
