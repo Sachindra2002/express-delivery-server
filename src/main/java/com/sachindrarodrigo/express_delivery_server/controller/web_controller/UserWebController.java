@@ -1,5 +1,8 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
+import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
+import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -10,11 +13,14 @@ import org.springframework.web.servlet.ModelAndView;
 @AllArgsConstructor
 public class UserWebController {
 
+    MailService mailService;
+    CustomerService customerService;
+
     @GetMapping("/login")
     public ModelAndView login(String error) {
-        ModelAndView mv =new ModelAndView();
+        ModelAndView mv = new ModelAndView();
 
-        if(error != null) mv.addObject("error", "Invalid login credentials");
+        if (error != null) mv.addObject("error", "Invalid login credentials");
         System.out.println(error);
 
         mv.setViewName("login.jsp");
@@ -33,11 +39,18 @@ public class UserWebController {
 
     @GetMapping("/home-customer")
     @PreAuthorize("hasAnyRole('CUSTOMER')")
-    public ModelAndView homeCustomer(){
+    public ModelAndView homeCustomer() {
         //Direct customer to homepage
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("home_customer.jsp");
+        mv.addObject("upcoming_packages", mailService.getAllRecentUpcomingPackages());
+        mv.addObject("outgoing_packages", mailService.getAllRecentOutgoingPackages());
+        try {
+            mv.addObject("name", customerService.getName());
+        } catch (ExpressDeliveryException e) {
+            e.printStackTrace();
+        }
 
         return mv;
     }

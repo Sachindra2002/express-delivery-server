@@ -86,5 +86,9 @@ public class Mail {
     @Column(nullable = false, length = 20)
     private String status;
 
+    @NotEmpty(message = "Description is required")
+    @Column(nullable = false, length = 200)
+    private String description;
+
     private Instant createdAt;
 }

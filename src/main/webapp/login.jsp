@@ -29,7 +29,8 @@
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
                     </div>
                     <p class="errors" style="margin-top: 10px; color: red">${error}</p>
-                    <button type="submit" class="btn btn-class">Login</button>
+                    <button type="submit" class="btn btn-class">Login</button><br/><br/>
+                    <a href="/register" style="text-decoration: none; color: #febc17">Register Now</a>
                 </form>
             </div>
         </div>

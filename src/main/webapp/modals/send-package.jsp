@@ -34,6 +34,13 @@
                             </div>
                             <div class="form-row">
                                 <div class="col">
+                                    <label for="inputDesc">Package Description</label>
+                                    <textarea class="form-control select-filter" name="description"
+                                              id="inputDesc" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col">
                                     <label for="inputReceiverPhoneNumber">Receivers' Phone Number</label>
                                     <input type="text" class="form-control select-filter" name="receiverPhoneNumber"
                                            id="inputReceiverPhoneNumber" required>
@@ -46,34 +53,35 @@
                             </div>
                             <hr />
                             <div class="form-row">
+
                                 <div class="col">
                                     <label for="inputReceiverCity">Select City of Receiver</label>
                                     <select name="receiverCity" id="inputReceiverCity" class="custom-select" aria-label="Default select example" required>
-                                        <option value="Colombo">Colombo</option>
-                                        <option value="Negombo">Negombo</option>
-                                        <option value="Galle">Galle</option>
+                                        <option value="Colombo">Colombo [Western Province]</option>
+                                        <option value="Negombo">Negombo [Western Province]</option>
+                                        <option value="Galle">Galle [Southern Province]</option>
                                     </select>
                                 </div>
                                 <div class="col">
                                     <label for="inputTypeofParcel">Select Type of Parcel</label>
                                     <select name="parcelType" id="inputTypeofParcel" class="custom-select" aria-label="Default select example" required>
-                                        <option value="small">Small 20CM X 20CM</option>
-                                        <option value="medium">Medium 45CM X 45CM</option>
-                                        <option value="large">Large 80CM X 80CM</option>
-                                        <option value="card">Card Envelop</option>
-                                        <option value="flyer">Express Delivery Flyer</option>
+                                        <option value="Small 20CM X 20CM">Small 20CM X 20CM</option>
+                                        <option value="Medium 45CM X 45CM">Medium 45CM X 45CM</option>
+                                        <option value="Large 80CM X 80CM">Large 80CM X 80CM</option>
+                                        <option value="Card Envelop">Card Envelop</option>
+                                        <option value="Express Delivery Flyer">Express Delivery Flyer</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col">
                                     <label for="inputWeight">Weight (kg)</label>
-                                    <input type="text" class="form-control select-filter" name="weight"
+                                    <input type="number" class="form-control select-filter" name="weight" onkeyup="myFunction()"
                                            id="inputWeight" required>
                                 </div>
                                 <div class="col">
                                     <label for="inputPieces">Pieces</label>
-                                    <input type="text" class="form-control select-filter" name="pieces"
+                                    <input type="text" class="form-control select-filter" name="pieces" onchange="myFunction()"
                                            id="inputPieces" value="1" required>
                                 </div>
                                 <div class="col">
@@ -98,8 +106,8 @@
                                 </div>
                                 <div class="col">
                                     <label for="cost">Estimated Total Cost</label>
-                                    <input type="text" class="form-control select-filter" name="totalCost"
-                                           id="cost" required>
+                                    <input type="text" class="form-control select-filter" name="totalCost" value="0.0 LKR" onkeyup="myFunction()"
+                                           id="cost" required readonly>
                                 </div>
                             </div>
                             <hr />

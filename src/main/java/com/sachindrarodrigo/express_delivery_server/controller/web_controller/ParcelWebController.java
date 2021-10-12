@@ -2,6 +2,8 @@ package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class ParcelWebController {
 
     private final MailService mailService;
+    private final CustomerService customerService;
 
     @PostMapping("/send-package")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ModelAndView sendPackage(@RequestParam String pickupAddress, @RequestParam String receiverAddress, @RequestParam String receiverPhoneNumber, @RequestParam String receiverEmail, @RequestParam String receiverCity, @RequestParam String parcelType, @RequestParam String weight, @RequestParam String pieces, @RequestParam String paymentMethod, @RequestParam String date, @RequestParam String time, @RequestParam String totalCost){
+    public ModelAndView sendPackage(@RequestParam String pickupAddress, @RequestParam String receiverAddress, @RequestParam String receiverPhoneNumber, @RequestParam String receiverEmail, @RequestParam String receiverCity, @RequestParam String parcelType, @RequestParam String weight, @RequestParam String pieces, @RequestParam String paymentMethod, @RequestParam String date, @RequestParam String time, @RequestParam String totalCost, @RequestParam String description){
 
         // Create mail dto with user input
         MailDto dto = new MailDto();
@@ -34,6 +37,7 @@ public class ParcelWebController {
         dto.setDate(date);
         dto.setTime(time);
         dto.setTotalCost(totalCost);
+        dto.setDescription(description);
 
         mailService.sendMail(dto);
 
@@ -46,8 +50,15 @@ public class ParcelWebController {
 
     private ModelAndView HomePage() {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/home-customer");
+        mv.setViewName("home_customer.jsp");
+        mv.addObject("upcoming_packages", mailService.getAllRecentUpcomingPackages());
+        mv.addObject("outgoing_packages", mailService.getAllRecentOutgoingPackages());
 
+        try {
+            mv.addObject("name", customerService.getName());
+        } catch (ExpressDeliveryException e) {
+            e.printStackTrace();
+        }
         return mv;
     }
 

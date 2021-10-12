@@ -21,7 +21,7 @@
             <li style="list-style: none">
                 <div class="dropdown">
                     <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                         class="dropbtn">Account   <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                         class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
                         <a href="#">Settings</a>
@@ -32,6 +32,56 @@
         </ul>
     </sec:authorize>
     <sec:authorize access="hasRole('ADMIN')">
-
+        <div style="color: white; text-transform: uppercase; letter-spacing: 3px; font-size: 20px; margin-top: 5px"
+             class="logo">
+            <a style="color: white; text-decoration: none" href="/"><h4>Express Delivery</h4></a>
+        </div>
+        <ul style="display: flex; width: 40%; justify-content: space-around; margin-top: 10px">
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Packages <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#">Ongoing</a>
+                        <a href="#">Completed</a>
+                    </div>
+                </div>
+            </li>
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Service Centers <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#">Colombo</a>
+                        <a href="#">Negombo</a>
+                        <a href="#">Galle</a>
+                    </div>
+                </div>
+            </li>
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Users <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#">Agents</a>
+                        <a href="#">Drivers</a>
+                    </div>
+                </div>
+            </li>
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#">Settings</a>
+                        <a style="color: red" href="/logout">Log out</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </sec:authorize>
 </nav>
