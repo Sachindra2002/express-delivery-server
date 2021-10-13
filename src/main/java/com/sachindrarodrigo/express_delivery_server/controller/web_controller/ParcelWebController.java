@@ -48,6 +48,15 @@ public class ParcelWebController {
         return mv;
     }
 
+    @PostMapping("/open-dispute")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ModelAndView openDispute(@RequestParam String mailId, @RequestParam String disputeType, @RequestParam String description){
+        ModelAndView mv = HomePage();
+        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for "+ mailId));
+
+        return mv;
+    }
+
     private ModelAndView HomePage() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("home_customer.jsp");

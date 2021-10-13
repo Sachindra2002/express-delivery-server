@@ -13,15 +13,16 @@ public class FacadeController {
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     public ModelAndView sendUserHome() {
-        //Check if user is an admin
-        boolean isAdmin = ExtraUtilities.hasRole("ROLE_ADMIN");
-
         ModelAndView mv = new ModelAndView();
 
-        if(isAdmin) {
+        if (ExtraUtilities.hasRole("ROLE_ADMIN")) {
             mv.setViewName("redirect:/home-admin");
-        }else {
+        } else if (ExtraUtilities.hasRole("ROLE_CUSTOMER")) {
             mv.setViewName("redirect:/home-customer");
+        } else if (ExtraUtilities.hasRole("ROLE_AGENT")) {
+            mv.setViewName("/");
+        } else if (ExtraUtilities.hasRole("ROLE_DRIVER")) {
+            mv.setViewName("/");
         }
 
         return mv;

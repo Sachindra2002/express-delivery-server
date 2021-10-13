@@ -1,14 +1,15 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.Set;
 
+@EqualsAndHashCode(exclude="disputes")
+@ToString(exclude = "disputes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -89,6 +90,10 @@ public class Mail {
     @NotEmpty(message = "Description is required")
     @Column(nullable = false, length = 200)
     private String description;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "mail",fetch = FetchType.LAZY)
+    private Set<Dispute> disputes;
 
     private Instant createdAt;
 }

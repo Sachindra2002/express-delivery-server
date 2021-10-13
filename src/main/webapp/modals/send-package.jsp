@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="inputTypeofParcel">Select Type of Parcel</label>
-                                    <select name="parcelType" id="inputTypeofParcel" class="custom-select" aria-label="Default select example" required>
+                                    <select name="parcelType" id="inputTypeofParcel" class="custom-select" aria-label="Default select example" onkeyup="myFunction()" required>
                                         <option value="Small 20CM X 20CM">Small 20CM X 20CM</option>
                                         <option value="Medium 45CM X 45CM">Medium 45CM X 45CM</option>
                                         <option value="Large 80CM X 80CM">Large 80CM X 80CM</option>
@@ -76,7 +76,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     <label for="inputWeight">Weight (kg)</label>
-                                    <input type="number" class="form-control select-filter" name="weight" onkeyup="myFunction()"
+                                    <input type="number" class="form-control select-filter" name="weight" max="10.0" onkeyup="myFunction()"
                                            id="inputWeight" required>
                                 </div>
                                 <div class="col">

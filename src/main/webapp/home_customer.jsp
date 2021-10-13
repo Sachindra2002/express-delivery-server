@@ -17,17 +17,44 @@
     <%@ include file="utils/head_imports.jsp" %>
     <script>
         function myFunction() {
+            let cost = 0.0;
+            let typeCost = 0.0;
             let weight = document.getElementById('inputWeight').value;
             let type = document.getElementById('inputTypeofParcel').value;
             let pieces = document.getElementById('inputPieces').value;
+
+            if (type == "Small 20CM X 20CM") {
+                typeCost = 200.0;
+            } else if (type == "Medium 45CM X 45CM") {
+                typeCost = 300.0;
+            } else if (type == "Large 80CM X 80CM") {
+                typeCost = 500.0;
+            } else if (type == "Card Envelop") {
+                typeCost = 100.0;
+            } else if (type == "Express Delivery Flyer") {
+                typeCost = 50.0;
+            } else {
+                typeCost = 0.0;
+            }
+
             if (weight == 0.0) {
-                document.getElementById('cost').value = '0.0 LKR';
+                cost = 0.0;
             } else if (weight >= 0.1 && weight <= 1.0) {
-                document.getElementById('cost').value = '200.0 LKR';
+                cost = 200.0;
+                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
             } else if (weight >= 1.0 && weight <= 3.0) {
-                document.getElementById('cost').value = '500.0 LKR';
-            } else if (weight >= 3.1 && weight)
-                document.getElementById('cost').value = '700 LKR'
+                cost = 500.0;
+                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
+            } else if (weight >= 3.1 && weight <= 5.0) {
+                cost = 700.0;
+                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
+            } else if (weight >= 5.1 && weight <= 8.0) {
+                cost = 850.0;
+                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
+            } else {
+                cost = 1000.0;
+                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
+            }
         }
 
     </script>
@@ -44,7 +71,7 @@
 <div>
     <div class="send-package-button" style="float: right">
         <div>
-            <a type="button" data-toggle="modal" data-target="#sendPackageModal">Track Package</a>
+            <a type="button" data-toggle="modal" data-target="#openDisputeModal">Track Package</a>
         </div>
     </div>
     <div class="send-package-button" style="float: right">
@@ -55,6 +82,22 @@
     <br/><br/><br/>
     <div class="center-header">
         <h3 style="margin-left: 30px; font-size: 25px; margin-top: 30px">Track Recent Upcoming Packages</h3>
+        <%
+            List<MailDto> mail = new ArrayList<>();
+            try {
+                mail = (List<MailDto>) request.getAttribute("outgoing_packages");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (mail != null && mail.size() <= 0) {
+        %>
+        <div style="margin-right: 30px; margin-top: 30px" class="alert alert-secondary" role="alert">
+            No Incoming Packages
+        </div>
+        <%
+        } else {
+        %>
         <div class="homepage-row" style=" margin-right: 50px">
             <c:forEach var="mail" items="${upcoming_packages}">
                 <div class="card"
@@ -71,7 +114,11 @@
                                 style="font-weight: normal">${mail.getWeight()} KG</span></p>
                     </div>
                     <div>
+
                         <button style="float: right; margin: 10px" type="button" class="btn btn-danger">Open Dispute
+                        </button>
+                        <button style="float: right; margin: 10px" type="button" class="btn btn-warning">Initiate
+                            Return
                         </button>
                     </div>
                     <div class="card-header">
@@ -81,16 +128,17 @@
                 </div>
             </c:forEach>
         </div>
+        <% } %>
         <h3 style="margin-left: 30px; font-size: 25px; margin-top: 50px">Track Recent Outgoing Packages</h3>
         <%
-            List<MailDto> mail = new ArrayList<>();
+            List<MailDto> mails = new ArrayList<>();
             try {
-                mail = (List<MailDto>) request.getAttribute("outgoing_packages");
+                mails = (List<MailDto>) request.getAttribute("outgoing_packages");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (mail != null && mail.size() <= 0) {
+            if (mails != null && mails.size() <= 0) {
         %>
         <div style="margin-right: 30px; margin-top: 30px" class="alert alert-secondary" role="alert">
             No Outgoing Packages
@@ -116,11 +164,12 @@
                         <p style="font-weight: bold" class="card-text">Weight : <span
                                 style="font-weight: normal">${mail.getWeight()} KG</span></p>
                         <p style="font-weight: bold" class="card-text">Delivery Cost : <span
-                                style="font-weight: normal">${mail.getTotalCost()} LKR</span></p>
+                                style="font-weight: normal">${mail.getTotalCost()}</span></p>
                     </div>
                     <c:if test="${mail.getStatus() == 'In Warehouse [Negombo]'}">
                         <div>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger">Open Dispute
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track
                             </button>
@@ -128,7 +177,8 @@
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Processing'}">
                         <div>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger">Open Dispute
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-warning"><i
                                     style="color: black; margin-right: 10px" class="fa fa-exclamation-circle"
@@ -150,6 +200,7 @@
 </div>
 
 <%@ include file="modals/send-package.jsp" %>
+<%@ include file="modals/open-dispute.jsp" %>
 <%@ include file="utils/script_imports.jsp" %>
 </body>
 <footer>
