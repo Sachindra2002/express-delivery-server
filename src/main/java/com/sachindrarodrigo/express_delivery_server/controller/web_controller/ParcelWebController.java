@@ -1,9 +1,9 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
-import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
-import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.dto.*;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
+import com.sachindrarodrigo.express_delivery_server.service.DisputeService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +18,11 @@ public class ParcelWebController {
 
     private final MailService mailService;
     private final CustomerService customerService;
+    private final DisputeService disputeService;
 
     @PostMapping("/send-package")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ModelAndView sendPackage(@RequestParam String pickupAddress, @RequestParam String receiverAddress, @RequestParam String receiverPhoneNumber, @RequestParam String receiverEmail, @RequestParam String receiverCity, @RequestParam String parcelType, @RequestParam String weight, @RequestParam String pieces, @RequestParam String paymentMethod, @RequestParam String date, @RequestParam String time, @RequestParam String totalCost, @RequestParam String description){
+    public ModelAndView sendPackage(@RequestParam String pickupAddress, @RequestParam String receiverAddress, @RequestParam String receiverPhoneNumber, @RequestParam String receiverEmail, @RequestParam String receiverCity, @RequestParam String parcelType, @RequestParam String weight, @RequestParam String pieces, @RequestParam String paymentMethod, @RequestParam String date, @RequestParam String time, @RequestParam String totalCost, @RequestParam String description) throws ExpressDeliveryException {
 
         // Create mail dto with user input
         MailDto dto = new MailDto();
@@ -50,9 +51,27 @@ public class ParcelWebController {
 
     @PostMapping("/open-dispute")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ModelAndView openDispute(@RequestParam String mailId, @RequestParam String disputeType, @RequestParam String description){
+    public ModelAndView openDispute(@RequestParam int mailId, @RequestParam String disputeType, @RequestParam String description) throws ExpressDeliveryException {
         ModelAndView mv = HomePage();
-        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for "+ mailId));
+
+        DisputeDto dto = new DisputeDto();
+        dto.setMailId(mailId);
+        dto.setDescription(description);
+        dto.setDisputeType(disputeType);
+        disputeService.openDispute(dto);
+
+        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for package "+ mailId));
+
+        return mv;
+    }
+
+    @PostMapping("/initiate-return")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ModelAndView initiateReturn(@RequestParam int mailId, @RequestParam int trackingId, @RequestParam String date, @RequestParam String time, @RequestParam String returnType, @RequestParam String reason, @RequestParam String description) throws ExpressDeliveryException{
+        ModelAndView mv = HomePage();
+
+        MailTrackingDto dto = new MailTrackingDto();
+        mv.addObject("success", new SimpleMessageDto("Return initiated Successfully"));
 
         return mv;
     }

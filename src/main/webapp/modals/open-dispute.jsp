@@ -21,7 +21,7 @@
                                 <div class="col">
                                     <label for="mailId">Package ID</label>
                                     <input class="form-control select-filter" name="mailId"
-                                              id="mailId" value="${mail.getMailId()}" required readonly/>
+                                              id="mailId" required readonly/>
                                 </div>
                                 <div class="col">
                                     <label for="disputeType">Select Dispute</label>

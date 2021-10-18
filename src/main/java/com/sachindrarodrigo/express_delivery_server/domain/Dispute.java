@@ -21,8 +21,12 @@ public class Dispute {
     @Column(nullable = false, unique = true, length = 45)
     private int disputeId;
 
+    @NotEmpty(message = "Dispute type is required")
+    @Column(nullable = false, length = 40)
+    private String disputeType;
+
     @NotEmpty(message = "Description is required")
-    @Column(nullable = false, unique = true, length = 105)
+    @Column(nullable = false, length = 105)
     private String description;
 
     @JsonBackReference

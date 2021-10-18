@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DisputeDto {
-    String mailId;
+    int mailId;
     String disputeType;
     String description;
 
-    public DisputeDto(String mailId, String disputeType, String description) {
+    public DisputeDto(int mailId, String disputeType, String description) {
         this.mailId = mailId;
         this.disputeType = disputeType;
         this.description = description;

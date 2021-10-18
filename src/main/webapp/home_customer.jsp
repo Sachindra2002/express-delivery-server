@@ -57,6 +57,14 @@
             }
         }
 
+        function submitHiddenForm(mailId){
+            document.getElementById('mailId').value = mailId;
+        }
+
+        function submitHiddenForm2(mailId){
+            document.getElementById('mailId2').value = mailId;
+        }
+
     </script>
 </head>
 <body>
@@ -101,7 +109,7 @@
         <div class="homepage-row" style=" margin-right: 50px">
             <c:forEach var="mail" items="${upcoming_packages}">
                 <div class="card"
-                     style="width: 18rem; margin-left: 10px;flex: 0 0 auto; width: auto; max-width: 100%; margin-right: 10px;">
+                     style="width: 18rem; margin-left: 10px;flex: 0 0 auto; width: auto; max-width: 100%; margin-right: 10px; border-radius: 10px">
                     <div class="card-body">
                         <h5 style="float: left" class="card-title">From : ${mail.getSenderEmail()}</h5>
                         <span style="float: right; font-size: 15px; margin-left: 30px"
@@ -113,17 +121,33 @@
                         <p style="font-weight: bold" class="card-text">Weight : <span
                                 style="font-weight: normal">${mail.getWeight()} KG</span></p>
                     </div>
-                    <div>
-
-                        <button style="float: right; margin: 10px" type="button" class="btn btn-danger">Open Dispute
-                        </button>
-                        <button style="float: right; margin: 10px" type="button" class="btn btn-warning">Initiate
-                            Return
-                        </button>
-                    </div>
-                    <div class="card-header">
-                        <p class="card-text" style="float: right; font-weight: bold">#000${mail.getMailId()}</p>
-                        <p class="card-text" style="float: right; font-weight: bold; margin-right: 10px">Tracking ID</p>
+                    <c:if test="${mail.getStatus() == 'Delivered'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal" onclick="submitHiddenForm(${mail.getMailId()})">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#openReturnModal" onclick="submitHiddenForm2(${mail.getMailId()})">Initiate Return
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Processing'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal" onclick="submitHiddenForm(${mail.getMailId()})">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track
+                            </button>
+                        </div>
+                    </c:if>
+                    <div class="card-header" style="border-radius: 10px">
+                        <p class="card-text" style="float: right; font-weight: bold; margin-top: 5px">#000${mail.getMailId()}</p>
+                        <p class="card-text" style="float: right; font-weight: bold; margin-right: 10px; margin-top: 5px">Tracking ID</p><br/><br/>
+                        <p class="card-text" style="float: right; font-weight: bold; margin-top: -15px">#000${mail.getMailId()}</p>
+                        <p class="card-text" style="float: right; font-weight: bold; margin-right: 10px; margin-top: -15px">Package ID</p>
+                        <p class="card-text" style="float: left; font-weight: bold; margin-left: 10px; margin-top: -45px">Date</p>
+                        <p class="card-text" style="float: left; font-weight: bold; margin-top: -45px; margin-left: 50px">12/12/2021</p>
                     </div>
                 </div>
             </c:forEach>
@@ -178,7 +202,7 @@
                     <c:if test="${mail.getStatus() == 'Processing'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                                    data-toggle="modal" data-target="#openDisputeModal" onclick="submitHiddenForm(${mail.getMailId()})">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-warning"><i
                                     style="color: black; margin-right: 10px" class="fa fa-exclamation-circle"
@@ -198,9 +222,9 @@
         <% } %>
     </div>
 </div>
-
 <%@ include file="modals/send-package.jsp" %>
 <%@ include file="modals/open-dispute.jsp" %>
+<%@ include file="modals/initiate-return.jsp" %>
 <%@ include file="utils/script_imports.jsp" %>
 </body>
 <footer>

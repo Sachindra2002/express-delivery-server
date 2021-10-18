@@ -5,10 +5,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude="disputes")
+@EqualsAndHashCode(exclude = "disputes")
 @ToString(exclude = "disputes")
 @Data
 @AllArgsConstructor
@@ -19,7 +19,7 @@ import java.util.Set;
 public class Mail {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true, length = 45)
     private int mailId;
 
@@ -92,8 +92,18 @@ public class Mail {
     private String description;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "mail",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 
-    private Instant createdAt;
+    @OneToOne(mappedBy = "mail", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private MailTracking mailTracking;
+
+    private Date createdAt;
+
+    public void openDispute(Dispute dispute) {
+        if (!disputes.contains(dispute)) {
+            disputes.add(dispute);
+        }
+    }
 }

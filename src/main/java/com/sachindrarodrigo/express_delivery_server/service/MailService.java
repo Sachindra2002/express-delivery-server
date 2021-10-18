@@ -1,10 +1,12 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
+import com.sachindrarodrigo.express_delivery_server.domain.MailTracking;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
+import com.sachindrarodrigo.express_delivery_server.repository.MailTrackingRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.lang.model.type.NullType;
+import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,11 +29,22 @@ public class MailService {
 
     private final MailRepository mailRepository;
     private final UserRepository userRepository;
+    private final MailTrackingRepository mailTrackingRepository;
 
-    public MailDto sendMail(MailDto dto) {
+    @Transactional
+    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
         Mail mail = map(dto);
         mailRepository.save(mail);
+        createTracking(mail.getMailId());
         return dto;
+    }
+
+    public void createTracking(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
+        mailTrackingRepository.save(MailTracking.builder().mail(mail)
+                .status("Processing")
+                .deliveryPartner("NULL")
+                .driver("NULL").build());
     }
 
     public List<MailDto> getAllRecentUpcomingPackages() {
