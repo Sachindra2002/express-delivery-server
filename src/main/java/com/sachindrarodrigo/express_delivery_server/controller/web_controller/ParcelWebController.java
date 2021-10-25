@@ -5,9 +5,11 @@ import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryExc
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.DisputeService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
+import com.sachindrarodrigo.express_delivery_server.service.MailTrackingService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +21,7 @@ public class ParcelWebController {
     private final MailService mailService;
     private final CustomerService customerService;
     private final DisputeService disputeService;
+    private final MailTrackingService mailTrackingService;
 
     @PostMapping("/send-package")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -76,17 +79,28 @@ public class ParcelWebController {
         return mv;
     }
 
+    @PostMapping("/cancel-parcel")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ModelAndView cancelParcel(@RequestParam int mailId) throws ExpressDeliveryException {
+        ModelAndView mv = HomePage();
+        mailService.cancelParcel(mailId);
+        mv.addObject("success", new SimpleMessageDto("Package cancelled Successfully"));
+        return mv;
+    }
+
+    @GetMapping("/track-parcel")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ModelAndView trackParcel(@RequestParam int mailId) throws ExpressDeliveryException {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("track-parcel.jsp");
+        mv.addObject("tracking", mailTrackingService.getTrackingInfo(mailId));
+        return mv;
+    }
+
     private ModelAndView HomePage() {
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("home_customer.jsp");
-        mv.addObject("upcoming_packages", mailService.getAllRecentUpcomingPackages());
-        mv.addObject("outgoing_packages", mailService.getAllRecentOutgoingPackages());
-
-        try {
-            mv.addObject("name", customerService.getName());
-        } catch (ExpressDeliveryException e) {
-            e.printStackTrace();
-        }
+        mv.setViewName("redirect:/home-customer");
+        mv.addObject("success", new SimpleMessageDto("Package cancelled Successfully"));
         return mv;
     }
 

@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
+import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;

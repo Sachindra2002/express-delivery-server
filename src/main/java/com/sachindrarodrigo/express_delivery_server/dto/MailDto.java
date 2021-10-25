@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.dto;
 
+import com.sachindrarodrigo.express_delivery_server.domain.MailTracking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +26,9 @@ public class MailDto {
             totalCost,
             status,
             description;
+    private MailTracking mailTracking;
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String senderPhoneNumber, String receiverPhoneNumber, String senderEmail, String receiverEmail, String senderCity, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String senderPhoneNumber, String receiverPhoneNumber, String senderEmail, String receiverEmail, String senderCity, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, MailTracking mailTracking) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
@@ -45,6 +47,8 @@ public class MailDto {
         this.totalCost = totalCost;
         this.status = status;
         this.description = description;
+        this.mailTracking = mailTracking;
     }
+
 }
 

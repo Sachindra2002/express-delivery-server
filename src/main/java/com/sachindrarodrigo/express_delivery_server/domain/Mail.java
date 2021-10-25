@@ -95,7 +95,7 @@ public class Mail {
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 
-    @OneToOne(mappedBy = "mail", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "mail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 

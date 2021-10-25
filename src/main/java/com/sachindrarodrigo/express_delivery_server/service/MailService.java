@@ -47,6 +47,12 @@ public class MailService {
                 .driver("NULL").build());
     }
 
+    public void cancelParcel(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Cancelled");
+        mailRepository.save(mail);
+    }
+
     public List<MailDto> getAllRecentUpcomingPackages() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -122,6 +128,6 @@ public class MailService {
 
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
-        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverPhoneNumber(), mail.getSenderEmail(), mail.getReceiverEmail(), mail.getSenderCity(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(), mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription());
+        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverPhoneNumber(), mail.getSenderEmail(), mail.getReceiverEmail(), mail.getSenderCity(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(), mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getMailTracking());
     }
 }

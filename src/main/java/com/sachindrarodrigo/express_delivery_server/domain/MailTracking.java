@@ -33,8 +33,7 @@ public class MailTracking {
     @Column(nullable = false, length = 200)
     private String status;
 
-    @OneToOne
-    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mailId")
     private Mail mail;
 
