@@ -120,12 +120,16 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
-                        <c:if test="${mail.getStatus() == 'Shipped'}">
+                        <c:if test="${mail.getStatus() == 'Cancelled'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
-                        <c:if test="${mail.getStatus() == 'Cancelled'}">
-                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                        <c:if test="${mail.getStatus() == 'Shipped'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; border-color: orange; color: orange; background-color: white"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Delivered'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
                         <p style="font-weight: bold" class="card-text">Description : <span
@@ -141,9 +145,9 @@
                                     data-toggle="modal" data-target="#openReturnModal"
                                     onclick="submitHiddenForm2(${mail.getMailId()})">Initiate Return
                             </button>
-                            <form method="post" action="/track-parcel">
-                                <input type="hidden" value="${mail.getMailId()}">
-                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
                                 </button>
                             </form>
 
@@ -153,7 +157,7 @@
                         <div>
                             <form method="get" action="/track-parcel">
                                 <input type="hidden" name="mailId" value="${mail.getMailId()}">
-                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
                                 </button>
                             </form>
                         </div>
@@ -208,6 +212,14 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
+                        <c:if test="${mail.getStatus() == 'Shipped'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; border-color: orange; color: orange; background-color: white"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Delivered'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
                         <p style="font-weight: bold" class="card-text">Address : <span
                                 style="font-weight: normal">${mail.getReceiverAddress()} [${mail.getReceiverCity()}]</span>
                         </p>
@@ -225,7 +237,7 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
                             </button>
                         </div>
                     </c:if>
@@ -237,7 +249,7 @@
                                     style="color: black; margin-right: 10px" class="fa fa-exclamation-circle"
                                     aria-hidden="true"></i> Cancel
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
                             </button>
                         </div>
                     </c:if>

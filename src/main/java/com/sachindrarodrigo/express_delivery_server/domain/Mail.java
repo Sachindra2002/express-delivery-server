@@ -2,6 +2,8 @@ package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -99,6 +101,8 @@ public class Mail {
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
     public void openDispute(Dispute dispute) {
