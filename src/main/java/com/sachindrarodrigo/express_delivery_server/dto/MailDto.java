@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class MailDto {
@@ -27,8 +29,9 @@ public class MailDto {
             status,
             description;
     private MailTracking mailTracking;
+    private Date createdAt;
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String senderPhoneNumber, String receiverPhoneNumber, String senderEmail, String receiverEmail, String senderCity, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, MailTracking mailTracking) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String senderPhoneNumber, String receiverPhoneNumber, String senderEmail, String receiverEmail, String senderCity, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, MailTracking mailTracking, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
@@ -48,7 +51,7 @@ public class MailDto {
         this.status = status;
         this.description = description;
         this.mailTracking = mailTracking;
+        this.createdAt = createdAt;
     }
-
 }
 

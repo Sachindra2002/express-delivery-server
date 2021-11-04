@@ -40,15 +40,28 @@ public class MailService {
     }
 
     public void createTracking(int mailId) throws ExpressDeliveryException {
-        Mail mail = mailRepository.findById(mailId).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mailTrackingRepository.save(MailTracking.builder().mail(mail)
-                .status("Processing")
-                .deliveryPartner("NULL")
-                .driver("NULL").build());
+                .driver("NULL")
+                .deliveryPartner("LK-EXPRESS-DELIVERY")
+                .driver("NULL")
+                .status1("Processing - Thank you for using Express Delivery")
+                .status1Date(null)
+                .status2("NULL")
+                .status2Date(null)
+                .status3("NULL")
+                .status3Date(null)
+                .status4("NULL")
+                .status4Date(null)
+                .status5("NULL")
+                .status5Date(null)
+                .status6("NULL")
+                .status6Date(null)
+                .build());
     }
 
     public void cancelParcel(int mailId) throws ExpressDeliveryException {
-        Mail mail = mailRepository.findById(mailId).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mail.setStatus("Cancelled");
         mailRepository.save(mail);
     }
@@ -62,8 +75,8 @@ public class MailService {
         List<MailDto> list = mailRepository.findByReceiverEmailEquals(user.getEmail()).stream().map(this::mapDto).collect(Collectors.toList());
         List<MailDto> recentUpcoming = new ArrayList<>();
 
-        for(int i=0; i<list.size(); i++) {
-            if(i == 10) break;
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 10) break;
             recentUpcoming.add(list.get(i));
         }
 
@@ -81,8 +94,8 @@ public class MailService {
         List<MailDto> list = mailRepository.findBySenderEmailEquals(user.getEmail()).stream().map(this::mapDto).collect(Collectors.toList());
         List<MailDto> recentOutgoing = new ArrayList<>();
 
-        for(int i=0; i<list.size(); i++) {
-            if(i == 10) break;
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 10) break;
             recentOutgoing.add(list.get(i));
         }
         Collections.reverse(recentOutgoing);
@@ -95,7 +108,7 @@ public class MailService {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         //If user is not found
-        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
+        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
 
         return _user.getEmail();
     }
@@ -128,6 +141,6 @@ public class MailService {
 
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
-        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverPhoneNumber(), mail.getSenderEmail(), mail.getReceiverEmail(), mail.getSenderCity(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(), mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getMailTracking());
+        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverPhoneNumber(), mail.getSenderEmail(), mail.getReceiverEmail(), mail.getSenderCity(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(), mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getMailTracking(), mail.getCreatedAt());
     }
 }

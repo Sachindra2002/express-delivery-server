@@ -4,6 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <html>
@@ -175,7 +176,7 @@
                         <p class="card-text"
                            style="float: left; font-weight: bold; margin-left: 10px; margin-top: -45px">Date</p>
                         <p class="card-text"
-                           style="float: left; font-weight: bold; margin-top: -45px; margin-left: 50px">12/12/2021</p>
+                           style="float: left; font-weight: bold; margin-top: -45px; margin-left: 50px"><fmt:formatDate pattern = "yyyy-MM-dd" value = "${mail.getCreatedAt()}" /></p>
                     </div>
                 </div>
             </c:forEach>
