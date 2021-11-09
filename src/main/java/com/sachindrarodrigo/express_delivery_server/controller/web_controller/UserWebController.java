@@ -2,6 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.AdminService;
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ public class UserWebController {
 
     MailService mailService;
     CustomerService customerService;
+    AdminService adminService;
 
     @GetMapping("/login")
     public ModelAndView login(String error) {
@@ -34,7 +36,12 @@ public class UserWebController {
 
         ModelAndView mv = new ModelAndView();
         mv.setViewName("home_admin.jsp");
-
+        mv.addObject("new_shipments", adminService.getAllNewShipmentsAdmin());
+        try {
+            mv.addObject("name", adminService.getName());
+        } catch (ExpressDeliveryException e) {
+            e.printStackTrace();
+        }
         return mv;
     }
 

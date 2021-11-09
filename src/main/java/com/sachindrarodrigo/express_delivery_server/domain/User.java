@@ -1,16 +1,15 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -48,5 +47,17 @@ public class User {
     @NotEmpty(message = "User role is required")
     @Column(nullable = false, length = 10)
     private String userRole;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Mail> mails;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private DriverDetail driverDetail;
+
+    @ManyToOne
+    @JoinColumn(name = "centreId")
+    private ServiceCentre serviceCentre;
 
 }

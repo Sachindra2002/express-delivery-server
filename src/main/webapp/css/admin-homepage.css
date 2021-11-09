@@ -1,0 +1,11 @@
+.package-stats{
+    margin-left: 30px;
+    align-items: center;
+    height: auto;
+    width: 42rem;
+    background-color: #F2F2F2;
+    float: left;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+}

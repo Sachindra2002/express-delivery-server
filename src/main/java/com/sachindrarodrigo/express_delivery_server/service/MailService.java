@@ -45,7 +45,7 @@ public class MailService {
                 .driver("NULL")
                 .deliveryPartner("LK-EXPRESS-DELIVERY")
                 .driver("NULL")
-                .status1("Processing - Thank you for using Express Delivery")
+                .status1("Processing Started - Thank you for using Express Delivery")
                 .status1Date(null)
                 .status2("NULL")
                 .status2Date(null)
@@ -56,6 +56,11 @@ public class MailService {
                 .status5("NULL")
                 .status5Date(null)
                 .status6("NULL")
+                .status7("NULL")
+                .status8("NULL")
+                .status9("NULL")
+                .status10("NULL")
+                .status11("NULL")
                 .status6Date(null)
                 .build());
     }
@@ -80,7 +85,7 @@ public class MailService {
             recentUpcoming.add(list.get(i));
         }
 
-        Collections.reverse(recentUpcoming);
+//        Collections.reverse(recentUpcoming);
 
         return recentUpcoming;
     }
@@ -91,7 +96,7 @@ public class MailService {
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        List<MailDto> list = mailRepository.findBySenderEmailEquals(user.getEmail()).stream().map(this::mapDto).collect(Collectors.toList());
+        List<MailDto> list = mailRepository.findByUserEquals(user).stream().map(this::mapDto).collect(Collectors.toList());
         List<MailDto> recentOutgoing = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
@@ -120,13 +125,11 @@ public class MailService {
         Optional<User> userOptional = userRepository.findById(auth.getName());
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return Mail.builder().pickupAddress(dto.getPickupAddress())
+        return Mail.builder().user(user)
+                .pickupAddress(dto.getPickupAddress())
                 .receiverAddress(dto.getReceiverAddress())
-                .senderPhoneNumber(user.getPhoneNumber())
                 .receiverPhoneNumber(dto.getReceiverPhoneNumber())
-                .senderEmail(user.getEmail())
                 .receiverEmail(dto.getReceiverEmail())
-                .senderCity(user.getLocation())
                 .receiverCity(dto.getReceiverCity())
                 .parcelType(dto.getParcelType())
                 .weight(dto.getWeight())
@@ -141,6 +144,7 @@ public class MailService {
 
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
-        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverPhoneNumber(), mail.getSenderEmail(), mail.getReceiverEmail(), mail.getSenderCity(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(), mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getMailTracking(), mail.getCreatedAt());
+        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
+                mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getUser(), mail.getMailTracking(), mail.getCreatedAt());
     }
 }

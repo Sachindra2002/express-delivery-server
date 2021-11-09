@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,29 +30,24 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "email", nullable = false)
+    private User user;
+
     @NotEmpty(message = "Receiver address is required")
     @Column(nullable = false, length = 60)
     private String receiverAddress;
-
-    @NotEmpty(message = "Sender phone number is required")
-    @Column(nullable = false, length = 20)
-    private String senderPhoneNumber;
 
     @NotEmpty(message = "Receiver Phone number is required")
     @Column(nullable = false, length = 20)
     private String receiverPhoneNumber;
 
-    @NotEmpty(message = "Sender email number is required")
-    @Column(nullable = false, length = 60)
-    private String senderEmail;
 
     @NotEmpty(message = "Receiver email is required")
     @Column(nullable = false, length = 60)
     private String receiverEmail;
 
-    @NotEmpty(message = "Sender city is required")
-    @Column(nullable = false, length = 20)
-    private String senderCity;
 
     @NotEmpty(message = "Receiver city is required")
     @Column(nullable = false, length = 20)
@@ -101,13 +97,13 @@ public class Mail {
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "driverId")
+    private DriverDetail driverDetail;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    public void openDispute(Dispute dispute) {
-        if (!disputes.contains(dispute)) {
-            disputes.add(dispute);
-        }
-    }
 }

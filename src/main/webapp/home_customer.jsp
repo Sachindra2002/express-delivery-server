@@ -116,7 +116,7 @@
                 <div class="card"
                      style="width: 18rem; margin-left: 10px;flex: 0 0 auto; width: auto; max-width: 100%; margin-right: 10px; border-radius: 10px">
                     <div class="card-body">
-                        <h5 style="float: left" class="card-title">From : ${mail.getSenderEmail()}</h5>
+                        <h5 style="float: left" class="card-title">From : ${mail.user.getEmail()}</h5>
                         <c:if test="${mail.getStatus() == 'Processing'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
@@ -155,6 +155,15 @@
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Processing'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Shipped'}">
                         <div>
                             <form method="get" action="/track-parcel">
                                 <input type="hidden" name="mailId" value="${mail.getMailId()}">

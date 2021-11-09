@@ -58,21 +58,56 @@ public class MailTracking {
     private String status4;
 
     @Column(length = 200)
-    private String status4Date;
+    private Date status4Date;
 
     @NotEmpty(message = "status5 is required")
     @Column(nullable = false, length = 200)
     private String status5;
 
     @Column(length = 200)
-    private String status5Date;
+    private Date status5Date;
 
     @NotEmpty(message = "status6 is required")
     @Column(nullable = false, length = 200)
     private String status6;
 
     @Column(length = 200)
-    private String status6Date;
+    private Date status6Date;
+
+    @NotEmpty(message = "status7 is required")
+    @Column(nullable = false, length = 200)
+    private String status7;
+
+    @Column(length = 200)
+    private Date status7Date;
+
+    @NotEmpty(message = "status8 is required")
+    @Column(nullable = false, length = 200)
+    private String status8;
+
+    @Column(length = 200)
+    private Date status8Date;
+
+    @NotEmpty(message = "status9 is required")
+    @Column(nullable = false, length = 200)
+    private String status9;
+
+    @Column(length = 200)
+    private Date status9Date;
+
+    @NotEmpty(message = "status10 is required")
+    @Column(nullable = false, length = 200)
+    private String status10;
+
+    @Column(length = 200)
+    private Date status10Date;
+
+    @NotEmpty(message = "status11 is required")
+    @Column(nullable = false, length = 200)
+    private String status11;
+
+    @Column(length = 200)
+    private Date status11Date;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mailId")
