@@ -1,6 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,7 +31,7 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "email", nullable = false)
     private User user;
@@ -43,11 +44,9 @@ public class Mail {
     @Column(nullable = false, length = 20)
     private String receiverPhoneNumber;
 
-
     @NotEmpty(message = "Receiver email is required")
     @Column(nullable = false, length = 60)
     private String receiverEmail;
-
 
     @NotEmpty(message = "Receiver city is required")
     @Column(nullable = false, length = 20)

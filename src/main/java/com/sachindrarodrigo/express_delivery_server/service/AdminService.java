@@ -3,6 +3,7 @@ package com.sachindrarodrigo.express_delivery_server.service;
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
+import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
@@ -44,6 +45,15 @@ public class AdminService {
         }
 //        Collections.reverse(recentUpcoming);
         return newShipments;
+    }
+
+    public List<UserDto> getAllDrivers(){
+        return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
+    }
+
+    //Method to map data transfer object to domain class
+    private UserDto mapUsers(User user) {
+        return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(), user.getLocation(), user.getPhoneNumber(), user.getUserRole(), user.getServiceCentre(), user.getDriverDetail());
     }
 
     //Method to map data transfer object to domain class

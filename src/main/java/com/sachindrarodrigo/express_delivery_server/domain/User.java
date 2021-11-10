@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,7 +49,7 @@ public class User {
     @Column(nullable = false, length = 10)
     private String userRole;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Mail> mails;
 

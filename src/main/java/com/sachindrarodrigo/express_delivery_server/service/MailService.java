@@ -85,7 +85,7 @@ public class MailService {
             recentUpcoming.add(list.get(i));
         }
 
-//        Collections.reverse(recentUpcoming);
+        Collections.reverse(recentUpcoming);
 
         return recentUpcoming;
     }
