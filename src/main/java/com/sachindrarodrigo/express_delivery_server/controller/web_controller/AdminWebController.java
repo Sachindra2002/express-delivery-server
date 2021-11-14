@@ -1,26 +1,85 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
-import com.sachindrarodrigo.express_delivery_server.service.AdminService;
+import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
+import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
+import com.sachindrarodrigo.express_delivery_server.exception.APIException;
+import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.DriverService;
+import com.sachindrarodrigo.express_delivery_server.service.ServiceCenterService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 @AllArgsConstructor
 public class AdminWebController {
 
-    private final AdminService adminService;
+    private final DriverService driverService;
+    private final ServiceCenterService serviceCenterService;
 
-    @GetMapping("/manage-drivers")
+    @GetMapping("/drivers")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView manageDrivers() {
+    public ModelAndView viewAllDrivers() {
+        return getAllDrivers();
+    }
+
+    public ModelAndView getAllDrivers() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("manage-drivers.jsp");
-        mv.addObject("driver_list", adminService.getAllDrivers());
+        mv.addObject("driver_list", driverService.getAllDrivers());
+
+        //Get list of service centers for "Add Driver" Modal
+        mv.addObject("centers", serviceCenterService.getAllServiceCenters());
         return mv;
     }
 
+    @GetMapping("/view-driver")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewDriver(@RequestParam int driverId) throws ExpressDeliveryException {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("view-driver.jsp");
+        mv.addObject("driver", driverService.getDriverInfo(driverId));
+        return mv;
+    }
+
+    @PostMapping("/add-driver")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView addDriver(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String phone, @RequestParam String location,
+                                  @RequestParam String center, @RequestParam String dob, @RequestParam String nic, @RequestParam String address,
+                                  RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        try {
+
+            UserDto userDto = new UserDto();
+            userDto.setFirstName(firstName);
+            userDto.setLastName(lastName);
+            userDto.setEmail(email);
+            userDto.setPhoneNumber(phone);
+            userDto.setLocation(location);
+
+            DriverDetailDto driverDetailDto = new DriverDetailDto();
+            driverDetailDto.setDOB(dob);
+            driverDetailDto.setNIC(nic);
+            driverDetailDto.setAddress(address);
+
+            driverService.addDriver(userDto, driverDetailDto, center);
+            driverService.addDriverDetails(driverDetailDto, email);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Driver added successfully"));
+            mv.setViewName("redirect:/drivers");
+
+
+        } catch (ExpressDeliveryException e) {
+            mv.addObject("error", new APIException(e.getMessage()));
+        }
+
+        return mv;
+    }
 
 }

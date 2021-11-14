@@ -3,6 +3,7 @@ package com.sachindrarodrigo.express_delivery_server.service;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
 
     private final UserRepository userRepository;
+
 
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user

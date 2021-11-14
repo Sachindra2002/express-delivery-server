@@ -6,7 +6,6 @@ import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryExc
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class RegistrationService {
     @Transactional
     public UserDto registerUser(UserDto userDto) throws ExpressDeliveryException {
 
-        Optional existing = userRepository.findById(userDto.getEmail());
+        Optional<User> existing = userRepository.findById(userDto.getEmail());
 
         if(existing.isPresent()){
             throw new ExpressDeliveryException("Email already in use");

@@ -9,18 +9,22 @@ import com.sachindrarodrigo.express_delivery_server.repository.DisputeRepository
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 public class DisputeService {
+
     private final DisputeRepository disputeRepository;
     private final UserRepository userRepository;
     private final MailRepository mailRepository;
 
+    @Transactional
     public DisputeDto openDispute(DisputeDto dto) throws ExpressDeliveryException {
         Dispute dispute = map(dto);
         disputeRepository.save(dispute);

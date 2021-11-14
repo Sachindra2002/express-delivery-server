@@ -8,10 +8,12 @@ import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryExc
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class AdminService {
         return _user.getFirstName();
     }
 
+    @Transactional
     public List<MailDto> getAllNewShipmentsAdmin() {
 
         List<MailDto> list = mailRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
@@ -45,15 +48,6 @@ public class AdminService {
         }
 //        Collections.reverse(recentUpcoming);
         return newShipments;
-    }
-
-    public List<UserDto> getAllDrivers(){
-        return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
-    }
-
-    //Method to map data transfer object to domain class
-    private UserDto mapUsers(User user) {
-        return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(), user.getLocation(), user.getPhoneNumber(), user.getUserRole(), user.getServiceCentre(), user.getDriverDetail());
     }
 
     //Method to map data transfer object to domain class

@@ -67,7 +67,7 @@
                     </div>
                     <div class="dropdown-content">
                         <a href="#">Agents</a>
-                        <a href="/manage-drivers">Drivers</a>
+                        <a href="/drivers">Drivers</a>
                     </div>
                 </div>
             </li>

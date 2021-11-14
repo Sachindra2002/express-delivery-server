@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,9 +31,18 @@ public class DriverDetail {
     @JoinColumn(name = "email")
     private User user;
 
+    @Column(length = 15)
+    private String NIC;
+
+    @Column(length = 10)
+    private String DOB;
+
+    @Column(length = 200)
+    private String address;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "driverDetail", fetch = FetchType.LAZY)
-    private Set<Mail> mails;
+    private List<Mail> mails;
 
 
 }

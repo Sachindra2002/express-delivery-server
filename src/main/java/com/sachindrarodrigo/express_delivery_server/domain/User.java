@@ -57,6 +57,10 @@ public class User {
     @PrimaryKeyJoinColumn
     private DriverDetail driverDetail;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Documents> documents;
+
     @ManyToOne
     @JoinColumn(name = "centreId")
     private ServiceCentre serviceCentre;

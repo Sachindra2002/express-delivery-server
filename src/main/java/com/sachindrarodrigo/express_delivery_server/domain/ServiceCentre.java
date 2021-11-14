@@ -26,6 +26,12 @@ public class ServiceCentre {
     @Column(nullable = false, length = 20)
     private String city;
 
+    @Column(length = 20)
+    private String centre;
+
+    @Column(length = 150)
+    private String address;
+
     @OneToMany(mappedBy = "serviceCentre")
     private Set<User> users;
 
