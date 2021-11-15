@@ -42,7 +42,7 @@ public class User {
     private String phoneNumber;
 
     @NotEmpty(message = "Password is required")
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 200)
     private String password;
 
     @NotEmpty(message = "User role is required")
