@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## .WAR Files ###
+/target/**
+/out/**
