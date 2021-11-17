@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -59,7 +60,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Documents> documents;
+    private List<Documents> documents;
 
     @ManyToOne
     @JoinColumn(name = "centreId")

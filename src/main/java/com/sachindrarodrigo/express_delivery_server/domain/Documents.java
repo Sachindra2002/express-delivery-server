@@ -21,14 +21,14 @@ public class Documents {
     @Column(nullable = false, unique = true, length = 45)
     private int documentId;
 
-    @Column(length = 15)
+    @Column(length = 100)
     private String description;
 
-    @Column(length = 15)
-    private String documentType;
+    @Column(length = 100)
+    private String fileName ;
 
     @Column(length = 15)
-    private String documentPath;
+    private Long fileSize;
 
     @JsonIgnore
     @ManyToOne

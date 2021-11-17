@@ -153,8 +153,19 @@
             <button style="float: right" type="button" class="btn btn-primary">View All</button>
             <div>
                 <div style="margin-top: 50px">
-                    <c:forEach var="mail" items="${driver.mails}">
-
+                    <c:forEach var="document" items="${driver.user.documents}">
+                        <div class="card" style="border-radius: 10px; margin-top: 10px">
+                            <div class="card-body">
+                                <h6 style="float: left" class="card-title">${document.getDescription()}</h6>
+                                <form method="GET" action="/download">
+                                    <input type="hidden" name="fileName" value="${document.getFileName()}">
+                                    <button style="float: right" type="submit" class="btn btn-info"><i
+                                            class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                                </form>
+                                <h6 style="float: right; margin-right: 35px; font-weight: normal">
+                                        ${document.getFileSize()} KB</h6>
+                            </div>
+                        </div>
                     </c:forEach>
                 </div>
 

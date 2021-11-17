@@ -11,6 +11,7 @@
     <groupId>com.sachindrarodrigo</groupId>
     <artifactId>express_delivery_server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>express_delivery_server</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -95,6 +96,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

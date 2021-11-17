@@ -17,7 +17,7 @@
             <div class="modal-body">
                 <div class="card-body">
                     <div class="form-body">
-                        <form method="POST" action="/add-driver">
+                        <form method="POST" action="/add-driver" enctype="multipart/form-data">
                             <div class="form-row">
                                 <div class="col">
                                     <label for="firstName">Driver First Name</label>
