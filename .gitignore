@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ## .WAR Files ###
-/target/**
-/out/**
+target/**
+out/**
