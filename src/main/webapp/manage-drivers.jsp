@@ -26,7 +26,7 @@
     </div>
     <div class="send-package-button" style="float: right">
         <div>
-            <a type="button" data-toggle="modal" data-target="#openAddDriverModal">Add Driver</a>
+            <a type="button" href="/add-driver">Add Driver</a>
         </div>
     </div>
     <div style="margin-top: 120px">
@@ -94,7 +94,6 @@
             <% } %>
         </div>
     </div>
-    <%@ include file="modals/add-driver.jsp" %>
     <%@ include file="utils/script_imports.jsp" %>
 </body>
 </html>

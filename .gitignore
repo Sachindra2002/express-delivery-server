@@ -33,5 +33,6 @@ build/
 .vscode/
 
 ## .WAR Files ###
-/target/**
+/target/express_delivery_server-0.0.1-SNAPSHOT.war
+/target/express_delivery_server-0.0.1-SNAPSHOT.war.original
 /out/**

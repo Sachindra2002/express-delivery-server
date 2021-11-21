@@ -17,46 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <%@ include file="utils/head_imports.jsp" %>
     <script>
-        function myFunction() {
-            let cost = 0.0;
-            let typeCost = 0.0;
-            let weight = document.getElementById('inputWeight').value;
-            let type = document.getElementById('inputTypeofParcel').value;
-            let pieces = document.getElementById('inputPieces').value;
-
-            if (type === "Small 20CM X 20CM") {
-                typeCost = 200.0;
-            } else if (type === "Medium 45CM X 45CM") {
-                typeCost = 300.0;
-            } else if (type === "Large 80CM X 80CM") {
-                typeCost = 500.0;
-            } else if (type === "Card Envelop") {
-                typeCost = 100.0;
-            } else if (type === "Express Delivery Flyer") {
-                typeCost = 50.0;
-            } else {
-                typeCost = 0.0;
-            }
-
-            if (weight === 0.0) {
-                cost = 0.0;
-            } else if (weight >= 0.1 && weight <= 1.0) {
-                cost = 200.0;
-                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
-            } else if (weight >= 1.0 && weight <= 3.0) {
-                cost = 500.0;
-                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
-            } else if (weight >= 3.1 && weight <= 5.0) {
-                cost = 700.0;
-                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
-            } else if (weight >= 5.1 && weight <= 8.0) {
-                cost = 850.0;
-                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
-            } else {
-                cost = 1000.0;
-                document.getElementById('cost').value = (cost + typeCost) * pieces + " LKR";
-            }
-        }
 
         function submitHiddenForm(mailId) {
             document.getElementById('mailId').value = mailId;
@@ -89,7 +49,7 @@
     </div>
     <div class="send-package-button" style="float: right">
         <div>
-            <a type="button" data-toggle="modal" data-target="#sendPackageModal">Send a Package</a>
+            <a type="button" style="text-decoration: none" href="/send-package">Send a Package</a>
         </div>
     </div>
     <br/><br/><br/>
@@ -116,7 +76,7 @@
                 <div class="card"
                      style="width: 18rem; margin-left: 10px;flex: 0 0 auto; width: auto; max-width: 100%; margin-right: 10px; border-radius: 10px">
                     <div class="card-body">
-                        <h5 style="float: left" class="card-title">From : ${mail.user.getEmail()}</h5>
+                        <h5 style="float: left" class="card-title">From : ${mail.user.getFirstName()} ${mail.user.getLastName()}</h5>
                         <c:if test="${mail.getStatus() == 'Processing'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
@@ -213,7 +173,7 @@
                 <div class="card"
                      style="width: 18rem; margin-left: 10px;flex: 0 0 auto; width: auto; max-width: 100%; margin-right: 10px ; border-radius: 10px">
                     <div class="card-body">
-                        <h5 style="float: left" class="card-title">To : ${mail.getReceiverEmail()}</h5>
+                        <h5 style="float: left" class="card-title">To : ${mail.getReceiverFirstName()} ${mail.getReceiverLastName()}</h5>
                         <c:if test="${mail.getStatus() == 'Processing'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
@@ -273,7 +233,6 @@
         <% } %>
     </div>
 </div>
-<%@ include file="modals/send-package.jsp" %>
 <%@ include file="modals/open-dispute.jsp" %>
 <%@ include file="modals/initiate-return.jsp" %>
 <%@ include file="modals/cancel-parcel.jsp" %>

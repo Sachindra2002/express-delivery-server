@@ -8,7 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.Set;
 
@@ -40,12 +42,22 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String receiverAddress;
 
+    @NotEmpty(message = "Receiver First name is required")
+    @Column(nullable = false, length = 40)
+    private String receiverFirstName;
+
+    @NotEmpty(message = "Receiver last name is required")
+    @Column(nullable = false, length = 40)
+    private String receiverLastName;
+
     @NotEmpty(message = "Receiver Phone number is required")
     @Column(nullable = false, length = 20)
+    @Pattern(regexp="(^$|[0-9]{10})",message = "Incorrect Mobile Number")
     private String receiverPhoneNumber;
 
     @NotEmpty(message = "Receiver email is required")
     @Column(nullable = false, length = 60)
+    @Email(message = "Email is not valid")
     private String receiverEmail;
 
     @NotEmpty(message = "Receiver city is required")

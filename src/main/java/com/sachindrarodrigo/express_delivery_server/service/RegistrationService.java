@@ -37,6 +37,28 @@ public class RegistrationService {
         return userDto;
     }
 
+    @Transactional
+    public User registerUserWeb(User user) throws ExpressDeliveryException {
+
+        Optional<User> existing = userRepository.findById(user.getEmail());
+
+        if(existing.isPresent()){
+            throw new ExpressDeliveryException("Email already in use");
+        }
+
+        //save the new user
+        userRepository.save(User.builder().firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .location(user.getLocation())
+                .userRole("customer")
+                .password(passwordEncoder.encode(user.getPassword())).build());
+
+        return user;
+
+    }
+
     private User map(UserDto userDto){
         return User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())

@@ -14,6 +14,8 @@ public class MailDto {
     private int mailId;
     private String pickupAddress,
             receiverAddress,
+            receiverFirstName,
+            receiverLastName,
             receiverPhoneNumber,
             receiverEmail,
             receiverCity,
@@ -30,10 +32,12 @@ public class MailDto {
     private MailTracking mailTracking;
     private Date createdAt;
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, Date createdAt) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
+        this.receiverFirstName = receiverFirstName;
+        this.receiverLastName = receiverLastName;
         this.receiverPhoneNumber = receiverPhoneNumber;
         this.receiverEmail = receiverEmail;
         this.receiverCity = receiverCity;

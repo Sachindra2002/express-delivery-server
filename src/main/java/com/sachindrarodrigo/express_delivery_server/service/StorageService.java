@@ -91,7 +91,7 @@ public class StorageService {
         documentsRepository.save(Documents.builder().user(user)
                 .fileSize(fileSize)
                 .fileName(fileName)
-                .description(user.getFirstName() + user.getLastName() + description)
+                .description(user.getFirstName() + " " + user.getLastName() + " " + description)
                 .build());
     }
 

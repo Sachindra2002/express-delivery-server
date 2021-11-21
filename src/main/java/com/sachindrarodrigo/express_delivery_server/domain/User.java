@@ -1,18 +1,18 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Set;
 
+@EqualsAndHashCode(exclude = "mails")
+@ToString(exclude = "mails")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +24,7 @@ public class User {
     @Id
     @NotEmpty(message = "Email is required")
     @Column(nullable = false, unique = true, length = 45)
+    @Email(message = "Email is not valid")
     private String email;
 
     @NotEmpty(message = "First name is required")
@@ -40,11 +41,16 @@ public class User {
 
     @NotEmpty(message = "Phone number is required")
     @Column(nullable = false, length = 15)
+    @Pattern(regexp="(^$|[0-9]{10})",message = "Incorrect Mobile Number")
     private String phoneNumber;
 
     @NotEmpty(message = "Password is required")
     @Column(nullable = false, length = 200)
+    @Length(min = 8, message = "Password must be at least contain 8 characters")
     private String password;
+
+    @Transient
+    private String matchingPassword;
 
     @NotEmpty(message = "User role is required")
     @Column(nullable = false, length = 10)
@@ -52,7 +58,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Mail> mails;
+    private List<Mail> mails;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn

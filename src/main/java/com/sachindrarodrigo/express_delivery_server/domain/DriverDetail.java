@@ -1,16 +1,16 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Set;
 
+@EqualsAndHashCode(exclude = "mails")
+@ToString(exclude = "mails")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,13 +31,17 @@ public class DriverDetail {
     @JoinColumn(name = "email")
     private User user;
 
-    @Column(length = 15)
+    @NotEmpty(message = "NIC cannot be empty")
+    @Column(length = 15, unique = true, nullable = false)
+    @Pattern(regexp="^([0-9]{9}[x|X|v|V]|[0-9]{12})$",message = "Incorrect NIC Number")
     private String NIC;
 
-    @Column(length = 10)
+    @NotEmpty(message = "Date of birth cannot be empty")
+    @Column(length = 10, nullable = false)
     private String DOB;
 
-    @Column(length = 200)
+    @NotEmpty(message = "Address cannot be empty")
+    @Column(length = 200, nullable = false)
     private String address;
 
     @JsonManagedReference

@@ -128,6 +128,8 @@ public class MailService {
         return Mail.builder().user(user)
                 .pickupAddress(dto.getPickupAddress())
                 .receiverAddress(dto.getReceiverAddress())
+                .receiverFirstName(dto.getReceiverFirstName())
+                .receiverLastName(dto.getReceiverLastName())
                 .receiverPhoneNumber(dto.getReceiverPhoneNumber())
                 .receiverEmail(dto.getReceiverEmail())
                 .receiverCity(dto.getReceiverCity())
@@ -144,7 +146,7 @@ public class MailService {
 
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
-        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
+        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
                 mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getUser(), mail.getMailTracking(), mail.getCreatedAt());
     }
 }
