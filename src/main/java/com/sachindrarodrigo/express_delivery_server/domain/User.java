@@ -1,6 +1,8 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -56,7 +58,7 @@ public class User {
     @Column(nullable = false, length = 10)
     private String userRole;
 
-    @JsonIgnore
+    @JsonManagedReference(value = "user-customer")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Mail> mails;
 

@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -44,8 +45,7 @@ public class DriverDetail {
     @Column(length = 200, nullable = false)
     private String address;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "driverDetail", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "driverDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mail> mails;
 
 

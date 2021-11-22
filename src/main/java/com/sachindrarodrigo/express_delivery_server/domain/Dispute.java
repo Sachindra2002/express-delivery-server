@@ -7,8 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude="mails")
-@ToString(exclude = "mails")
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +28,6 @@ public class Dispute {
     @Column(nullable = false, length = 105)
     private String description;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "mailId", nullable = false)
     private Mail mail;

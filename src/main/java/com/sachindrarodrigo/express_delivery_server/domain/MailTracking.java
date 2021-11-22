@@ -1,5 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -109,6 +111,7 @@ public class MailTracking {
     @Column(length = 200)
     private Date status11Date;
 
+    @JsonManagedReference(value = "mailTracking")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mailId")
     private Mail mail;

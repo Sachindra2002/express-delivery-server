@@ -33,7 +33,7 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
-    @JsonIgnore
+    @JsonBackReference(value = "user-customer")
     @ManyToOne
     @JoinColumn(name = "email", nullable = false)
     private User user;
@@ -100,16 +100,15 @@ public class Mail {
     @Column(nullable = false, length = 200)
     private String description;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 
+    @JsonBackReference(value = "mailTracking")
     @OneToOne(mappedBy = "mail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 
-    @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "driverId")
     private DriverDetail driverDetail;
 
