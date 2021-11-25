@@ -25,7 +25,6 @@ import javax.validation.Valid;
 public class ParcelWebController {
 
     private final MailService mailService;
-    private final CustomerService customerService;
     private final DisputeService disputeService;
     private final MailTrackingService mailTrackingService;
 

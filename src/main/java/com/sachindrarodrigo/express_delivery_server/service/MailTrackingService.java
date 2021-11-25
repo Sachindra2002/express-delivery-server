@@ -24,5 +24,11 @@ public class MailTrackingService {
         return mailTrackingRepository.findByMail(mail);
     }
 
+    private MailTrackingDto mapTracking(MailTracking mailTracking){
+        return new MailTrackingDto(mailTracking.getMail(),mailTracking.getTrackingId(), mailTracking.getDriver(), mailTracking.getStatus1(), mailTracking.getStatus1Date(),
+                mailTracking.getStatus2(), mailTracking.getStatus2Date(), mailTracking.getStatus3(), mailTracking.getStatus3Date(), mailTracking.getStatus4(), mailTracking.getStatus4Date(),
+                mailTracking.getStatus5(), mailTracking.getStatus5Date(), mailTracking.getStatus6(), mailTracking.getStatus6Date(), mailTracking.getStatus7(), mailTracking.getStatus7Date(),
+                mailTracking.getStatus8(), mailTracking.getStatus8Date(), mailTracking.getStatus9(), mailTracking.getStatus9Date(), mailTracking.getDeliveryPartner());
+    }
 
 }

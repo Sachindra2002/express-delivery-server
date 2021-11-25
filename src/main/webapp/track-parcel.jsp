@@ -15,6 +15,7 @@
     <link rel="icon" href="images/logo.png"/>
     <link rel="stylesheet" href="css/track-parcel.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/custom-track.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <%@ include file="utils/head_imports.jsp" %>
 </head>
@@ -24,16 +25,16 @@
 <jsp:include page="utils/navbar.jsp">
     <jsp:param name="page" value="home"/>
 </jsp:include>
-<div style="margin-left: 20%">
+<div>
     <div class="center-header">
-        <h2>Delivery Details for Parcel ID #000<c:out value="${tracking.mail.mailId}"/></h2>
+        <h2>Delivery Details for Parcel ID #<c:out value="${tracking.mail.mailId}"/></h2>
     </div>
     <div class="center-header">
         <h4>Order Placed on <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium"
                                             value="${tracking.mail.createdAt}"/></h4>
     </div>
     <div class="center-header">
-        <h4>Tracking ID #000<c:out value="${tracking.mail.mailTracking.trackingId}"/></h4>
+        <h4>Tracking ID #<c:out value="${tracking.mail.mailTracking.trackingId}"/></h4>
     </div>
     <div class="left">
         <div class="receiverInfo">
@@ -102,47 +103,172 @@
         </div>
     </div>
     <div>
-        <div class="center-box">
-            <div class="mailStatus">
-                <div style="float: left; margin-left: 30px">
-                    Package Status :
-                </div>
-                <div style="float:left; font-weight: bold;">
-                    <c:if test="${tracking.mail.status == 'Processing'}">
-                            <span style="float: right; font-size: 15px; margin-left: 10px; margin-top: 5px;"
-                                  class="badge badge-pill badge-success">${tracking.mail.status}</span><br/><br/>
-                    </c:if>
-                    <c:if test="${tracking.mail.status == 'Cancelled'}">
-                            <span style="float: right; font-size: 15px; margin-left: 10px; margin-top: 5px; background-color: red"
-                                  class="badge badge-pill badge-success">${tracking.mail.status}</span><br/><br/>
-                    </c:if>
-                    <c:if test="${tracking.mail.status == 'Shipped'}">
-                            <span style="float: right; font-size: 15px;margin-left: 10px; margin-top: 5px; border-color: orange; color: orange; background-color: white"
-                                  class="badge badge-pill badge-success">${tracking.mail.status}</span><br/><br/>
-                    </c:if>
-                    <c:if test="${tracking.mail.status == 'Delivered'}">
-                            <span style="float: right; font-size: 15px; margin-left: 10px; margin-top: 5px; background-color: orange; color: white"
-                                  class="badge badge-pill badge-success">${tracking.mail.status}</span><br/><br/>
-                    </c:if>
+        <div class="center-box-track">
+            <div class="custom-status">
+                <div style="border-radius: 10px" class="card card-timeline px-2 border-none">
+                    <ul class="bs4-order-tracking">
+                        <c:if test="${tracking.mail.status == 'Processing'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Accepted'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'pickup'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'transit'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'out for delivery'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Delivered'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-box"></i></div> Pick up package
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-house-user"></i></div> Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Rejected'}">
+                            <li style="margin-left: 25%" class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-times-circle"></i></div>
+                            </li>
+                            <li style="color: red" class="step active">
+                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i></div> Order Rejected
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Cancelled'}">
+                            <li style="margin-left: 25%" class="step active">
+                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-times-circle"></i></div>
+                            </li>
+                            <li style="color: red" class="step active">
+                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i></div> Order Cancelled
+                            </li>
+                        </c:if>
+                    </ul>
                 </div>
             </div>
-            <br/><br/>
-            <c:if test="${tracking.status11 == 'NULL'}">
+            <br/>
+            <c:if test="${tracking.status11 == null}">
             </c:if>
-            <c:if test="${tracking.status11 != 'NULL'}">
+            <c:if test="${tracking.status11 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status11Date}"/></div>
-                    <div style="float: left; margin-left: 20px"><c:out value="${tracking.status11}"/></div>
+                    <div style="float: left; margin-left: 50px"><c:out value="${tracking.status11}"/></div>
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status10 == 'NULL'}">
+            <c:if test="${tracking.status10 == null}">
             </c:if>
-            <c:if test="${tracking.status10 != 'NULL'}">
+            <c:if test="${tracking.status10 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -153,9 +279,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status9 == 'NULL'}">
+            <c:if test="${tracking.status9 == null}">
             </c:if>
-            <c:if test="${tracking.status9 != 'NULL'}">
+            <c:if test="${tracking.status9 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -166,9 +292,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status8 == 'NULL'}">
+            <c:if test="${tracking.status8 == null}">
             </c:if>
-            <c:if test="${tracking.status8 != 'NULL'}">
+            <c:if test="${tracking.status8 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -179,9 +305,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status7 == 'NULL'}">
+            <c:if test="${tracking.status7 == null}">
             </c:if>
-            <c:if test="${tracking.status7 != 'NULL'}">
+            <c:if test="${tracking.status7 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -192,9 +318,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status6 == 'NULL'}">
+            <c:if test="${tracking.status6 == null}">
             </c:if>
-            <c:if test="${tracking.status6 != 'NULL'}">
+            <c:if test="${tracking.status6 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -205,9 +331,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status5 == 'NULL'}">
+            <c:if test="${tracking.status5 == null}">
             </c:if>
-            <c:if test="${tracking.status5 != 'NULL'}">
+            <c:if test="${tracking.status5 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -218,9 +344,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status4 == 'NULL'}">
+            <c:if test="${tracking.status4 == null}">
             </c:if>
-            <c:if test="${tracking.status4 != 'NULL'}">
+            <c:if test="${tracking.status4 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -231,9 +357,9 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status3 == 'NULL'}">
+            <c:if test="${tracking.status3 == null}">
             </c:if>
-            <c:if test="${tracking.status3 != 'NULL'}">
+            <c:if test="${tracking.status3 != null}">
                 <div class="status1">
                     <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
                             type="both"
@@ -244,29 +370,31 @@
                 </div>
                 <br/>
             </c:if>
-            <c:if test="${tracking.status2 == 'NULL'}">
+            <c:if test="${tracking.status2 == null}">
             </c:if>
-            <c:if test="${tracking.status2 != 'NULL'}">
+            <c:if test="${tracking.status2 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status2Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status2}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status2}"/></div>
                 </div>
                 <br/>
             </c:if>
             <div class="status1">
-                <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                         type="both"
                         dateStyle="medium"
                         timeStyle="medium"
                         value="${tracking.status1Date}"/></div>
-                <div style="float: left; margin-left: 30px"><c:out value="${tracking.status1}"/></div>
+                <div style="float: left; margin-left: 80px"><c:out value="${tracking.status1}"/></div>
             </div>
         </div>
     </div>
 
 </div>
+<%@ include file="utils/script_imports.jsp" %>
+
 </body>

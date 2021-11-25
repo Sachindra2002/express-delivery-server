@@ -8,6 +8,7 @@ import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.AgentService;
 import com.sachindrarodrigo.express_delivery_server.service.DriverService;
 import com.sachindrarodrigo.express_delivery_server.service.ServiceCenterService;
 import com.sachindrarodrigo.express_delivery_server.service.StorageService;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 
 @Controller
@@ -31,6 +33,7 @@ import javax.validation.Valid;
 public class AdminWebController {
 
     private final DriverService driverService;
+    private final AgentService agentService;
     private final ServiceCenterService serviceCenterService;
     private final StorageService storageService;
 
@@ -40,10 +43,24 @@ public class AdminWebController {
         return getAllDrivers();
     }
 
+    @GetMapping("/agents")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewAllAgents() {
+        return getAllAgents();
+    }
+
     public ModelAndView getAllDrivers() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("manage-drivers.jsp");
         mv.addObject("driver_list", driverService.getAllDrivers());
+
+        return mv;
+    }
+
+    public ModelAndView getAllAgents() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("manage-agents.jsp");
+        mv.addObject("agent_list", agentService.getAllAgents());
 
         return mv;
     }
@@ -57,8 +74,9 @@ public class AdminWebController {
         return mv;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/add-driver")
-    public ModelAndView register() {
+    public ModelAndView addDriver() {
         ModelAndView mv = new ModelAndView();
         DriverDetail driverDetail = new DriverDetail();
         User user = new User();
@@ -70,6 +88,19 @@ public class AdminWebController {
 
         return mv;
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/add-agent")
+    public ModelAndView addAgent() {
+        ModelAndView mv = new ModelAndView();
+        User user = new User();
+        mv.setViewName("add-agent.jsp");
+        mv.addObject("user", user);
+        //Get list of service centers for "Add Driver"
+        mv.addObject("centers", serviceCenterService.getAllServiceCenters());
+        return mv;
+    }
+
 
     @PostMapping("/add-driver")
     @PreAuthorize("hasRole('ADMIN')")
@@ -118,6 +149,40 @@ public class AdminWebController {
                 mv.addObject("error", new APIException(e.getMessage()));
             }
         }
+        return mv;
+    }
+
+    @PostMapping("/add-agent")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView addAgent(@Valid @ModelAttribute("user") User user, BindingResult bindingUser, @RequestParam String center, RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/agents");
+        if (bindingUser.hasErrors()) {
+            mv.setViewName("add-agent.jsp");
+        } else {
+            try {
+                UserDto userDto = new UserDto();
+                userDto.setFirstName(user.getFirstName());
+                userDto.setLastName(user.getLastName());
+                userDto.setEmail(user.getEmail());
+                userDto.setPhoneNumber(user.getPhoneNumber());
+                userDto.setLocation(user.getLocation());
+
+                agentService.addAgent(userDto, center);
+
+                redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Agent added successfully"));
+                mv.setViewName("redirect:/agents");
+            } catch (ExpressDeliveryException e) {
+                if (Objects.equals(e.getMessage(), "Email already in use")) {
+                    mv.setViewName("add-agent.jsp");
+                    mv.addObject("emailError", "Email already in use");
+                } else {
+                    redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+                }
+
+            }
+        }
+
         return mv;
     }
 

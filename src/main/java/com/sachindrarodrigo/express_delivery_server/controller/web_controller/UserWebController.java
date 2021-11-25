@@ -1,8 +1,8 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
-import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.AdminService;
+import com.sachindrarodrigo.express_delivery_server.service.AgentService;
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ public class UserWebController {
     MailService mailService;
     CustomerService customerService;
     AdminService adminService;
+    AgentService agentService;
 
     @GetMapping("/login")
     public ModelAndView login(String error) {
@@ -60,6 +61,22 @@ public class UserWebController {
             e.printStackTrace();
         }
 
+        return mv;
+    }
+
+    @GetMapping("/home-agent")
+    @PreAuthorize("hasAnyRole('AGENT')")
+    public ModelAndView homeAgent() throws ExpressDeliveryException {
+        //Direct agent to homepage
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/home_agent.jsp");
+        mv.addObject("pending_packages", agentService.getAllNewShipmentsAdmin());
+        try {
+            mv.addObject("name", agentService.getName());
+        } catch (ExpressDeliveryException e) {
+            e.printStackTrace();
+        }
         return mv;
     }
 }

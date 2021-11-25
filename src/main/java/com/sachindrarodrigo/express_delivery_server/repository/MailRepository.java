@@ -12,4 +12,5 @@ public interface MailRepository extends JpaRepository<Mail, Integer> {
 
     List<Mail> findByUserEquals(User user);
 
+    List<Mail> findByUserLocationAndStatusEquals(String location, String status);
 }

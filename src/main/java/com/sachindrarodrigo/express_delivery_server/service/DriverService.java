@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Driver;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class DriverService {
     }
 
     @Transactional
-    public UserDto addDriver(UserDto dto, DriverDetailDto driverDetailDto, String serviceCenter) throws ExpressDeliveryException {
+    public void addDriver(UserDto dto, DriverDetailDto driverDetailDto, String serviceCenter) throws ExpressDeliveryException {
 
         Optional<User> existing = userRepository.findById(dto.getEmail());
 
@@ -52,15 +51,12 @@ public class DriverService {
         User user = map(dto, serviceCenter);
         userRepository.save(user);
 
-        return dto;
     }
 
     @Transactional
-    public DriverDetailDto addDriverDetails(DriverDetailDto driverDetailDto, String email){
+    public void addDriverDetails(DriverDetailDto driverDetailDto, String email){
         DriverDetail driver = mapDriverDetail(driverDetailDto, email);
         driverDetailRepository.save(driver);
-
-        return driverDetailDto;
 
     }
 

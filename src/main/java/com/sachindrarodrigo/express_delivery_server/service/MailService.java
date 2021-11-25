@@ -42,26 +42,8 @@ public class MailService {
     public void createTracking(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mailTrackingRepository.save(MailTracking.builder().mail(mail)
-                .driver("NULL")
                 .deliveryPartner("LK-EXPRESS-DELIVERY")
-                .driver("NULL")
                 .status1("Processing Started - Thank you for using Express Delivery")
-                .status1Date(null)
-                .status2("NULL")
-                .status2Date(null)
-                .status3("NULL")
-                .status3Date(null)
-                .status4("NULL")
-                .status4Date(null)
-                .status5("NULL")
-                .status5Date(null)
-                .status6("NULL")
-                .status7("NULL")
-                .status8("NULL")
-                .status9("NULL")
-                .status10("NULL")
-                .status11("NULL")
-                .status6Date(null)
                 .build());
     }
 
@@ -111,7 +93,6 @@ public class MailService {
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         //If user is not found
         com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
 

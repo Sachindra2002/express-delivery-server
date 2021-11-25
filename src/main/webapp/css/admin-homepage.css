@@ -9,3 +9,16 @@
     padding: 20px;
     margin-top: 10px;
 }
+
+.package-stats-agent{
+    margin: auto;
+    height: auto;
+    width: 110rem;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.center {
+    text-align: center;
+}

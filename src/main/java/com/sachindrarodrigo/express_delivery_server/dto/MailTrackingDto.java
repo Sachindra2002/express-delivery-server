@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class MailTrackingDto {
-    int mailId;
+    Mail mailId;
     int trackingId;
     String driver;
     String status1;
@@ -32,7 +32,7 @@ public class MailTrackingDto {
     Date status9Date;
     String deliveryPartner;
 
-    public MailTrackingDto(int mailId, int trackingId, String driver, String status1, Date status1Date, String status2, Date status2Date, String status3, Date status3Date, String status4, Date status4Date, String status5, Date status5Date, String status6, Date status6Date, String status7, Date status7Date, String status8, Date status8Date, String status9, Date status9Date, String deliveryPartner) {
+    public MailTrackingDto(Mail mailId, int trackingId, String driver, String status1, Date status1Date, String status2, Date status2Date, String status3, Date status3Date, String status4, Date status4Date, String status5, Date status5Date, String status6, Date status6Date, String status7, Date status7Date, String status8, Date status8Date, String status9, Date status9Date, String deliveryPartner) {
         this.mailId = mailId;
         this.trackingId = trackingId;
         this.driver = driver;

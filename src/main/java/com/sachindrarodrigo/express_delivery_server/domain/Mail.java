@@ -2,6 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,8 +34,7 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
-    @JsonBackReference(value = "user-customer")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "email", nullable = false)
     private User user;
 
@@ -103,7 +103,6 @@ public class Mail {
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 
-    @JsonBackReference(value = "mailTracking")
     @OneToOne(mappedBy = "mail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;

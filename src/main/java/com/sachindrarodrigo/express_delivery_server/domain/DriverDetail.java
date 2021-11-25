@@ -32,6 +32,10 @@ public class DriverDetail {
     @JoinColumn(name = "email")
     private User user;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "vehicleId")
+    private Vehicle vehicle;
+
     @NotEmpty(message = "NIC cannot be empty")
     @Column(length = 15, unique = true, nullable = false)
     @Pattern(regexp="^([0-9]{9}[x|X|v|V]|[0-9]{12})$",message = "Incorrect NIC Number")

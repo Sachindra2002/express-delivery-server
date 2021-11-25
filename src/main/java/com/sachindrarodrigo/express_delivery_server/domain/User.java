@@ -58,8 +58,7 @@ public class User {
     @Column(nullable = false, length = 10)
     private String userRole;
 
-    @JsonManagedReference(value = "user-customer")
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mail> mails;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
