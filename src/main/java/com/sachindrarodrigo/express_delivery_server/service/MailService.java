@@ -2,11 +2,13 @@ package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.domain.MailTracking;
+import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.MailTrackingRepository;
+import com.sachindrarodrigo.express_delivery_server.repository.ServiceCenterRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,10 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.lang.model.type.NullType;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Null;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,7 @@ public class MailService {
     private final MailRepository mailRepository;
     private final UserRepository userRepository;
     private final MailTrackingRepository mailTrackingRepository;
+    private final ServiceCenterRepository serviceCenterRepository;
 
     @Transactional
     public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
@@ -49,16 +50,20 @@ public class MailService {
 
     public void cancelParcel(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
+        mailTracking.setStatus2("Order cancelled successfully");
+        mailTracking.setStatus2Date(Date.from(Instant.now()));
         mail.setStatus("Cancelled");
+        mailTrackingRepository.save(mailTracking);
         mailRepository.save(mail);
     }
 
-    public List<MailDto> getAllRecentUpcomingPackages() {
+    public List<MailDto> getAllRecentUpcomingPackages() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
         List<MailDto> list = mailRepository.findByReceiverEmailEquals(user.getEmail()).stream().map(this::mapDto).collect(Collectors.toList());
         List<MailDto> recentUpcoming = new ArrayList<>();
 
@@ -105,6 +110,7 @@ public class MailService {
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        ServiceCentre serviceCentre = serviceCenterRepository.findByCityEquals(user.getLocation());
 
         return Mail.builder().user(user)
                 .pickupAddress(dto.getPickupAddress())
@@ -122,12 +128,13 @@ public class MailService {
                 .time(dto.getTime())
                 .totalCost(dto.getTotalCost())
                 .status("Processing")
+                .serviceCentre(serviceCentre)
                 .description(dto.getDescription()).build();
     }
 
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
         return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
-                mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getUser(), mail.getMailTracking(), mail.getCreatedAt());
+                mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getUser(), mail.getMailTracking(), mail.getServiceCentre(),mail.getDropOffDate(),mail.getCreatedAt());
     }
 }

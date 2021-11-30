@@ -49,6 +49,7 @@ public class DriverDetail {
     @Column(length = 200, nullable = false)
     private String address;
 
+    @JsonManagedReference(value = "driver")
     @OneToMany(mappedBy = "driverDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mail> mails;
 

@@ -99,6 +99,7 @@ public class MailTracking {
     @Column(length = 50)
     private Date status11Date;
 
+    @JsonBackReference(value = "tracking")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mailId")
     private Mail mail;

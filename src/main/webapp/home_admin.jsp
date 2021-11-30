@@ -54,7 +54,7 @@
                         <h6 style="float: left" class="card-title">${mail.getDescription()}</h6>
                         <button style="float: right" type="button" class="btn btn-info"><i class="fas fa-expand-alt"></i></button>
                         <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.getTotalCost()}</h6>
-                        <h6 style="float: right; margin-right: 35px; font-weight: normal">#000${mail.getMailId()}</h6>
+                        <h6 style="float: right; margin-right: 35px; font-weight: normal">#${mail.getMailId()}</h6>
                         <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.user.getLocation()}</h6>
                     </div>
                 </div>

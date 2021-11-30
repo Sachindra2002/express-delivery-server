@@ -1,12 +1,13 @@
 package com.sachindrarodrigo.express_delivery_server.dto;
 
-import com.sachindrarodrigo.express_delivery_server.domain.MailTracking;
-import com.sachindrarodrigo.express_delivery_server.domain.User;
+import com.sachindrarodrigo.express_delivery_server.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,11 +29,15 @@ public class MailDto {
             totalCost,
             status,
             description;
+    private Set<Dispute> disputes;
     private User user;
     private MailTracking mailTracking;
+    private DriverDetail driverDetail;
+    private ServiceCentre serviceCentre;
+    private LocalDate dropOffDate;
     private Date createdAt;
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, Date createdAt) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, ServiceCentre serviceCentre, LocalDate dropOffDate, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
@@ -52,7 +57,10 @@ public class MailDto {
         this.description = description;
         this.user = user;
         this.mailTracking = mailTracking;
+        this.serviceCentre = serviceCentre;
+        this.dropOffDate = dropOffDate;
         this.createdAt = createdAt;
     }
+
 }
 

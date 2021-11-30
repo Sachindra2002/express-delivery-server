@@ -24,17 +24,17 @@ public class DisputeService {
     private final UserRepository userRepository;
     private final MailRepository mailRepository;
 
-    @Transactional
-    public DisputeDto openDispute(DisputeDto dto) throws ExpressDeliveryException {
-        Dispute dispute = map(dto);
-        disputeRepository.save(dispute);
-        return dto;
-    }
-
-    private Dispute map(DisputeDto dto) throws ExpressDeliveryException {
-        Mail mail = mailRepository.findById(dto.getMailId()).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
-        return Dispute.builder().mail(mail)
-                .description(dto.getDescription())
-                .disputeType(dto.getDisputeType()).build();
-    }
+//    @Transactional
+//    public DisputeDto openDispute(DisputeDto dto) throws ExpressDeliveryException {
+//        Dispute dispute = map(dto);
+//        disputeRepository.save(dispute);
+//        return dto;
+//    }
+//
+//    private Dispute map(DisputeDto dto) throws ExpressDeliveryException {
+//        Mail mail = mailRepository.findById(dto.getMailId()).orElseThrow(()-> new ExpressDeliveryException("Mail not found"));
+//        return Dispute.builder().mail(mail)
+//                .description(dto.getDescription())
+//                .disputeType(dto.getDisputeType()).build();
+//    }
 }

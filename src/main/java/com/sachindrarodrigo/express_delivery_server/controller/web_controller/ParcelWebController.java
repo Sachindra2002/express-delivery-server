@@ -2,6 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.dto.*;
+import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.DisputeService;
@@ -78,21 +79,21 @@ public class ParcelWebController {
         return mv;
     }
 
-    @PostMapping("/open-dispute")
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ModelAndView openDispute(@RequestParam int mailId, @RequestParam String disputeType, @RequestParam String description) throws ExpressDeliveryException {
-        ModelAndView mv = HomePage();
-
-        DisputeDto dto = new DisputeDto();
-        dto.setMailId(mailId);
-        dto.setDescription(description);
-        dto.setDisputeType(disputeType);
-        disputeService.openDispute(dto);
-
-        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for package "+ mailId));
-
-        return mv;
-    }
+//    @PostMapping("/open-dispute")
+//    @PreAuthorize("hasRole('CUSTOMER')")
+//    public ModelAndView openDispute(@RequestParam int mailId, @RequestParam String disputeType, @RequestParam String description) throws ExpressDeliveryException {
+//        ModelAndView mv = HomePage();
+//
+//        DisputeDto dto = new DisputeDto();
+////        dto.setMailId(mailId);
+//        dto.setDescription(description);
+//        dto.setDisputeType(disputeType);
+//        disputeService.openDispute(dto);
+//
+//        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for package "+ mailId));
+//
+//        return mv;
+//    }
 
     @PostMapping("/initiate-return")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -116,10 +117,16 @@ public class ParcelWebController {
 
     @GetMapping("/track-parcel")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ModelAndView trackParcel(@RequestParam int mailId) throws ExpressDeliveryException {
+    public ModelAndView trackParcel(@RequestParam int mailId, RedirectAttributes redirectAttributes){
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("track-parcel.jsp");
-        mv.addObject("tracking", mailTrackingService.getTrackingInfo(mailId));
+        try{
+            mv.setViewName("track-parcel.jsp");
+            mv.addObject("tracking", mailTrackingService.getTrackingInfo(mailId));
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("error", new APIException("No tracking info found"));
+            mv.setViewName("redirect:/home-customer");
+        }
+
         return mv;
     }
 

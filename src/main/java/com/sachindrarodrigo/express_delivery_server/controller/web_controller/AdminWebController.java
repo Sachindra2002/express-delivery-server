@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -145,7 +146,7 @@ public class AdminWebController {
                 mv.setViewName("redirect:/drivers");
 
 
-            } catch (ExpressDeliveryException e) {
+            } catch (ExpressDeliveryException | MessagingException e) {
                 mv.addObject("error", new APIException(e.getMessage()));
             }
         }

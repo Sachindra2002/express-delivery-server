@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Express Delivery</title>
     <%@ include file="../utils/head_imports.jsp" %>
-    <link rel="stylesheet" type="text/css" href="../css/errors.css" />
+    <link rel="stylesheet" type="text/css" href="../css/error.css" />
 </head>
 
 <body class="red-error">

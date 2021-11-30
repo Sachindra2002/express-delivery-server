@@ -38,6 +38,7 @@
     <jsp:param name="page" value="home"/>
 </jsp:include>
 <%@ include file="utils/success_alert.jsp" %>
+<%@ include file="utils/error_alert.jsp" %>
 <div style="float: left">
     <h3 style="padding: 20px 30px 20px 30px; color: grey">Welcome Back, <span style="color: grey">${name}</span></h3>
 </div>
@@ -84,6 +85,10 @@
                         <c:if test="${mail.getStatus() == 'Accepted'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Assigned'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px"
+                                  class="badge badge-pill badge-success">Accepted</span><br/><br/>
                         </c:if>
                         <c:if test="${mail.getStatus() == 'Cancelled'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
@@ -149,7 +154,25 @@
                             </form>
                         </div>
                     </c:if>
+                    <c:if test="${mail.getStatus() == 'Assigned'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
                     <c:if test="${mail.getStatus() == 'Rejected'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Cancelled'}">
                         <div>
                             <form method="get" action="/track-parcel">
                                 <input type="hidden" name="mailId" value="${mail.getMailId()}">
@@ -204,7 +227,19 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
+                        <c:if test="${mail.getStatus() == 'Accepted'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Assigned'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px"
+                                  class="badge badge-pill badge-success">Accepted</span><br/><br/>
+                        </c:if>
                         <c:if test="${mail.getStatus() == 'Cancelled'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Rejected'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
@@ -229,6 +264,24 @@
                                 style="font-weight: normal">${mail.getTotalCost()}</span></p>
                     </div>
                     <c:if test="${mail.getStatus() == 'In Warehouse [Negombo]'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Accepted'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Assigned'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal">Open Dispute

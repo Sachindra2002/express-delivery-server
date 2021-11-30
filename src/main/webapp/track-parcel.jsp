@@ -77,180 +77,227 @@
                 <p style="margin-left: 5px"><c:out value="${tracking.mail.pieces}"/> Piece</p>
             </div>
         </div>
-        <div class="driverInfo">
-            <%--Delivery Partner Section--%>
-            <c:if test="${tracking.deliveryPartner == 'NULL'}">
-            </c:if>
-            <c:if test="${tracking.deliveryPartner != 'NULL'}">
-                <div style="display: flex">
-                    <p style="font-weight: bold; float: left">Delivery Partner : </p>
-                    <p style="float:left; margin-left: 10px"><c:out value="${tracking.deliveryPartner}"/></p>
-                </div>
-            </c:if>
-            <c:if test="${tracking.driver == 'NULL'}">
-            </c:if>
-            <c:if test="${tracking.driver != 'NULL'}">
-                <div style="display: flex">
-                    <p style="font-weight: bold; float: left">Driver : </p>
-                    <p style="margin-left: 10px"><c:out value="${tracking.driver}"/></p>
-                </div>
 
-            </c:if>
-            <div style="display: flex">
-                <p style="font-weight: bold; float: left">Driver Mobile : </p>
-                <p style="margin-left: 10px">076 251 4255</p>
-            </div>
-        </div>
     </div>
     <div>
         <div class="center-box-track">
+
             <div class="custom-status">
                 <div style="border-radius: 10px" class="card card-timeline px-2 border-none">
                     <ul class="bs4-order-tracking">
                         <c:if test="${tracking.mail.status == 'Processing'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step ">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'Accepted'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step ">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Assigned'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'pickup'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step ">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'transit'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step ">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'out for delivery'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step ">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'Delivered'}">
                             <li class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-check-double"></i></div> Order Accepted
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-box"></i></div> Pick up package
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-warehouse"></i></div>In Transit
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-truck"></i></div> Out for delivery
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
                             </li>
                             <li class="step active">
-                                <div><i class="fas fa-house-user"></i></div> Delivered
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'Rejected'}">
                             <li style="margin-left: 25%" class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
                                 <div><i class="fas fa-times-circle"></i></div>
                             </li>
                             <li style="color: red" class="step active">
-                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i></div> Order Rejected
+                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i>
+                                </div>
+                                Order Rejected
                             </li>
                         </c:if>
                         <c:if test="${tracking.mail.status == 'Cancelled'}">
                             <li style="margin-left: 25%" class="step active">
-                                <div><i class="fas fa-check-circle"></i></div> Order Placed
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
                             </li>
                             <li class="step active">
                                 <div><i class="fas fa-times-circle"></i></div>
                             </li>
                             <li style="color: red" class="step active">
-                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i></div> Order Cancelled
+                                <div style="color: white; background-color: red"><i class="fas fa-times-circle"></i>
+                                </div>
+                                Order Cancelled
                             </li>
                         </c:if>
                     </ul>
                 </div>
+
             </div>
             <br/>
             <c:if test="${tracking.status11 == null}">
@@ -361,12 +408,12 @@
             </c:if>
             <c:if test="${tracking.status3 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status3Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status3}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status3}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -391,7 +438,26 @@
                         value="${tracking.status1Date}"/></div>
                 <div style="float: left; margin-left: 80px"><c:out value="${tracking.status1}"/></div>
             </div>
+
         </div>
+        <c:if test="${tracking.mail.driverDetail !=  null}">
+            <div class="driver-track-details">
+
+                <div class="driver-info">
+                    <p>Driver Name
+                        : ${tracking.mail.driverDetail.user.firstName} ${tracking.mail.driverDetail.user.lastName}</p>
+                    <p>Driver Mobile : ${tracking.mail.driverDetail.user.phoneNumber}</p>
+                    <p>Driver Vehicle
+                        : ${tracking.mail.driverDetail.vehicle.vehicleNumber} ${tracking.mail.driverDetail.vehicle.vehicleType}</p>
+                </div>
+                <div class="driver-info-2">
+                    <p style="font-weight: bold; font-size: 20px">Deliver Partner : ${tracking.deliveryPartner}</p>
+                    <p style="font-weight: bold; font-size: 20px">Estimated Date : ${tracking.mail.dropOffDate}</p>
+                </div>
+            </div>
+        </c:if>
+        <c:if test="${tracking.mail.driverDetail ==  null}">
+        </c:if>
     </div>
 
 </div>

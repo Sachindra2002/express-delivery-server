@@ -11,6 +11,14 @@ public class DocumentsDto {
     private int documentId;
     private String description;
     private String fileName;
-    private String fileSize;
+    private Long fileSize;
     private User user;
+
+    public DocumentsDto(int documentId, String description, String fileName, Long fileSize, User user) {
+        this.documentId = documentId;
+        this.description = description;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.user = user;
+    }
 }

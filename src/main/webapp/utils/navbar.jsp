@@ -49,16 +49,8 @@
                 </div>
             </li>
             <li style="list-style: none">
-                <div class="dropdown">
-                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                         class="dropbtn">Service Centers <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="#">Colombo</a>
-                        <a href="#">Negombo</a>
-                        <a href="#">Galle</a>
-                    </div>
-                </div>
+                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                   href="#">Service Centers</a>
             </li>
             <li style="list-style: none">
                 <div class="dropdown">

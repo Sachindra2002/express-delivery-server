@@ -48,7 +48,7 @@ public class UserWebController {
 
     @GetMapping("/home-customer")
     @PreAuthorize("hasAnyRole('CUSTOMER')")
-    public ModelAndView homeCustomer() {
+    public ModelAndView homeCustomer() throws ExpressDeliveryException {
         //Direct customer to homepage
 
         ModelAndView mv = new ModelAndView();
@@ -72,6 +72,9 @@ public class UserWebController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/home_agent.jsp");
         mv.addObject("pending_packages", agentService.getAllNewShipmentsAdmin());
+        mv.addObject("accepted_packages", agentService.getAllNewAcceptedShipmentsAdmin());
+        //Get list of available driver to the specific service center to be assigned
+        mv.addObject("available_driver_list", agentService.getAllAvailableDrivers());
         try {
             mv.addObject("name", agentService.getName());
         } catch (ExpressDeliveryException e) {

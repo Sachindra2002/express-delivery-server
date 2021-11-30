@@ -79,3 +79,29 @@
     background-color: #fff;
     z-index: 0
 }
+
+.driver-track-details{
+    width: auto;
+    height: 10rem;
+    margin: 20px 20px 20px 20px;
+}
+
+.driver-info{
+
+    border-radius: 10px;
+    background-color: white;
+    float: left;
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    width: 20rem;
+    height: 9rem;
+}
+
+.driver-info-2{
+    float: right;
+    margin-right:  -50px;
+    margin-top: 30px;
+    padding: 10px 10px 10px 10px;
+    width: 30rem;
+    height: 9rem;
+}

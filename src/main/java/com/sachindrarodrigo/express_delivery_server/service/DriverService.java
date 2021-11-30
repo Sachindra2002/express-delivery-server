@@ -15,6 +15,7 @@ import org.springframework.expression.ExpressionException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class DriverService {
     private final DriverDetailRepository driverDetailRepository;
     private final PasswordEncoder passwordEncoder;
     private final ServiceCenterRepository serviceCenterRepository;
+    private final EmailService emailService;
 
     public List<UserDto> getAllDrivers(){
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
@@ -40,7 +42,7 @@ public class DriverService {
     }
 
     @Transactional
-    public void addDriver(UserDto dto, DriverDetailDto driverDetailDto, String serviceCenter) throws ExpressDeliveryException {
+    public void addDriver(UserDto dto, DriverDetailDto driverDetailDto, String serviceCenter) throws ExpressDeliveryException, MessagingException {
 
         Optional<User> existing = userRepository.findById(dto.getEmail());
 
@@ -49,6 +51,7 @@ public class DriverService {
         }
 
         User user = map(dto, serviceCenter);
+        emailService.sendSimpleMessage(dto.getEmail(), "Driver account registered, password is the email");
         userRepository.save(user);
 
     }

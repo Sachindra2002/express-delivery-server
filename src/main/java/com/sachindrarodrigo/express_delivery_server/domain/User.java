@@ -58,6 +58,7 @@ public class User {
     @Column(nullable = false, length = 10)
     private String userRole;
 
+    @JsonBackReference(value = "user")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mail> mails;
 
@@ -69,6 +70,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Documents> documents;
 
+    @JsonManagedReference(value = "user-center")
     @ManyToOne
     @JoinColumn(name = "centreId")
     private ServiceCentre serviceCentre;

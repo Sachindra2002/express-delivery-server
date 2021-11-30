@@ -1,17 +1,15 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -34,6 +32,7 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
+    @JsonManagedReference(value = "user")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "email", nullable = false)
     private User user;
@@ -103,13 +102,23 @@ public class Mail {
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 
+    @JsonManagedReference(value = "tracking")
     @OneToOne(mappedBy = "mail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 
+    @JsonBackReference(value = "driver")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "driverId")
     private DriverDetail driverDetail;
+
+    @JsonManagedReference(value = "center")
+    @ManyToOne
+    @JoinColumn(name = "centreId")
+    private ServiceCentre serviceCentre;
+
+    @Column(length = 50)
+    private LocalDate dropOffDate;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
