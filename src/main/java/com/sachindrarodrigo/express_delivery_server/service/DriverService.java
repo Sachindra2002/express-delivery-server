@@ -1,22 +1,29 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.DriverDetail;
+import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
+import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.DriverDetailRepository;
+import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.ServiceCenterRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.ExpressionException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +36,7 @@ public class DriverService {
     private final UserRepository userRepository;
     private final DriverDetailRepository driverDetailRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailRepository mailRepository;
     private final ServiceCenterRepository serviceCenterRepository;
     private final EmailService emailService;
 
@@ -63,6 +71,38 @@ public class DriverService {
 
     }
 
+    public List<MailDto> getAllAssignedPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Assigned").stream().map(this::mapDto).collect(Collectors.toList());
+        List<MailDto> recentAssignedPackages = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 10) break;
+            recentAssignedPackages.add(list.get(i));
+        }
+
+        Collections.reverse(recentAssignedPackages);
+
+        return recentAssignedPackages;
+    }
+
+    public List<MailDto> getAllAcceptedPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Driver Accepted").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
     private DriverDetail mapDriverDetail(DriverDetailDto driverDetailDto, String email){
 
         User user = userRepository.findById(email).orElseThrow(()-> new ExpressionException("User not found"));
@@ -92,5 +132,21 @@ public class DriverService {
     //Method to map data transfer object to domain class
     private UserDto mapUsers(User user) {
         return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(), user.getLocation(), user.getPhoneNumber(), user.getUserRole(), user.getServiceCentre(), user.getDriverDetail());
+    }
+
+    //Method to map data transfer object to domain class
+    private MailDto mapDto(Mail mail) {
+
+
+        return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),
+                mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
+                mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(),
+                mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(),mail.getServiceCentre(),mail.getDropOffDate(),mail.getCreatedAt());
+    }
+
+    public void acceptPackage(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Driver Accepted");
+        mailRepository.save(mail);
     }
 }

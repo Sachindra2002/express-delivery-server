@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -134,6 +136,7 @@ public class AgentService {
         DriverDetail driverDetail = driverDetailRepository.findById(driverId).orElseThrow(()-> new ExpressDeliveryException("Driver Not found"));
         mail.setDriverDetail(driverDetail);
         mail.setStatus("Assigned");
+        mail.setTransportationStatus("Pick Up");
         mail.setDropOffDate(LocalDate.parse(date));
         mailTracking.setStatus3("Driver assigned to pick up package");
         mailTracking.setStatus3Date(Date.from(Instant.now()));

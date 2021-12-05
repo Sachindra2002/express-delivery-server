@@ -35,6 +35,6 @@ public class AuthService {
         //Find user from database or send an error
         User user = userRepository.findById(request.getEmail()).orElseThrow(() -> new ExpressDeliveryException("User not found!"));
 
-        return new AuthResponse(token, request.getEmail(), user.getUserRole());
+        return new AuthResponse(token, request.getEmail(), user.getUserRole(), user.getFirstName(), user.getLastName());
     }
 }

@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.repository;
 
+import com.sachindrarodrigo.express_delivery_server.domain.DriverDetail;
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
@@ -14,4 +15,6 @@ public interface MailRepository extends JpaRepository<Mail, Integer> {
     List<Mail> findByUserEquals(User user);
 
     List<Mail> findByServiceCentreAndStatusEquals(ServiceCentre serviceCentre, String status);
+
+    List<Mail> findByDriverDetailAndStatusEquals(DriverDetail driverDetail, String status);
 }

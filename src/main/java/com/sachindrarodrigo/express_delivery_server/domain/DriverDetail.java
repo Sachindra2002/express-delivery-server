@@ -1,6 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -28,10 +29,12 @@ public class DriverDetail {
     @Column(length = 50)
     private String status;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "user-driver")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "email")
     private User user;
 
+    @JsonBackReference(value = "driver-vehicle")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicleId")
     private Vehicle vehicle;
@@ -49,7 +52,7 @@ public class DriverDetail {
     @Column(length = 200, nullable = false)
     private String address;
 
-    @JsonManagedReference(value = "driver")
+    @JsonBackReference(value = "driver")
     @OneToMany(mappedBy = "driverDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Mail> mails;
 
