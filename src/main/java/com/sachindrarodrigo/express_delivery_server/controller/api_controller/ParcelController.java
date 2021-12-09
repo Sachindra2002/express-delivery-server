@@ -28,9 +28,14 @@ public class ParcelController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/send-package")
-    public ResponseEntity<Object> sendMail(@RequestBody MailDto dto) throws ExpressDeliveryException {
-        MailDto result = mailService.sendMail(dto);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    public ResponseEntity<Object> sendMail(@RequestBody MailDto dto){
+
+        try {
+            mailService.sendMail(dto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (ExpressDeliveryException e){
+            return new ResponseEntity<>((new APIException(e.getMessage(), HttpStatus.BAD_REQUEST)),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -51,4 +56,14 @@ public class ParcelController {
         }
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/get-outgoing-packages")
+    public ResponseEntity<Object> getOutgoingPackages(){
+        try {
+            List<MailDto> mailDto1 = mailService.getAllRecentOutgoingPackages();
+            return new ResponseEntity<>(mailDto1, HttpStatus.OK);
+        } catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

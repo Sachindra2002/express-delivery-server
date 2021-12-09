@@ -34,8 +34,8 @@ public class DriverDetail {
     @JoinColumn(name = "email")
     private User user;
 
-    @JsonBackReference(value = "driver-vehicle")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "driver-vehicle")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicleId")
     private Vehicle vehicle;
 

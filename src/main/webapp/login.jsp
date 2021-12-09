@@ -37,7 +37,8 @@
                 </c:if>
                 <button type="submit" class="btn btn-class">Login</button>
                 <br/><br/>
-                <a href="/register" style="text-decoration: none; color: #febc17">Register Now</a>
+                <a href="/register" style="text-decoration: none; color: #febc17">Register Now</a><br/><br/>
+                <a href="/#" style="text-decoration: none; color: red">Forgot Password</a>
             </form>
         </div>
     </div>

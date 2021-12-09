@@ -103,6 +103,13 @@ public class DriverService {
         return list;
     }
 
+    public Optional<UserDto> getUserDetails() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        return userRepository.findById(auth.getName()).map(this::mapUsers);
+    }
+
     private DriverDetail mapDriverDetail(DriverDetailDto driverDetailDto, String email){
 
         User user = userRepository.findById(email).orElseThrow(()-> new ExpressionException("User not found"));

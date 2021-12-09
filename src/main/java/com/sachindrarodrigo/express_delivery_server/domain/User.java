@@ -71,6 +71,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Documents> documents;
 
+    @JsonIgnore
     @JsonManagedReference(value = "user-center")
     @ManyToOne
     @JoinColumn(name = "centreId")

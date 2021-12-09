@@ -16,12 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.lang.model.type.NullType;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,11 +31,10 @@ public class MailService {
     private final ServiceCenterRepository serviceCenterRepository;
 
     @Transactional
-    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
+    public void sendMail(MailDto dto) throws ExpressDeliveryException {
         Mail mail = map(dto);
         mailRepository.save(mail);
         createTracking(mail.getMailId());
-        return dto;
     }
 
     public void createTracking(int mailId) throws ExpressDeliveryException {
@@ -79,12 +74,12 @@ public class MailService {
         return recentUpcoming;
     }
 
-    public List<MailDto> getAllRecentOutgoingPackages() {
+    public List<MailDto> getAllRecentOutgoingPackages() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
         List<MailDto> list = mailRepository.findByUserEquals(user).stream().map(this::mapDto).collect(Collectors.toList());
         List<MailDto> recentOutgoing = new ArrayList<>();
 

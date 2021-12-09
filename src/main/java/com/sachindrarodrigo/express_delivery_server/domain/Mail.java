@@ -2,6 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,6 +34,7 @@ public class Mail {
     @Column(nullable = false, length = 60)
     private String pickupAddress;
 
+    @JsonIgnore
     @JsonManagedReference(value = "user")
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "email", nullable = false)
@@ -61,7 +63,7 @@ public class Mail {
     private String receiverEmail;
 
     @NotEmpty(message = "Receiver city is required")
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 70)
     private String receiverCity;
 
     @NotEmpty(message = "Parcel type is required")
@@ -108,6 +110,7 @@ public class Mail {
     @PrimaryKeyJoinColumn
     private MailTracking mailTracking;
 
+    @JsonIgnore
     @JsonManagedReference(value = "driver")
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "driverId")
@@ -116,6 +119,7 @@ public class Mail {
     @Column(length = 20)
     private String transportationStatus;
 
+    @JsonIgnore
     @JsonManagedReference(value = "center")
     @ManyToOne
     @JoinColumn(name = "centreId")

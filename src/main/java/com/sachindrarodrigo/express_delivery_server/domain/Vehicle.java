@@ -1,5 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +31,8 @@ public class Vehicle {
     @Column(nullable = false)
     private String vehicleType;
 
-    @JsonManagedReference(value = "driver-vehicle")
-    @OneToOne(mappedBy = "vehicle", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference(value = "driver-vehicle")
+    @OneToOne(mappedBy = "vehicle", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private DriverDetail driverDetail;
 }

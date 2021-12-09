@@ -1,7 +1,9 @@
 package com.sachindrarodrigo.express_delivery_server.controller.api_controller;
 
+import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.DriverService;
@@ -14,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -52,6 +55,17 @@ public class DriverController {
             driverService.acceptPackage(mailId);
             return new ResponseEntity<>(new SimpleMessageDto("Accepted Successfully", HttpStatus.OK), HttpStatus.OK);
         }catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('DRIVER')")
+    public ResponseEntity<Object> getUser(){
+        try{
+            Optional<UserDto> user = driverService.getUserDetails();
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
