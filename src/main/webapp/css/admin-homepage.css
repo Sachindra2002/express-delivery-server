@@ -10,6 +10,29 @@
     margin-top: 10px;
 }
 
+.package-stats-2{
+    margin-left: 30px;
+    align-items: center;
+    height: auto;
+    width: 35rem;
+    background-color: #F2F2F2;
+    float: right;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.package-stats-1{
+    margin-left: 10px;
+    align-items: center;
+    height: auto;
+    width: 35rem;
+    background-color: #F2F2F2;
+    float: left;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+}
 .package-stats-agent{
     margin: auto;
     height: auto;

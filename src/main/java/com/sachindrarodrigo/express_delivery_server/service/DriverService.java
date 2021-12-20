@@ -40,6 +40,14 @@ public class DriverService {
     private final ServiceCenterRepository serviceCenterRepository;
     private final EmailService emailService;
 
+    public String getName() throws ExpressDeliveryException {
+        //User object from security context holder to obtain current user
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //If user is not found
+        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
+        return _user.getFirstName();
+    }
+
     public List<UserDto> getAllDrivers(){
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
     }
@@ -103,6 +111,19 @@ public class DriverService {
         return list;
     }
 
+    public List<MailDto> getAllStartedPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Delivery Started").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
     public Optional<UserDto> getUserDetails() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -154,6 +175,12 @@ public class DriverService {
     public void acceptPackage(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mail.setStatus("Driver Accepted");
+        mailRepository.save(mail);
+    }
+
+    public void startPackage(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Delivery Started");
         mailRepository.save(mail);
     }
 }

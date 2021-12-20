@@ -90,6 +90,10 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">Accepted</span><br/><br/>
                         </c:if>
+                        <c:if test="${mail.getStatus() == 'Driver Accepted'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px"
+                                  class="badge badge-pill badge-success">Accepted</span><br/><br/>
+                        </c:if>
                         <c:if test="${mail.getStatus() == 'Cancelled'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
@@ -146,6 +150,15 @@
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Accepted'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Driver Accepted'}">
                         <div>
                             <form method="get" action="/track-parcel">
                                 <input type="hidden" name="mailId" value="${mail.getMailId()}">
@@ -230,6 +243,11 @@
                         <c:if test="${mail.getStatus() == 'Accepted'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+
+                        <c:if test="${mail.getStatus() == 'Driver Accepted'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px"
+                                  class="badge badge-pill badge-success">Accepted</span><br/><br/>
                         </c:if>
                         <c:if test="${mail.getStatus() == 'Assigned'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px"

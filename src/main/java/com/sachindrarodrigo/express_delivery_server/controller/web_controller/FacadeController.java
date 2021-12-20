@@ -11,7 +11,7 @@ public class FacadeController {
 
     //Facade design pattern to direct user to respective controller to load home page
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN', 'AGENT')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN', 'AGENT', 'DRIVER')")
     public ModelAndView sendUserHome() {
         ModelAndView mv = new ModelAndView();
 
@@ -22,7 +22,7 @@ public class FacadeController {
         } else if (ExtraUtilities.hasRole("ROLE_AGENT")) {
             mv.setViewName("redirect:/home-agent");
         } else if (ExtraUtilities.hasRole("ROLE_DRIVER")) {
-            mv.setViewName("/");
+            mv.setViewName("redirect:/home-driver");
         }
 
         return mv;

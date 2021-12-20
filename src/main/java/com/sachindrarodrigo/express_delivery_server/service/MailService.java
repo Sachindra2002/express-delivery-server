@@ -126,6 +126,7 @@ public class MailService {
                 .totalCost(dto.getTotalCost())
                 .status("Processing")
                 .serviceCentre(serviceCentre)
+                .transportationStatus("Pick Up")
                 .description(dto.getDescription()).build();
     }
 

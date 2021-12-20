@@ -137,6 +137,32 @@
                                 Delivered
                             </li>
                         </c:if>
+                        <c:if test="${tracking.mail.status == 'Driver Accepted'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
+                            </li>
+                        </c:if>
                         <c:if test="${tracking.mail.status == 'Assigned'}">
                             <li class="step active">
                                 <div><i class="fas fa-check-circle"></i></div>
