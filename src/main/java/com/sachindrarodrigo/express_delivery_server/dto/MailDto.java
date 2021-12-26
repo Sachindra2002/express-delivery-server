@@ -35,10 +35,10 @@ public class MailDto {
     private DriverDetail driverDetail;
     private String transportationStatus;
     private ServiceCentre serviceCentre;
-    private LocalDate dropOffDate;
+    private String dropOffDate;
     private Date createdAt;
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, ServiceCentre serviceCentre, LocalDate dropOffDate, Date createdAt) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, ServiceCentre serviceCentre, String dropOffDate, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
@@ -63,7 +63,7 @@ public class MailDto {
         this.createdAt = createdAt;
     }
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description,  User user, MailTracking mailTracking, DriverDetail driverDetail, ServiceCentre serviceCentre, LocalDate dropOffDate, Date createdAt) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description,  User user, MailTracking mailTracking, DriverDetail driverDetail, ServiceCentre serviceCentre, String dropOffDate, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;
@@ -89,7 +89,7 @@ public class MailDto {
         this.createdAt = createdAt;
     }
 
-    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, DriverDetail driverDetail, String transportationStatus, ServiceCentre serviceCentre, LocalDate dropOffDate, Date createdAt) {
+    public MailDto(int mailId, String pickupAddress, String receiverAddress, String receiverFirstName, String receiverLastName, String receiverPhoneNumber, String receiverEmail, String receiverCity, String parcelType, String weight, String pieces, String paymentMethod, String date, String time, String totalCost, String status, String description, User user, MailTracking mailTracking, DriverDetail driverDetail, String transportationStatus, ServiceCentre serviceCentre, String dropOffDate, Date createdAt) {
         this.mailId = mailId;
         this.pickupAddress = pickupAddress;
         this.receiverAddress = receiverAddress;

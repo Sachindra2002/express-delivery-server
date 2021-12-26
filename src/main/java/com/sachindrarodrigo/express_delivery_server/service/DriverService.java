@@ -124,6 +124,19 @@ public class DriverService {
         return list;
     }
 
+    public List<MailDto> getPickedUpPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Package picked up").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
     public Optional<UserDto> getUserDetails() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -181,6 +194,12 @@ public class DriverService {
     public void startPackage(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mail.setStatus("Delivery Started");
+        mailRepository.save(mail);
+    }
+
+    public void confirmPickupPackage(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Package picked up");
         mailRepository.save(mail);
     }
 }

@@ -58,6 +58,17 @@ public class DriverController {
     }
 
     @PreAuthorize("hasRole('DRIVER')")
+    @GetMapping("/get-picked-up-packages")
+    public ResponseEntity<Object> getPickedUpPackages(){
+        try {
+            List<MailDto> mailDto1 = driverService.getPickedUpPackages();
+            return new ResponseEntity<>(mailDto1, HttpStatus.OK);
+        } catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
     @PostMapping("/accept-package/{mailId}")
     public ResponseEntity<Object> acceptPackage(@PathVariable int mailId){
         try{
@@ -73,6 +84,17 @@ public class DriverController {
     public ResponseEntity<Object> startPackage(@PathVariable int mailId){
         try{
             driverService.startPackage(mailId);
+            return new ResponseEntity<>(new SimpleMessageDto("Delivery started Successfully", HttpStatus.OK), HttpStatus.OK);
+        }catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
+    @PostMapping("/confirm-pickup-package/{mailId}")
+    public ResponseEntity<Object> confirmPickupPackage(@PathVariable int mailId){
+        try{
+            driverService.confirmPickupPackage(mailId);
             return new ResponseEntity<>(new SimpleMessageDto("Delivery started Successfully", HttpStatus.OK), HttpStatus.OK);
         }catch (ExpressDeliveryException e){
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);

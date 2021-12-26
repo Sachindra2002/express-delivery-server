@@ -14,11 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +107,17 @@ public class AgentService {
 
     }
 
+    @Transactional
+    public List<UserDto> getAllDrivers() throws ExpressDeliveryException {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
+
+        ServiceCentre serviceCentre = serviceCenterRepository.getById(_user.getServiceCentre().getCentreId());
+
+        return userRepository.findByUserRoleEqualsAndDriverDetail_StatusAndServiceCentre("driver", "Available",serviceCentre).stream().map(this::mapUsers).collect(Collectors.toList());
+
+    }
+
     public void acceptParcel(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
@@ -130,14 +138,14 @@ public class AgentService {
         mailRepository.save(mail);
     }
 
-    public void assignDriver(int mailId, int driverId, String date) throws ExpressDeliveryException, ParseException {
+    public void assignDriver(int mailId, int driverId, String date) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         DriverDetail driverDetail = driverDetailRepository.findById(driverId).orElseThrow(()-> new ExpressDeliveryException("Driver Not found"));
         mail.setDriverDetail(driverDetail);
         mail.setStatus("Assigned");
         mail.setTransportationStatus("Pick Up");
-        mail.setDropOffDate(LocalDate.parse(date));
+        mail.setDropOffDate(date);
         mailTracking.setStatus3("Driver assigned to pick up package");
         mailTracking.setStatus3Date(Date.from(Instant.now()));
         mailRepository.save(mail);

@@ -4,8 +4,6 @@ import com.sachindrarodrigo.express_delivery_server.domain.Mail;
 import com.sachindrarodrigo.express_delivery_server.dto.*;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
-import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
-import com.sachindrarodrigo.express_delivery_server.service.DisputeService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import com.sachindrarodrigo.express_delivery_server.service.MailTrackingService;
 import lombok.AllArgsConstructor;
@@ -26,7 +24,6 @@ import javax.validation.Valid;
 public class ParcelWebController {
 
     private final MailService mailService;
-    private final DisputeService disputeService;
     private final MailTrackingService mailTrackingService;
 
     @GetMapping("/send-package")

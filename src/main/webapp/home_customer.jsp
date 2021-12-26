@@ -110,6 +110,14 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
+                        <c:if test="${mail.getStatus() == 'Delivery Started'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Package picked up'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
                         <p style="font-weight: bold" class="card-text">Description : <span
                                 style="font-weight: normal">${mail.getDescription()}</span></p>
                         <p style="font-weight: bold" class="card-text">Parcel Type : <span
@@ -149,7 +157,25 @@
                             </form>
                         </div>
                     </c:if>
-                    <c:if test="${mail.getStatus() == 'Accepted'}">
+                    <c:if test="${mail.getStatus() == 'Package picked up'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Shipped'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Delivery Started'}">
                         <div>
                             <form method="get" action="/track-parcel">
                                 <input type="hidden" name="mailId" value="${mail.getMailId()}">
@@ -254,6 +280,14 @@
                                   class="badge badge-pill badge-success">Accepted</span><br/><br/>
                         </c:if>
                         <c:if test="${mail.getStatus() == 'Cancelled'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Delivery Started'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'Package picked up'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>

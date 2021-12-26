@@ -124,9 +124,8 @@ public class Mail {
     @JoinColumn(name = "centreId")
     private ServiceCentre serviceCentre;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MMM dd, yyyy")
     @Column(length = 50)
-    private LocalDate dropOffDate;
+    private String dropOffDate;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

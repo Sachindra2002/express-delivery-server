@@ -2,6 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.controller.api_controller;
 
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.AgentService;
@@ -28,6 +29,17 @@ public class AgentController {
         try {
             List<MailDto> mailDto1 = agentService.getAllNewShipmentsAdmin();
             return new ResponseEntity<>(mailDto1, HttpStatus.OK);
+        } catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('AGENT')")
+    @GetMapping("/get-drivers")
+    public ResponseEntity<Object> getDrivers(){
+        try {
+            List<UserDto> userDto = agentService.getAllDrivers();
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } catch (ExpressDeliveryException e){
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
@@ -62,6 +74,17 @@ public class AgentController {
             List<MailDto> mailDto1 = agentService.getAllNewAcceptedShipmentsAdmin();
             return new ResponseEntity<>(mailDto1, HttpStatus.OK);
         } catch (ExpressDeliveryException e){
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/assign-driver")
+    public ResponseEntity<Object> assignDriver(@RequestBody MailDto dto){
+        try{
+            agentService.assignDriver(dto.getMailId(), dto.getDriverDetail().getDriverId(), dto.getDropOffDate().toString());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (ExpressDeliveryException e){
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
