@@ -21,10 +21,10 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody UserDto userDto){
-        try{
-            UserDto result = registrationService.registerUser(userDto);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+    public ResponseEntity<Object> registerUser(@RequestBody UserDto userDto) {
+        try {
+            registrationService.registerUser(userDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }

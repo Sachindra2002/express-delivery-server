@@ -1,6 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.*;
+import com.sachindrarodrigo.express_delivery_server.dto.DocumentsDto;
 import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
@@ -31,6 +32,7 @@ public class AgentService {
     private final MailTrackingRepository mailTrackingRepository;
     private final ServiceCenterRepository serviceCenterRepository;
     private final DriverDetailRepository driverDetailRepository;
+    private final DocumentsRepository documentsRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> getAllAgents(){
@@ -68,6 +70,10 @@ public class AgentService {
         return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(), user.getLocation(), user.getPhoneNumber(), user.getUserRole(), user.getServiceCentre(), user.getDriverDetail());
     }
 
+    private DocumentsDto mapDocuments(Documents documents){
+        return new DocumentsDto(documents.getDocumentId(), documents.getDescription(), documents.getFileName(), documents.getFileSize(), documents.getUser());
+    }
+
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -97,6 +103,16 @@ public class AgentService {
     }
 
     @Transactional
+    public List<MailDto> getTransitPackages() throws ExpressDeliveryException {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
+
+        ServiceCentre serviceCentre = serviceCenterRepository.getById(_user.getServiceCentre().getCentreId());
+
+        return mailRepository.findByServiceCentreAndStatusEquals(serviceCentre, "In Transit").stream().map(this::mapDto).collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<DriverDetailDto> getAllAvailableDrivers() throws ExpressDeliveryException {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
@@ -116,6 +132,11 @@ public class AgentService {
 
         return userRepository.findByUserRoleEqualsAndDriverDetail_StatusAndServiceCentre("driver", "Available",serviceCentre).stream().map(this::mapUsers).collect(Collectors.toList());
 
+    }
+
+    public List<DocumentsDto> getDriverDocuments(String email) throws ExpressDeliveryException {
+        User user = userRepository.findById(email).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
+        return documentsRepository.findByUserEquals(user).stream().map(this::mapDocuments).collect(Collectors.toList());
     }
 
     public void acceptParcel(int mailId) throws ExpressDeliveryException {
