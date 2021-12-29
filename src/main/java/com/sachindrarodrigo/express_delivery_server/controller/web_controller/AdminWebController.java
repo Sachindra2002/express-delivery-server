@@ -8,10 +8,7 @@ import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
-import com.sachindrarodrigo.express_delivery_server.service.AgentService;
-import com.sachindrarodrigo.express_delivery_server.service.DriverService;
-import com.sachindrarodrigo.express_delivery_server.service.ServiceCenterService;
-import com.sachindrarodrigo.express_delivery_server.service.StorageService;
+import com.sachindrarodrigo.express_delivery_server.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,6 +33,7 @@ public class AdminWebController {
     private final DriverService driverService;
     private final AgentService agentService;
     private final ServiceCenterService serviceCenterService;
+    private final VehicleService vehicleService;
     private final StorageService storageService;
 
     @GetMapping("/drivers")
@@ -86,7 +84,7 @@ public class AdminWebController {
         mv.addObject("user", user);
         //Get list of service centers for "Add Driver"
         mv.addObject("centers", serviceCenterService.getAllServiceCenters());
-
+        mv.addObject("vehicles", vehicleService.getAvailableVehicles());
         return mv;
     }
 
@@ -107,6 +105,8 @@ public class AdminWebController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView addDriver(@Valid @ModelAttribute("user") User user, BindingResult bindingUser,
                                   @Valid @ModelAttribute("driverDetail") DriverDetail driverDetail, BindingResult bindingDriver,
+                                  @RequestParam int center,
+                                  @RequestParam int vehicle,
                                   @RequestParam String DOB,
                                   @RequestParam String NIC, @RequestParam String address, @RequestParam(value = "nicImage") MultipartFile nicImage,
                                   @RequestParam(value = "licence") MultipartFile licence, @RequestParam(value = "insurance") MultipartFile insurance,
@@ -133,8 +133,8 @@ public class AdminWebController {
                 driverDetailDto.setNIC(NIC);
                 driverDetailDto.setAddress(address);
 
-                driverService.addDriver(userDto, driverDetailDto, user.getLocation());
-                driverService.addDriverDetails(driverDetailDto, user.getEmail());
+                driverService.addDriver(userDto, center);
+                driverService.addDriverDetails(driverDetailDto, user.getEmail(), vehicle);
 
                 DocumentsDto dto = new DocumentsDto();
 

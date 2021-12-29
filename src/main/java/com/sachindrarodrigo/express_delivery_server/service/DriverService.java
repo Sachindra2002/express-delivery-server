@@ -1,20 +1,13 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
-import com.sachindrarodrigo.express_delivery_server.domain.DriverDetail;
-import com.sachindrarodrigo.express_delivery_server.domain.Mail;
-import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
-import com.sachindrarodrigo.express_delivery_server.domain.User;
+import com.sachindrarodrigo.express_delivery_server.domain.*;
 import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
-import com.sachindrarodrigo.express_delivery_server.repository.DriverDetailRepository;
-import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
-import com.sachindrarodrigo.express_delivery_server.repository.ServiceCenterRepository;
-import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
+import com.sachindrarodrigo.express_delivery_server.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.expression.ExpressionException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,46 +31,54 @@ public class DriverService {
     private final PasswordEncoder passwordEncoder;
     private final MailRepository mailRepository;
     private final ServiceCenterRepository serviceCenterRepository;
+    private final VehicleRepository vehicleRepository;
     private final EmailService emailService;
 
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //If user is not found
-        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
+        com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
         return _user.getFirstName();
     }
 
-    public List<UserDto> getAllDrivers(){
+    public List<UserDto> getAllDrivers() {
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
     }
 
     @Transactional
     public DriverDetail getDriverInfo(int driverId) throws ExpressDeliveryException {
-        return driverDetailRepository.findById(driverId).orElseThrow(()-> new ExpressDeliveryException("Driver not found"));
+        return driverDetailRepository.findById(driverId).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
     }
 
     @Transactional
-    public void addDriver(UserDto dto, DriverDetailDto driverDetailDto, String serviceCenter) throws ExpressDeliveryException, MessagingException {
+    public void addDriver(UserDto dto, int centerId) throws ExpressDeliveryException, MessagingException {
 
         Optional<User> existing = userRepository.findById(dto.getEmail());
 
-        if(existing.isPresent()){
+        if (existing.isPresent()) {
             throw new ExpressDeliveryException("Email already in use");
         }
 
-        User user = map(dto, serviceCenter);
+        User user = map(dto, centerId);
         emailService.sendSimpleMessage(dto.getEmail(), "Driver account registered, password is the email");
         userRepository.save(user);
 
     }
 
     @Transactional
-    public void addDriverDetails(DriverDetailDto driverDetailDto, String email){
-        DriverDetail driver = mapDriverDetail(driverDetailDto, email);
+    public void addDriverDetails(DriverDetailDto driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
+        DriverDetail driver = mapDriverDetail(driverDetailDto, email, vehicleId);
         driverDetailRepository.save(driver);
 
     }
+
+    @Transactional
+    public void addDriverDetail(DriverDetail driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
+        DriverDetail driver = mapDriverDetails(driverDetailDto, email, vehicleId);
+        driverDetailRepository.save(driver);
+    }
+
 
     public List<MailDto> getAllAssignedPackages() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -144,20 +145,41 @@ public class DriverService {
         return userRepository.findById(auth.getName()).map(this::mapUsers);
     }
 
-    private DriverDetail mapDriverDetail(DriverDetailDto driverDetailDto, String email){
+    private DriverDetail mapDriverDetail(DriverDetailDto driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
 
-        User user = userRepository.findById(email).orElseThrow(()-> new ExpressionException("User not found"));
+        User user = userRepository.findById(email).orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ExpressDeliveryException("Vehicle not found"));
+
+        vehicle.setStatus("taken");
+        vehicleRepository.save(vehicle);
 
         return DriverDetail.builder().address(driverDetailDto.getAddress())
                 .DOB(driverDetailDto.getDOB())
                 .NIC(driverDetailDto.getNIC())
                 .status("Unavailable")
+                .vehicle(vehicle)
                 .user(user).build();
     }
 
-    private User map(UserDto userDto, String serviceCenter){
+    private DriverDetail mapDriverDetails(DriverDetail driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
 
-        ServiceCentre serviceCentre = serviceCenterRepository.findByCentreEquals(serviceCenter);
+        User user = userRepository.findById(email).orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new ExpressDeliveryException("Vehicle not found"));
+
+        vehicle.setStatus("taken");
+        vehicleRepository.save(vehicle);
+
+        return DriverDetail.builder().address(driverDetailDto.getAddress())
+                .DOB(driverDetailDto.getDOB())
+                .NIC(driverDetailDto.getNIC())
+                .status("Unavailable")
+                .vehicle(vehicle)
+                .user(user).build();
+    }
+
+    private User map(UserDto userDto, int centerId) throws ExpressDeliveryException {
+
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(centerId).orElseThrow(() -> new ExpressDeliveryException("No center found"));
 
         return User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
@@ -182,7 +204,7 @@ public class DriverService {
         return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),
                 mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
                 mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(),
-                mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(),mail.getServiceCentre(),mail.getDropOffDate(),mail.getCreatedAt());
+                mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(), mail.getServiceCentre(), mail.getDropOffDate(), mail.getCreatedAt());
     }
 
     public void acceptPackage(int mailId) throws ExpressDeliveryException {

@@ -38,15 +38,8 @@
         </div>
         <ul style="display: flex; width: 40%; justify-content: space-around; margin-top: 10px">
             <li style="list-style: none">
-                <div class="dropdown">
-                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                         class="dropbtn">Packages <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="#">Ongoing</a>
-                        <a href="#">Completed</a>
-                    </div>
-                </div>
+                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                   href="#">Shipments</a>
             </li>
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"

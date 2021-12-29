@@ -69,14 +69,22 @@
                                enctype="multipart/form-data">
                         <form:input type="hidden" value="Unavailable" name="status" path="status"/>
                         <div class="col">
-                            <form:label for="center" path="user.serviceCentre.centre">Assign Service Center</form:label>
-                            <form:select name="center" id="center" class="custom-select"
-                                         aria-label="Default select example" path="user.serviceCentre.centre">
+                            <label for="center">Assign Service Center</label>
+                            <select name="center" id="center" class="custom-select"
+                                         aria-label="Default select example">
                                 <c:forEach var="center" items="${centers}">
-                                    <option value="${center.getCenter()}">${center.getCenter()}</option>
+                                    <option value="${center.getCentreId()}">${center.getCenter()}</option>
                                 </c:forEach>
-                            </form:select>
-                            <form:errors cssStyle="color: red" path="user.serviceCentre.centre"/>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="center">Assign Vehicle</label>
+                            <select name="vehicle" id="vehicle" class="custom-select"
+                                    aria-label="Default select example">
+                                <c:forEach var="vehicle" items="${vehicles}">
+                                    <option value="${vehicle.vehicleId}">${vehicle.vehicleType} ${vehicle.vehicleNumber}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                         </div>
                         <div class="form-row">

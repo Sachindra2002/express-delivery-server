@@ -1,10 +1,14 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
+import com.sachindrarodrigo.express_delivery_server.domain.Documents;
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
+import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
+import com.sachindrarodrigo.express_delivery_server.dto.DocumentsDto;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.repository.DocumentsRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -27,6 +31,12 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final UserRepository userRepository;
     private final MailRepository mailRepository;
+    private final DocumentsRepository documentsRepository;
+
+    public List<DocumentsDto> getDriverDocuments(String email) throws ExpressDeliveryException {
+        User user = userRepository.findById(email).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
+        return documentsRepository.findByUserEquals(user).stream().map(this::mapDocuments).collect(Collectors.toList());
+    }
 
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
@@ -52,10 +62,33 @@ public class AdminService {
         return newShipments;
     }
 
+    @Transactional
+    public List<UserDto> getAllDrivers() throws ExpressDeliveryException {
+
+        return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public List<UserDto> getAllAgents() throws ExpressDeliveryException {
+
+        return userRepository.findByUserRoleEquals("agent").stream().map(this::mapUsers).collect(Collectors.toList());
+
+    }
+
+    //Method to map data transfer object to domain class
+    private UserDto mapUsers(User user) {
+        return new UserDto(user.getEmail(), user.getFirstName(), user.getLastName(), user.getLocation(), user.getPhoneNumber(), user.getUserRole(), user.getServiceCentre(), user.getDriverDetail());
+    }
+
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
         return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
                 mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(), mail.getUser(), mail.getMailTracking(),  mail.getServiceCentre(),mail.getDropOffDate(), mail.getCreatedAt());
+    }
+
+    private DocumentsDto mapDocuments(Documents documents){
+        return new DocumentsDto(documents.getDocumentId(), documents.getDescription(), documents.getFileName(), documents.getFileSize(), documents.getUser());
     }
 
 }

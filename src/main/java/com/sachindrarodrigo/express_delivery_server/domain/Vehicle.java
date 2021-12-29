@@ -31,6 +31,8 @@ public class Vehicle {
     @Column(nullable = false)
     private String vehicleType;
 
+    private String status;
+
     @JsonBackReference(value = "driver-vehicle")
     @OneToOne(mappedBy = "vehicle", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
