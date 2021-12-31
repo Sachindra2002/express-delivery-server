@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ServiceCenterRepository extends JpaRepository<ServiceCentre, Integer> {
 
-    ServiceCentre findByCentreEquals(String serviceCenter);
+    ServiceCentre findByCenterEquals(String serviceCenter);
 
     ServiceCentre findByCityEquals(String city);
 }

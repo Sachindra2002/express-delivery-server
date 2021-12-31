@@ -64,7 +64,7 @@
     </div>
     <div class="package-stats">
         <div>
-            <h4 style="float: left">Driver Details</h4>
+            <h4 style="float: left">New Documents</h4>
             <button style="float: right" type="button" class="btn btn-primary">View All</button>
         </div>
     </div>

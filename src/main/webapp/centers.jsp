@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.UserDto" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.ServiceCenterDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Express Delivery - Manage Agents</title>
+    <title>Express Delivery - Manage Centers</title>
     <link rel="icon" href="images/logo.png"/>
     <link rel="stylesheet" href="css/admin-homepage.css">
     <link rel="stylesheet" href="css/index.css">
@@ -20,51 +20,49 @@
 <%@ include file="utils/success_alert.jsp" %>
 <%@ include file="utils/error_alert.jsp" %>
 <div style="float: left">
-    <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Agents</h3>
+    <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Centers</h3>
 </div>
 <div class="send-package-button" style="float: right">
     <div>
-        <a type="button" href="/add-agent">Add Agent</a>
+        <a type="button" href="/add-agent">Add Center</a>
     </div>
 </div>
 <div style="margin-top: 120px">
     <div>
         <%
-            List<UserDto> mail = new ArrayList<>();
+            List<ServiceCenterDto> serviceCenterDtoList = new ArrayList<>();
             try {
-                mail = (List<UserDto>) request.getAttribute("agent_list");
+                serviceCenterDtoList = (List<ServiceCenterDto>) request.getAttribute("centers");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (mail != null && mail.size() <= 0) {
+            if (serviceCenterDtoList != null && serviceCenterDtoList.size() <= 0) {
         %>
         <div style="margin-right: 30px; margin-top: 100px; margin-left: 30px" class="alert alert-secondary"
              role="alert">
-            No Agents in the System
+            No Service Centers in the system
         </div>
         <%
         } else {
         %>
         <div class="driver-row" style=" margin-left: 90px">
-            <c:forEach var="agent" items="${agent_list}">
+            <c:forEach var="center" items="${centers}">
                 <div class="card"
                      style="width: 20rem; margin-left: 10px;flex: 0 0 auto; max-width: 100%; margin-right: 10px; border-radius: 10px; height: 15rem">
                     <div class="card-body">
                         <h5 style="float: left"
-                            class="card-title">${agent.getFirstName()} ${agent.getLastName()}</h5><br/><br/>
-                        <p style="font-weight: bold" class="card-text">Email : <span
-                                style="font-weight: normal">${agent.getEmail()}</span></p>
-                        <p style="font-weight: bold" class="card-text">Mobile : <span
-                                style="font-weight: normal">${agent.getPhoneNumber()}</span></p>
-                        <p style="font-weight: bold" class="card-text">Center : <span
-                                style="font-weight: normal">${agent.serviceCentre.center}</span></p>
+                            class="card-title">${center.center}</h5><br/><br/>
+                        <p style="font-weight: bold" class="card-text">City : <span
+                                style="font-weight: normal">${center.city}</span></p>
+                        <p style="font-weight: bold" class="card-text">Address : <span
+                                style="font-weight: normal">${center.address}</span></p>
                     </div>
                     <div>
                         <form method="get" action="/">
-                            <input type="hidden" name="agentId" value="${agent.getEmail()}">
+                            <input type="hidden" name="agentId" value="${center.centreId}">
                             <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">View
-                                Agent
+                                Center
                             </button>
                         </form>
                     </div>

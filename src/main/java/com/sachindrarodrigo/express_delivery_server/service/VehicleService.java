@@ -1,8 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
-import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.Vehicle;
-import com.sachindrarodrigo.express_delivery_server.dto.ServiceCenterDto;
 import com.sachindrarodrigo.express_delivery_server.dto.VehicleDto;
 import com.sachindrarodrigo.express_delivery_server.repository.VehicleRepository;
 import lombok.AllArgsConstructor;
@@ -23,7 +21,11 @@ public class VehicleService {
         return vehicleRepository.findByStatusEquals("available").stream().map(this::mapDto).collect(Collectors.toList());
     }
 
+    public List<VehicleDto> getAllVehicles(){
+        return vehicleRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
+    }
+
     private VehicleDto mapDto(Vehicle vehicle) {
-        return new VehicleDto(vehicle.getVehicleId(), vehicle.getVehicleNumber(), vehicle.getVehicleType());
+        return new VehicleDto(vehicle.getVehicleId(), vehicle.getVehicleNumber(), vehicle.getVehicleType(), vehicle.getStatus(), vehicle.getDriverDetail());
     }
 }

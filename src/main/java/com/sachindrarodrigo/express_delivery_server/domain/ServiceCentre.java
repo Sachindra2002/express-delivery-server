@@ -30,7 +30,7 @@ public class ServiceCentre {
     private String city;
 
     @Column(length = 20)
-    private String centre;
+    private String center;
 
     @Column(length = 150)
     private String address;

@@ -20,6 +20,6 @@ public class ServiceCenterService {
     }
 
     private ServiceCenterDto mapDto(ServiceCentre serviceCentre) {
-        return new ServiceCenterDto(serviceCentre.getCentreId(), serviceCentre.getCity(), serviceCentre.getCentre(), serviceCentre.getAddress());
+        return new ServiceCenterDto(serviceCentre.getCentreId(), serviceCentre.getCity(), serviceCentre.getCenter(), serviceCentre.getAddress());
     }
 }

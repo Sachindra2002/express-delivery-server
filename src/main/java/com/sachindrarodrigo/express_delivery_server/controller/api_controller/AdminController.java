@@ -25,6 +25,8 @@ public class AdminController {
     private DriverService driverService;
     private VehicleService vehicleService;
     private AdminService adminService;
+    private InquiryService inquiryService;
+    private DisputeService disputeService;
     private StorageService service;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,53 +52,75 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/get-inquiries")
+    public ResponseEntity<Object> getAllInquiries() {
+        try {
+            List<InquiryDto> inquiryDtoList = inquiryService.getAllInquiries();
+            return new ResponseEntity<>(inquiryDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/get-disputes")
+    public ResponseEntity<Object> getAllDisputes() {
+        try {
+            List<DisputeDto> disputeDtoList = disputeService.getAllDisputes();
+            return new ResponseEntity<>(disputeDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-driver")
     public ResponseEntity<Object> addDriver(@RequestBody UserDto userDto) {
-        try{
+        try {
             driverService.addDriver(userDto, userDto.getServiceCentre().getCentreId());
             driverService.addDriverDetail(userDto.getDriverDetail(), userDto.getEmail(), userDto.getDriverDetail().getVehicle().getVehicleId());
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (ExpressDeliveryException | MessagingException e){
+        } catch (ExpressDeliveryException | MessagingException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get-drivers-admin")
-    public ResponseEntity<Object> getDrivers(){
+    public ResponseEntity<Object> getDrivers() {
         try {
             List<UserDto> userDto = adminService.getAllDrivers();
             return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get-agents")
-    public ResponseEntity<Object> getAgents(){
+    public ResponseEntity<Object> getAgents() {
         try {
             List<UserDto> userDto = adminService.getAllAgents();
             return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get-driver-documents-admin/{email}")
-    public ResponseEntity<Object> getDriverDocuments(@PathVariable String email){
+    public ResponseEntity<Object> getDriverDocuments(@PathVariable String email) {
         try {
             List<DocumentsDto> documentsDto = adminService.getDriverDocuments(email);
             return new ResponseEntity<>(documentsDto, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/download-admin/{fileName}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName){
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = service.downloadFile(fileName);
         ByteArrayResource resource = new ByteArrayResource(data);
         return ResponseEntity

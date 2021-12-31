@@ -315,10 +315,46 @@
                         <p style="font-weight: bold" class="card-text">Delivery Cost : <span
                                 style="font-weight: normal">${mail.getTotalCost()}</span></p>
                     </div>
-                    <c:if test="${mail.getStatus() == 'In Warehouse [Negombo]'}">
+                    <c:if test="${mail.getStatus() == 'In Transit'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Package picked up'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Driver Accepted'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Delivery Started'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Rejected'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
                             </button>
@@ -327,7 +363,7 @@
                     <c:if test="${mail.getStatus() == 'Accepted'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
                             </button>
@@ -336,7 +372,25 @@
                     <c:if test="${mail.getStatus() == 'Assigned'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#openDisputeModal">Open Dispute
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Shipped'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
+                            </button>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            </button>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Cancelled'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
                             </button>
@@ -359,12 +413,13 @@
                         <p class="card-text" style="float: right; font-weight: bold; margin-right: 10px">Tracking ID</p>
                     </div>
                 </div>
+                <%@ include file="modals/open-dispute.jsp" %>
             </c:forEach>
         </div>
         <% } %>
     </div>
 </div>
-<%@ include file="modals/open-dispute.jsp" %>
+
 <%@ include file="modals/initiate-return.jsp" %>
 <%@ include file="modals/cancel-parcel.jsp" %>
 <%@ include file="utils/script_imports.jsp" %>

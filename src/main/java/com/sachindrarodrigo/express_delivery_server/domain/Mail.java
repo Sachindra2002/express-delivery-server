@@ -101,6 +101,7 @@ public class Mail {
     @Column(nullable = false, length = 200)
     private String description;
 
+    @JsonBackReference(value = "dispute")
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
     private Set<Dispute> disputes;
 

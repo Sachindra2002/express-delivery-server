@@ -1,31 +1,31 @@
 package com.sachindrarodrigo.express_delivery_server.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
-import java.util.Set;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "disputes")
-public class Dispute {
+@Table(name = "inquiries")
+public class Inquiry {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(nullable = false, unique = true, length = 45)
-    private int disputeId;
+    private int inquiryId;
 
     @NotEmpty(message = "Dispute type is required")
     @Column(nullable = false, length = 40)
-    private String disputeType;
+    private String inquiryType;
 
     @NotEmpty(message = "Description is required")
     @Column(nullable = false, length = 105)
@@ -39,8 +39,7 @@ public class Dispute {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    @JsonManagedReference(value = "dispute")
     @ManyToOne
-    @JoinColumn(name = "mailId", nullable = false)
-    private Mail mail;
+    @JoinColumn(name = "email", nullable = false)
+    private User user;
 }

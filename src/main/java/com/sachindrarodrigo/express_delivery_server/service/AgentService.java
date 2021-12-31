@@ -52,7 +52,7 @@ public class AgentService {
 
     private User map(UserDto userDto, String serviceCenter){
 
-        ServiceCentre serviceCentre = serviceCenterRepository.findByCentreEquals(serviceCenter);
+        ServiceCentre serviceCentre = serviceCenterRepository.findByCenterEquals(serviceCenter);
 
         return User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())

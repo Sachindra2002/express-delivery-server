@@ -18,4 +18,19 @@ public class VehicleDto {
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
     }
+
+    public VehicleDto(int vehicleId, String vehicleNumber, String vehicleType, String status) {
+        this.vehicleId = vehicleId;
+        this.vehicleNumber = vehicleNumber;
+        this.vehicleType = vehicleType;
+        this.status = status;
+    }
+
+    public VehicleDto(int vehicleId, String vehicleNumber, String vehicleType, String status, DriverDetail driverDetail) {
+        this.vehicleId = vehicleId;
+        this.vehicleNumber = vehicleNumber;
+        this.vehicleType = vehicleType;
+        this.status = status;
+        this.driverDetail = driverDetail;
+    }
 }

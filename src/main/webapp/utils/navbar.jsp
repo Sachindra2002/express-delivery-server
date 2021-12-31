@@ -5,18 +5,17 @@
              class="logo">
             <a style="color: white; text-decoration: none" href="/"><h4>Express Delivery</h4></a>
         </div>
-        <ul style="display: flex; width: 30%; justify-content: space-around; margin-top: 10px">
+        <ul style="display: flex; width: 18%; justify-content: space-around; margin-top: 10px">
             <li style="list-style: none">
-                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">From Me</a>
-            </li>
-            <li style="list-style: none">
-                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">To Me</a>
-            </li>
-            <li style="list-style: none">
-                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">Completed</a>
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Shipments <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="#">For You</a>
+                        <a href="#">From You</a>
+                    </div>
+                </div>
             </li>
             <li style="list-style: none">
                 <div class="dropdown">
@@ -24,6 +23,8 @@
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
+                        <a href="/inquiries">Inquiries</a>
+                        <a href="/disputes">Disputes</a>
                         <a href="#">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
@@ -36,14 +37,29 @@
              class="logo">
             <a style="color: white; text-decoration: none" href="/"><h4>Express Delivery</h4></a>
         </div>
-        <ul style="display: flex; width: 40%; justify-content: space-around; margin-top: 10px">
+        <ul style="display: flex; width: 50%; justify-content: space-around; margin-top: 10px">
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
                    href="#">Shipments</a>
             </li>
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">Service Centers</a>
+                   href="/service-centers">Service Centers</a>
+            </li>
+            <li style="list-style: none">
+                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                   href="/vehicles">Vehicles</a>
+            </li>
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Complaints <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="/view-disputes">Disputes</a>
+                        <a href="/view-inquiries">Inquiries</a>
+                    </div>
+                </div>
             </li>
             <li style="list-style: none">
                 <div class="dropdown">

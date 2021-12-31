@@ -2,10 +2,7 @@ package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import com.sachindrarodrigo.express_delivery_server.domain.DriverDetail;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
-import com.sachindrarodrigo.express_delivery_server.dto.DocumentsDto;
-import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
-import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
-import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
+import com.sachindrarodrigo.express_delivery_server.dto.*;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.service.*;
@@ -34,6 +31,8 @@ public class AdminWebController {
     private final AgentService agentService;
     private final ServiceCenterService serviceCenterService;
     private final VehicleService vehicleService;
+    private final DisputeService disputeService;
+    private final InquiryService inquiryService;
     private final StorageService storageService;
 
     @GetMapping("/drivers")
@@ -182,6 +181,79 @@ public class AdminWebController {
                 }
 
             }
+        }
+
+        return mv;
+    }
+
+    @GetMapping("/view-disputes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewDisputes(){
+        ModelAndView mv = new ModelAndView();
+        try{
+            mv.addObject("dispute_list", disputeService.getAllDisputes());
+            mv.setViewName("view-disputes.jsp");
+        }catch (Exception e){
+            mv.setViewName("view-disputes.jsp");
+        }
+        return mv;
+    }
+
+    @GetMapping("/view-inquiries")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewInquires(){
+        ModelAndView mv = new ModelAndView();
+        try{
+            mv.addObject("inquiry_list", inquiryService.getAllInquiries());
+            mv.setViewName("view-inquiries.jsp");
+        }catch (Exception e){
+            mv.setViewName("view-inquiries.jsp");
+        }
+        return mv;
+    }
+
+    @PostMapping("/send-response")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView sendResponse(@RequestParam int disputeId, @RequestParam String response, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            DisputeDto disputeDto = new DisputeDto();
+            disputeDto.setResponse(response);
+            disputeDto.setDisputeId(disputeId);
+            disputeService.respondDispute(disputeDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Responded successfully"));
+            mv.setViewName("redirect:/view-disputes");
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Something went wrong!"));
+            mv.setViewName("redirect:/view-disputes");
+        }
+        return mv;
+    }
+
+    @GetMapping("/service-centers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewServiceCenters(){
+        ModelAndView mv = new ModelAndView();
+        try {
+            mv.setViewName("centers.jsp");
+            mv.addObject("centers", serviceCenterService.getAllServiceCenters());
+        }catch (Exception e){
+            mv.addObject("error", new SimpleMessageDto("Something went wrong!"));
+            mv.setViewName("redirect:/home-admin");
+        }
+        return mv;
+    }
+
+    @GetMapping("/vehicles")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView viewVehicles(){
+        ModelAndView mv = new ModelAndView();
+        try{
+            mv.setViewName("vehicles.jsp");
+            mv.addObject("vehicles", vehicleService.getAllVehicles());
+        }catch (Exception e){
+            mv.addObject("error", new SimpleMessageDto("Something went wrong!"));
+            mv.setViewName("redirect:/home-admin");
         }
 
         return mv;
