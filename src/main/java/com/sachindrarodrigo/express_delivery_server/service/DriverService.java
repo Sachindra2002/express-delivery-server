@@ -52,6 +52,33 @@ public class DriverService {
     }
 
     @Transactional
+    public void updateDriverPhoneNumber(DriverDetailDto driverDetailDto){
+        User user = userRepository.findByDriverDetail_DriverId(driverDetailDto.getDriverId());
+
+        user.setPhoneNumber(driverDetailDto.getUser().getPhoneNumber());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateCityAndAddress(DriverDetailDto driverDetailDto) throws ExpressDeliveryException {
+        User user = userRepository.findByDriverDetail_DriverId(driverDetailDto.getDriverId());
+
+        user.setLocation(driverDetailDto.getUser().getLocation());
+        userRepository.save(user);
+
+        DriverDetail driverDetail = driverDetailRepository.findById(driverDetailDto.getDriverId()).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
+        driverDetail.setAddress(driverDetailDto.getAddress());
+        driverDetailRepository.save(driverDetail);
+    }
+
+    @Transactional
+    public void updateStatus(DriverDetailDto driverDetailDto) throws ExpressDeliveryException {
+        DriverDetail driverDetail = driverDetailRepository.findById(driverDetailDto.getDriverId()).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
+        driverDetail.setStatus(driverDetailDto.getStatus());
+        driverDetailRepository.save(driverDetail);
+    }
+
+    @Transactional
     public void addDriver(UserDto dto, int centerId) throws ExpressDeliveryException, MessagingException {
 
         Optional<User> existing = userRepository.findById(dto.getEmail());

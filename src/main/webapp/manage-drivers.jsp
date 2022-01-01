@@ -67,6 +67,10 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">${driver.driverDetail.getStatus()}</span><br/><br/>
                             </c:if>
+                            <c:if test="${driver.driverDetail.getStatus() == 'Blacklisted'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: black"
+                                  class="badge badge-pill badge-success">${driver.driverDetail.getStatus()}</span><br/><br/>
+                            </c:if>
                             <p style="font-weight: bold" class="card-text">Email : <span
                                     style="font-weight: normal">${driver.getEmail()}</span></p>
                             <p style="font-weight: bold" class="card-text">Mobile : <span

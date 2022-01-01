@@ -21,8 +21,13 @@
 </jsp:include>
 <div>
     <div style="float: right; margin-right: 20px">
-        <button type="button" class="btn btn-warning" style="font-size: 20px; ">Edit Driver Details</button>
+        <button type="button" class="btn btn-warning" style="font-size: 20px; " data-toggle="modal" data-target="#openEditDetailsModal${driver.driverId}">Edit Driver Details</button>
     </div>
+    <c:if test="${driver.user.documents.size() == 0}">
+        <div style="float: right; margin-right: 20px">
+            <button type="button" class="btn btn-warning" style="font-size: 20px; " data-toggle="modal" data-target="#openUploadDocumentsModal${driver.driverId}">Upload driver documents</button>
+        </div>
+    </c:if>
     <div class="center-header">
         <h3 style="float: left">Driver Details for Driver ID #000<c:out value="${driver.getDriverId()}"/></h3>
         <div>
@@ -36,6 +41,10 @@
             </c:if>
             <c:if test="${driver.getStatus() == 'Busy'}">
                 <span style="float:left; margin-left: 20px; margin-top: 3px; font-size: 20px; background-color: orange"
+                      class="badge badge-pill badge-success">Status : ${driver.getStatus()}</span>
+            </c:if>
+            <c:if test="${driver.getStatus() == 'Blacklisted'}">
+                <span style="float:left; margin-left: 20px; margin-top: 3px; font-size: 20px; background-color: black"
                       class="badge badge-pill badge-success">Status : ${driver.getStatus()}</span>
             </c:if>
         </div>
@@ -93,7 +102,7 @@
                     </div>
                     <div style="display: flex;">
                         <p style="font-weight: bold">Service Center : </p>
-                        <p style="margin-left: 5px"><c:out value="${driver.user.serviceCentre.getCentre()}"/></p>
+                        <p style="margin-left: 5px"><c:out value="${driver.user.serviceCentre.getCenter()}"/></p>
                     </div>
 
                     <div style="display: flex;">
@@ -168,10 +177,16 @@
                         </div>
                     </c:forEach>
                 </div>
-                
+
             </div>
         </div>
     </div>
 </div>
+<%@ include file="modals/edit-driver-details.jsp" %>
+<%@ include file="modals/upload-driver-documents.jsp" %>
+<%@ include file="modals/update-driver-phone-number.jsp" %>
+<%@ include file="modals/update-city-address-driver.jsp" %>
+<%@ include file="modals/update-driver-status.jsp" %>
+<%@ include file="utils/script_imports.jsp" %>
 </body>
 </html>

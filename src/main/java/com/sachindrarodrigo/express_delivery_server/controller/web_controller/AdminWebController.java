@@ -5,6 +5,7 @@ import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.*;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.repository.DriverDetailRepository;
 import com.sachindrarodrigo.express_delivery_server.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +35,7 @@ public class AdminWebController {
     private final DisputeService disputeService;
     private final InquiryService inquiryService;
     private final StorageService storageService;
+    private final DriverDetailRepository driverDetailRepository;
 
     @GetMapping("/drivers")
     @PreAuthorize("hasRole('ADMIN')")
@@ -152,6 +154,95 @@ public class AdminWebController {
         return mv;
     }
 
+    @PostMapping("/upload-documents")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView uploadDocuments(@RequestParam int driverId ,@RequestParam(value = "nicImage") MultipartFile nicImage,
+                                        @RequestParam(value = "licence") MultipartFile licence, @RequestParam(value = "insurance") MultipartFile insurance,
+                                        RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+
+            DocumentsDto dto = new DocumentsDto();
+
+            DriverDetail driverDetail = driverDetailRepository.findById(driverId).orElseThrow(() -> new ExpressDeliveryException("No driver found"));
+
+            storageService.uploadNicFile(nicImage, driverDetail.getUser().getEmail(), dto);
+            storageService.uploadLicenceFile(licence, driverDetail.getUser().getEmail(), dto);
+            storageService.uploadInsuaranceFile(insurance, driverDetail.getUser().getEmail(), dto);
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Documents uploaded successfully"));
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+        }
+        return mv;
+
+    }
+
+    @PostMapping("/update-phone-number")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView updateDriverPhoneNumber(@RequestParam int driverId, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) throws ExpressDeliveryException {
+        ModelAndView mv;
+        try{
+            User user = new User();
+            DriverDetailDto driverDetailDto = new DriverDetailDto();
+
+            user.setPhoneNumber(phoneNumber);
+
+            driverDetailDto.setDriverId(driverId);
+            driverDetailDto.setUser(user);
+
+            driverService.updateDriverPhoneNumber(driverDetailDto);
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Phone number updated successfully"));
+        }catch (ExpressDeliveryException e){
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+        }
+
+        return mv;
+    }
+
+    @PostMapping("/update-city-address")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView updateCityAndAddress(@RequestParam int driverId, @RequestParam String address, @RequestParam String city, RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        try{
+            User user =  new User();
+            user.setLocation(city);
+
+            DriverDetailDto driverDetailDto = new DriverDetailDto();
+            driverDetailDto.setDriverId(driverId);
+            driverDetailDto.setAddress(address);
+            driverDetailDto.setUser(user);
+
+            driverService.updateCityAndAddress(driverDetailDto);
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("City and address updated successfully"));
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+        }
+        return mv;
+    }
+
+    @PostMapping("/update-driver-status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView updateDriverStatus(@RequestParam int driverId, @RequestParam String status, RedirectAttributes redirectAttributes) throws ExpressDeliveryException {
+        ModelAndView mv;
+        try{
+            DriverDetailDto driverDetailDto = new DriverDetailDto();
+            driverDetailDto.setDriverId(driverId);
+            driverDetailDto.setStatus(status);
+            driverService.updateStatus(driverDetailDto);
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Status updated successfully"));
+        }catch (ExpressDeliveryException e){
+            mv = viewDriver(driverId);
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+        }
+
+        return mv;
+    }
+
     @PostMapping("/add-agent")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView addAgent(@Valid @ModelAttribute("user") User user, BindingResult bindingUser, @RequestParam String center, RedirectAttributes redirectAttributes) {
@@ -230,6 +321,42 @@ public class AdminWebController {
         return mv;
     }
 
+    @PostMapping("/add-vehicle")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView addVehicle(@RequestParam String vehicleType, @RequestParam String vehicleNumber, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            VehicleDto vehicleDto = new VehicleDto();
+            vehicleDto.setVehicleType(vehicleType);
+            vehicleDto.setVehicleNumber(vehicleNumber);
+            vehicleService.addVehicle(vehicleDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Vehicle added sucessfully"));
+            mv.setViewName("redirect:/vehicles");
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("error", new APIException("Vehicle Number already exists"));
+            mv.setViewName("redirect:/vehicles");
+        }
+        return mv;
+    }
+
+    @PostMapping("/send-response-inquiry")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView sendResponseInquiry(@RequestParam int inquiryId, @RequestParam String response, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            InquiryDto inquiryDto = new InquiryDto();
+            inquiryDto.setInquiryId(inquiryId);
+            inquiryDto.setResponse(response);
+            inquiryService.respondInquiry(inquiryDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Responded successfully"));
+            mv.setViewName("redirect:/view-inquiries");
+        }catch (ExpressDeliveryException e){
+            redirectAttributes.addFlashAttribute("error", new SimpleMessageDto("Something went wrong!"));
+            mv.setViewName("redirect:/view-inquiries");
+        }
+        return mv;
+    }
+
     @GetMapping("/service-centers")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView viewServiceCenters(){
@@ -252,8 +379,62 @@ public class AdminWebController {
             mv.setViewName("vehicles.jsp");
             mv.addObject("vehicles", vehicleService.getAllVehicles());
         }catch (Exception e){
-            mv.addObject("error", new SimpleMessageDto("Something went wrong!"));
+            mv.addObject("error", new APIException("Something went wrong!"));
             mv.setViewName("redirect:/home-admin");
+        }
+
+        return mv;
+    }
+
+    @PostMapping("/delete-vehicle")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView deleteVehicle(@RequestParam int vehicleId, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            VehicleDto vehicleDto = new VehicleDto();
+            vehicleDto.setVehicleId(vehicleId);
+            vehicleService.deleteVehicle(vehicleDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Vehicle removed successfully"));
+            mv.setViewName("redirect:/vehicles");
+        }catch (Exception e){
+            mv.addObject("error", new APIException("Something went wrong!"));
+            mv.setViewName("redirect:/vehicles");
+        }
+
+        return mv;
+    }
+
+    @PostMapping("/blacklist-vehicle")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView setBlacklist(@RequestParam int vehicleId, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            VehicleDto vehicleDto = new VehicleDto();
+            vehicleDto.setVehicleId(vehicleId);
+            vehicleService.setBlacklist(vehicleDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Vehicle blacklisted successfully"));
+            mv.setViewName("redirect:/vehicles");
+        }catch (ExpressDeliveryException e){
+            mv.addObject("error", new APIException("Something went wrong!"));
+            mv.setViewName("redirect:/vehicles");
+        }
+
+        return mv;
+    }
+
+    @PostMapping("/remove-vehicle-blacklist")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView removeVehicleBlacklist(@RequestParam int vehicleId, RedirectAttributes redirectAttributes){
+        ModelAndView mv = new ModelAndView();
+        try{
+            VehicleDto vehicleDto = new VehicleDto();
+            vehicleDto.setVehicleId(vehicleId);
+            vehicleService.removeBlacklist(vehicleDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Vehicle blacklist removed successfully"));
+            mv.setViewName("redirect:/vehicles");
+        }catch (ExpressDeliveryException e){
+            mv.addObject("error", new APIException("Something went wrong!"));
+            mv.setViewName("redirect:/vehicles");
         }
 
         return mv;

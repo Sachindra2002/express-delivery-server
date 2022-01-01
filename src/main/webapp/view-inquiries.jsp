@@ -68,8 +68,9 @@
                             <td>${inquiry.description}</td>
                             <td>${inquiry.createdAt}</td>
                             <td>${inquiry.status}</td>
-                            <td><button type="button" class="btn btn-primary">Respond</button></td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#openResponseInquiryModal${inquiry.inquiryId}">Respond</button></td>
                         </tr>
+                        <%@ include file="modals/respond-inquiry.jsp" %>
                     </c:forEach>
                     <% } %>
                     </tbody>

@@ -25,7 +25,8 @@
 </div>
 <div class="send-package-button" style="float: right">
     <div>
-        <a type="button" href="/add-agent">Add Vehicle</a>
+        <a type="button" data-toggle="modal" data-target="#openAddVehicleModal"
+           style="text-decoration: none; margin-bottom: 30px">Add Vehicle</a>
     </div>
 </div>
 <div style="margin-top: 120px">
@@ -62,11 +63,16 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: red"
                                   class="badge badge-pill badge-success">Occupied</span><br/><br/>
                         </c:if>
+                        <c:if test="${vehicle.status == 'Blacklisted'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: black"
+                                  class="badge badge-pill badge-success">Blacklisted</span><br/><br/>
+                        </c:if>
                         <p style="font-weight: bold" class="card-text">Number : <span
                                 style="font-weight: normal">${vehicle.vehicleNumber}</span></p>
                         <c:if test="${vehicle.driverDetail != null}">
                             <p style="font-weight: bold" class="card-text">Driver : <span
-                                    style="font-weight: normal">${vehicle.driverDetail.user.firstName} ${vehicle.driverDetail.user.lastName}</span></p>
+                                    style="font-weight: normal">${vehicle.driverDetail.user.firstName} ${vehicle.driverDetail.user.lastName}</span>
+                            </p>
                         </c:if>
                         <c:if test="${vehicle.driverDetail == null}">
                             <p style="font-weight: bold" class="card-text">Driver : <span
@@ -74,21 +80,18 @@
                         </c:if>
                     </div>
                     <div>
-                        <form method="get" action="/">
-                            <input type="hidden" name="agentId" value="${vehicle.vehicleId}">
-                            <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">View
-                                Vehicle
-                            </button>
-                        </form>
+                        <button style="float: right; margin: 10px" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#openViewVehicleModal${vehicle.vehicleId}">View
+                            Vehicle
+                        </button>
                     </div>
                 </div>
+                <%@ include file="modals/view-vehicle.jsp" %>
             </c:forEach>
         </div>
         <% } %>
     </div>
 </div>
-
-</div>
+<%@ include file="modals/add-vehicle.jsp" %>
 <%@ include file="utils/script_imports.jsp" %>
 </body>
 </html>

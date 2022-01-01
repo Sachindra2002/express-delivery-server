@@ -50,7 +50,7 @@ public class StorageService {
         return "File uploaded : " + fileName;
     }
 
-    public DocumentsDto uploadNicFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
+    public void uploadNicFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Long fileSize = file.getSize();
@@ -58,10 +58,9 @@ public class StorageService {
         fileObj.delete();
 
         saveDocument(fileName, fileSize, email, "NIC");
-        return dto;
     }
 
-    public DocumentsDto uploadLicenceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
+    public void uploadLicenceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Long fileSize = file.getSize();
@@ -69,10 +68,9 @@ public class StorageService {
         fileObj.delete();
 
         saveDocument(fileName, fileSize, email, "License");
-        return dto;
     }
 
-    public DocumentsDto uploadInsuaranceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
+    public void uploadInsuaranceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Long fileSize = file.getSize();
@@ -80,7 +78,6 @@ public class StorageService {
         fileObj.delete();
 
         saveDocument(fileName, fileSize, email, "Insurance");
-        return dto;
     }
 
     public void saveDocument(String fileName, Long fileSize, String email, String description) throws ExpressDeliveryException {

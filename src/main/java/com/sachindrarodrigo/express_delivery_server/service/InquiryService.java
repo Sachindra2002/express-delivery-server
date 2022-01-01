@@ -1,6 +1,8 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
+import com.sachindrarodrigo.express_delivery_server.domain.Dispute;
 import com.sachindrarodrigo.express_delivery_server.domain.Inquiry;
+import com.sachindrarodrigo.express_delivery_server.dto.DisputeDto;
 import com.sachindrarodrigo.express_delivery_server.dto.InquiryDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.InquiryRepository;
@@ -27,6 +29,13 @@ public class InquiryService {
 
     public void addInquiry(InquiryDto inquiryDto) throws ExpressDeliveryException {
         Inquiry inquiry = map(inquiryDto);
+        inquiryRepository.save(inquiry);
+    }
+
+    public void respondInquiry(InquiryDto inquiryDto) throws ExpressDeliveryException {
+        Inquiry inquiry = inquiryRepository.findById(inquiryDto.getInquiryId()).orElseThrow(() -> new ExpressDeliveryException("Inquiry not found"));
+        inquiry.setResponse(inquiry.getResponse());
+        inquiry.setStatus("responded");
         inquiryRepository.save(inquiry);
     }
 
