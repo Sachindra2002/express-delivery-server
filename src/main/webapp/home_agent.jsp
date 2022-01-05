@@ -34,6 +34,7 @@
     <jsp:param name="page" value="home"/>
 </jsp:include>
 <%@ include file="utils/success_alert.jsp" %>
+<%@ include file="utils/error_alert.jsp" %>
 <div>
     <h3 style="padding: 20px 30px 20px 30px">Welcome Back, ${name}</h3>
 </div>

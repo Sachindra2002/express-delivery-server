@@ -49,6 +49,22 @@
                             Remove Vehicle
                         </button>
                     </form>
+                    <c:if test="${vehicle.status == 'available'}">
+                        <form style="float: left; margin-left: 20px" method="post" action="/set-unavailable-vehicle">
+                            <input type="hidden" value="${vehicle.vehicleId}" name="vehicleId">
+                            <button class="btn btn-warning" type="submit" value="submit">
+                                Set Unavailable
+                            </button>
+                        </form>
+                    </c:if>
+                    <c:if test="${vehicle.status == 'taken'}">
+                        <form style="float: left; margin-left: 20px" method="post" action="/set-available-vehicle">
+                            <input type="hidden" value="${vehicle.vehicleId}" name="vehicleId">
+                            <button class="btn btn-primary" type="submit" value="submit">
+                                Set Available
+                            </button>
+                        </form>
+                    </c:if>
                     <c:if test="${vehicle.status != 'Blacklisted'}">
                         <form style="float: left; margin-left: 20px" method="post" action="/blacklist-vehicle">
                             <input type="hidden" value="${vehicle.vehicleId}" name="vehicleId">

@@ -32,6 +32,15 @@ public class MailService {
 
     @Transactional
     public void sendMail(MailDto dto) throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+
+        if (user.getIsBanned()) {
+            throw new ExpressDeliveryException("User is Blacklisted");
+        }
+
         Mail mail = map(dto);
         mailRepository.save(mail);
         createTracking(mail.getMailId());
@@ -92,6 +101,12 @@ public class MailService {
         return recentOutgoing;
     }
 
+    public List<MailDto> getAllShipments() {
+        List<MailDto> list = mailRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
+    }
+
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -133,10 +148,10 @@ public class MailService {
     //Method to map data transfer object to domain class
     private MailDto mapDto(Mail mail) {
 
-
         return new MailDto(mail.getMailId(), mail.getPickupAddress(), mail.getReceiverAddress(), mail.getReceiverFirstName(), mail.getReceiverLastName(),
                 mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
                 mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(),
-                mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(),mail.getServiceCentre(),mail.getDropOffDate(),mail.getCreatedAt());
+                mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(), mail.getServiceCentre(), mail.getDropOffDate(), mail.getCreatedAt());
     }
+
 }

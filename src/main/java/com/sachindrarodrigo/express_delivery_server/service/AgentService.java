@@ -50,6 +50,11 @@ public class AgentService {
         userRepository.save(user);
     }
 
+    public void deleteAgent(UserDto userDto) throws ExpressDeliveryException {
+        User user = userRepository.findById(userDto.getEmail()).orElseThrow(() -> new ExpressDeliveryException("Agent not found"));
+        userRepository.delete(user);
+    }
+
     private User map(UserDto userDto, String serviceCenter){
 
         ServiceCentre serviceCentre = serviceCenterRepository.findByCenterEquals(serviceCenter);
@@ -60,6 +65,7 @@ public class AgentService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .location(userDto.getLocation())
                 .userRole("agent")
+                .isBanned(false)
                 .password(passwordEncoder.encode(userDto.getEmail()))
                 .serviceCentre(serviceCentre)
                 .build();

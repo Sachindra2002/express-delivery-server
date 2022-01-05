@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(exclude = "disputes")
@@ -101,9 +102,9 @@ public class Mail {
     @Column(nullable = false, length = 200)
     private String description;
 
-    @JsonBackReference(value = "dispute")
+    @JsonManagedReference(value = "dispute")
     @OneToMany(mappedBy = "mail", fetch = FetchType.LAZY)
-    private Set<Dispute> disputes;
+    private List<Dispute> disputes;
 
     @JsonManagedReference(value = "tracking")
     @OneToOne(mappedBy = "mail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

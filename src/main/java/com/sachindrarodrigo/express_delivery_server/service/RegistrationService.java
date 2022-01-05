@@ -25,7 +25,7 @@ public class RegistrationService {
 
         Optional<User> existing = userRepository.findById(userDto.getEmail());
 
-        if(existing.isPresent()){
+        if (existing.isPresent()) {
             throw new ExpressDeliveryException("Email already in use");
         }
         User user = map(userDto);
@@ -38,11 +38,11 @@ public class RegistrationService {
     }
 
     @Transactional
-    public User registerUserWeb(User user) throws ExpressDeliveryException {
+    public void registerUserWeb(User user) throws ExpressDeliveryException {
 
         Optional<User> existing = userRepository.findById(user.getEmail());
 
-        if(existing.isPresent()){
+        if (existing.isPresent()) {
             throw new ExpressDeliveryException("Email already in use");
         }
 
@@ -53,13 +53,12 @@ public class RegistrationService {
                 .phoneNumber(user.getPhoneNumber())
                 .location(user.getLocation())
                 .userRole("customer")
+                .isBanned(false)
                 .password(passwordEncoder.encode(user.getPassword())).build());
-
-        return user;
 
     }
 
-    private User map(UserDto userDto){
+    private User map(UserDto userDto) {
         return User.builder().firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .email(userDto.getEmail())

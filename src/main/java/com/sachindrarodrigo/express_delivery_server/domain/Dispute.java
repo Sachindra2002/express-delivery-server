@@ -39,7 +39,7 @@ public class Dispute {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    @JsonManagedReference(value = "dispute")
+    @JsonBackReference(value = "dispute")
     @ManyToOne
     @JoinColumn(name = "mailId", nullable = false)
     private Mail mail;

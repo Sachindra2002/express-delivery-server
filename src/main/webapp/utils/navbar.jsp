@@ -25,7 +25,7 @@
                     <div class="dropdown-content">
                         <a href="/inquiries">Inquiries</a>
                         <a href="/disputes">Disputes</a>
-                        <a href="#">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
         <ul style="display: flex; width: 50%; justify-content: space-around; margin-top: 10px">
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">Shipments</a>
+                   href="/all-shipments">Shipments</a>
             </li>
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
@@ -69,6 +69,7 @@
                     <div class="dropdown-content">
                         <a href="/agents">Agents</a>
                         <a href="/drivers">Drivers</a>
+                        <a href="/customers">Customers</a>
                     </div>
                 </div>
             </li>
@@ -78,7 +79,7 @@
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="#">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>
@@ -93,7 +94,7 @@
     <ul style="display: flex; width: 30%; justify-content: space-around; margin-top: 10px">
         <li style="list-style: none">
             <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-               href="#">Shipments</a>
+               href="/all-shipments">Shipments</a>
         </li>
         <li style="list-style: none">
             <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
@@ -105,7 +106,7 @@
                      class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                 </div>
                 <div class="dropdown-content">
-                    <a href="#">Settings</a>
+                    <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
                     <a style="color: red" href="/logout">Log out</a>
                 </div>
             </div>
@@ -128,7 +129,7 @@
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="#">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>
@@ -136,3 +137,5 @@
         </ul>
     </sec:authorize>
 </nav>
+
+<%@ include file="../modals/settings-modal.jsp" %>

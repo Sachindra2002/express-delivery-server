@@ -37,7 +37,7 @@ public class ServiceCentre {
 
     @JsonBackReference(value = "user-center")
     @OneToMany(mappedBy = "serviceCentre")
-    private Set<User> users;
+    private List<User> users;
 
     @JsonBackReference(value = "center")
     @OneToMany(mappedBy = "serviceCentre")

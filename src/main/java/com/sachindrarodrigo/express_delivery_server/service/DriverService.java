@@ -46,13 +46,34 @@ public class DriverService {
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
     }
 
+    public List<UserDto> getAvailableDrivers() {
+        return userRepository.findAllByDriverDetail_Status("Available").stream().map(this::mapUsers).collect(Collectors.toList());
+    }
+
+    public void updateServiceCenter(UserDto userDto) throws ExpressDeliveryException {
+        User user = userRepository.findById(userDto.getEmail()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(userDto.getServiceCentre().getCentreId()).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
+
+        user.setServiceCentre(serviceCentre);
+        userRepository.save(user);
+    }
+
+    public void updateDriverVehicle(UserDto userDto) throws ExpressDeliveryException {
+        DriverDetail driverDetail = driverDetailRepository.findById(userDto.getDriverDetail().getDriverId()).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
+        Vehicle vehicle1 = vehicleRepository.findById(userDto.getDriverDetail().getVehicle().getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle not found"));
+        vehicle1.setStatus("taken");
+        driverDetail.setVehicle(vehicle1);
+        driverDetailRepository.save(driverDetail);
+        vehicleRepository.save(vehicle1);
+    }
+
     @Transactional
     public DriverDetail getDriverInfo(int driverId) throws ExpressDeliveryException {
         return driverDetailRepository.findById(driverId).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
     }
 
     @Transactional
-    public void updateDriverPhoneNumber(DriverDetailDto driverDetailDto){
+    public void updateDriverPhoneNumber(DriverDetailDto driverDetailDto) {
         User user = userRepository.findByDriverDetail_DriverId(driverDetailDto.getDriverId());
 
         user.setPhoneNumber(driverDetailDto.getUser().getPhoneNumber());
@@ -214,6 +235,7 @@ public class DriverService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .location(userDto.getLocation())
                 .userRole("driver")
+                .isBanned(false)
                 .password(passwordEncoder.encode(userDto.getEmail()))
                 .serviceCentre(serviceCentre)
                 .build();

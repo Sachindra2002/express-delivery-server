@@ -27,6 +27,11 @@ public class InquiryService {
         return inquiryRepository.findAllByStatusEquals("Pending").stream().map(this::mapInquiries).collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<InquiryDto> getEveryInquiries() {
+        return inquiryRepository.findAll().stream().map(this::mapInquiries).collect(Collectors.toList());
+    }
+
     public void addInquiry(InquiryDto inquiryDto) throws ExpressDeliveryException {
         Inquiry inquiry = map(inquiryDto);
         inquiryRepository.save(inquiry);

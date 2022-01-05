@@ -6,10 +6,12 @@ import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.DocumentsDto;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
+import com.sachindrarodrigo.express_delivery_server.dto.ServiceCenterDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.DocumentsRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
+import com.sachindrarodrigo.express_delivery_server.repository.ServiceCenterRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final MailRepository mailRepository;
     private final DocumentsRepository documentsRepository;
+    private final ServiceCenterRepository serviceCenterRepository;
 
     public List<DocumentsDto> getDriverDocuments(String email) throws ExpressDeliveryException {
         User user = userRepository.findById(email).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));
@@ -45,7 +48,7 @@ public class AdminService {
         //If user is not found
         com.sachindrarodrigo.express_delivery_server.domain.User _user = userRepository.findById(user.getUsername()).orElseThrow(()->new ExpressDeliveryException("User not found"));
 
-        return _user.getFirstName();
+        return _user.getFirstName() + " " + _user.getLastName();
     }
 
     @Transactional
@@ -62,11 +65,23 @@ public class AdminService {
         return newShipments;
     }
 
+    public List<MailDto> getServiceCenterPackages(ServiceCenterDto serviceCenterDto) throws ExpressDeliveryException {
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(serviceCenterDto.getCentreId()).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
+
+        return mailRepository.findAllByServiceCentre(serviceCentre).stream().map(this::mapDto).collect(Collectors.toList());
+    }
+
     @Transactional
     public List<UserDto> getAllDrivers() throws ExpressDeliveryException {
 
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
 
+    }
+
+    public List<UserDto> getServiceCenterDrivers(ServiceCenterDto serviceCenterDto) throws ExpressDeliveryException {
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(serviceCenterDto.getCentreId()).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
+
+        return userRepository.findAllByServiceCentre(serviceCentre).stream().map(this::mapUsers).collect(Collectors.toList());
     }
 
     @Transactional

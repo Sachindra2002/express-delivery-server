@@ -22,6 +22,17 @@ public class UserDto {
     private List<Documents> documents;
     private ServiceCentre serviceCentre;
     private DriverDetail driverDetail;
+    private Boolean isBanned;
+
+    public UserDto(String email, String firstName, String lastName, String location, String phoneNumber, List<Mail> mailList, Boolean isBanned) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.mailList = mailList;
+        this.isBanned = isBanned;
+    }
 
     public UserDto(String email, String firstName, String lastName, String location, String phoneNumber, String userRole, ServiceCentre serviceCentre, DriverDetail driverDetail) {
         this.email = email;
@@ -32,6 +43,16 @@ public class UserDto {
         this.userRole = userRole;
         this.serviceCentre = serviceCentre;
         this.driverDetail = driverDetail;
+    }
+
+    public UserDto(String email, String firstName, String lastName, String location, String phoneNumber, String userRole, Boolean isBanned) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.userRole = userRole;
+        this.isBanned = isBanned;
     }
 
     public UserDto(String email, String firstName, String lastName, String location, String phoneNumber, String password, String userRole, List<Mail> mailList, List<Documents> documents, ServiceCentre serviceCentre, DriverDetail driverDetail) {

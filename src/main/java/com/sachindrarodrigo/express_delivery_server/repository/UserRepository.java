@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<User> findByUserRoleEqualsAndDriverDetail_StatusAndServiceCentre(String userRole, String status, ServiceCentre serviceCentre);
 
     User findByDriverDetail_DriverId(int driverId);
+
+    List<User> findAllByDriverDetail_Status(String status);
+
+    List<User> findAllByServiceCentre(ServiceCentre serviceCentre);
 }

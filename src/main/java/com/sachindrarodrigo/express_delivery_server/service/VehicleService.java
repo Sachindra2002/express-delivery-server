@@ -55,6 +55,20 @@ public class VehicleService {
         vehicleRepository.save(vehicle);
     }
 
+    public void setVehicleAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
+        Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
+
+        vehicle.setStatus("available");
+        vehicleRepository.save(vehicle);
+    }
+
+    public void setVehicleUnAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
+        Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
+
+        vehicle.setStatus("taken");
+        vehicleRepository.save(vehicle);
+    }
+
     public List<VehicleDto> getAvailableVehicles() {
         return vehicleRepository.findByStatusEquals("available").stream().map(this::mapDto).collect(Collectors.toList());
     }

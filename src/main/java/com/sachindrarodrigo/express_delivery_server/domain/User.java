@@ -77,4 +77,7 @@ public class User {
     @JoinColumn(name = "centreId")
     private ServiceCentre serviceCentre;
 
+    private Boolean isBanned;
+
+
 }

@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.UserDto" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.sachindrarodrigo.express_delivery_server.dto.ServiceCenterDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Express Delivery - Manage Centers</title>
+    <title>Express Delivery - Manage Agents</title>
     <link rel="icon" href="images/logo.png"/>
     <link rel="stylesheet" href="css/admin-homepage.css">
     <link rel="stylesheet" href="css/index.css">
@@ -20,49 +20,51 @@
 <%@ include file="utils/success_alert.jsp" %>
 <%@ include file="utils/error_alert.jsp" %>
 <div style="float: left">
-    <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Centers</h3>
-</div>
-<div class="send-package-button" style="float: right">
-    <div>
-        <a type="button" data-toggle="modal" data-target="#openAddCenterModal">Add Center</a>
-    </div>
+    <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Customers</h3>
 </div>
 <div style="margin-top: 120px">
     <div>
         <%
-            List<ServiceCenterDto> serviceCenterDtoList = new ArrayList<>();
+            List<UserDto> mail = new ArrayList<>();
             try {
-                serviceCenterDtoList = (List<ServiceCenterDto>) request.getAttribute("centers");
+                mail = (List<UserDto>) request.getAttribute("customers");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (serviceCenterDtoList != null && serviceCenterDtoList.size() <= 0) {
+            if (mail != null && mail.size() <= 0) {
         %>
         <div style="margin-right: 30px; margin-top: 100px; margin-left: 30px" class="alert alert-secondary"
              role="alert">
-            No Service Centers in the system
+            No Agents in the System
         </div>
         <%
         } else {
         %>
         <div class="driver-row" style=" margin-left: 90px">
-            <c:forEach var="center" items="${centers}">
+            <c:forEach var="customer" items="${customers}">
                 <div class="card"
                      style="width: 20rem; margin-left: 10px;flex: 0 0 auto; max-width: 100%; margin-right: 10px; border-radius: 10px; height: 15rem">
                     <div class="card-body">
                         <h5 style="float: left"
-                            class="card-title">${center.center}</h5><br/><br/>
-                        <p style="font-weight: bold" class="card-text">City : <span
-                                style="font-weight: normal">${center.city}</span></p>
-                        <p style="font-weight: bold" class="card-text">Address : <span
-                                style="font-weight: normal">${center.address}</span></p>
+                            class="card-title">${customer.firstName} ${customer.lastName}</h5>
+                        <c:if test="${customer.isBanned == true}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: black"
+                                  class="badge badge-pill badge-success">Blacklisted</span><br/><br/>
+                        </c:if>
+                        <c:if test="${customer.isBanned == false}">
+                            <br/><br/>
+                        </c:if>
+                        <p style="font-weight: bold" class="card-text">Email : <span
+                                style="font-weight: normal">${customer.email}</span></p>
+                        <p style="font-weight: bold" class="card-text">Mobile : <span
+                                style="font-weight: normal">${customer.phoneNumber}</span></p>
                     </div>
                     <div>
-                        <form method="get" action="/view-center">
-                            <input type="hidden" name="centerId" value="${center.centreId}">
+                        <form method="get" action="/view-customer">
+                            <input type="hidden" name="email" value="${customer.email}">
                             <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">View
-                                Center
+                                Customer
                             </button>
                         </form>
                     </div>
@@ -72,7 +74,6 @@
         <% } %>
     </div>
 </div>
-<%@ include file="modals/add-service-center.jsp" %>
 <%@ include file="utils/script_imports.jsp" %>
 </body>
 </html>

@@ -42,55 +42,47 @@ public class ParcelWebController {
                                     @RequestParam String receiverLastName, @RequestParam String receiverPhoneNumber, @RequestParam String receiverEmail,
                                     @RequestParam String receiverCity, @RequestParam String parcelType, @RequestParam String weight, @RequestParam String pieces,
                                     @RequestParam String paymentMethod, @RequestParam String date, @RequestParam String time, @RequestParam String totalCost,
-                                    @RequestParam String description) throws ExpressDeliveryException {
+                                    @RequestParam String description) {
 
         ModelAndView mv = new ModelAndView();
-        if(bindingResult.hasErrors()){
-            mv.setViewName("send-package.jsp");
-            System.out.println("errors" + bindingResult.hasErrors() + bindingResult.getAllErrors());
-        }else{
-            // Create mail dto with user input
-            MailDto dto = new MailDto();
-            dto.setPickupAddress(pickupAddress);
-            dto.setReceiverAddress(receiverAddress);
-            dto.setReceiverFirstName(receiverFirstName);
-            dto.setReceiverLastName(receiverLastName);
-            dto.setReceiverPhoneNumber(receiverPhoneNumber);
-            dto.setReceiverEmail(receiverEmail);
-            dto.setReceiverCity(receiverCity);
-            dto.setParcelType(parcelType);
-            dto.setWeight(weight);
-            dto.setPieces(pieces);
-            dto.setPaymentMethod(paymentMethod);
-            dto.setDate(date);
-            dto.setTime(time);
-            dto.setTotalCost(totalCost);
-            dto.setDescription(description);
 
-            mailService.sendMail(dto);
+        try{
+            if(bindingResult.hasErrors()){
+                mv.setViewName("send-package.jsp");
+                System.out.println("errors" + bindingResult.hasErrors() + bindingResult.getAllErrors());
+            }else{
+                // Create mail dto with user input
+                MailDto dto = new MailDto();
+                dto.setPickupAddress(pickupAddress);
+                dto.setReceiverAddress(receiverAddress);
+                dto.setReceiverFirstName(receiverFirstName);
+                dto.setReceiverLastName(receiverLastName);
+                dto.setReceiverPhoneNumber(receiverPhoneNumber);
+                dto.setReceiverEmail(receiverEmail);
+                dto.setReceiverCity(receiverCity);
+                dto.setParcelType(parcelType);
+                dto.setWeight(weight);
+                dto.setPieces(pieces);
+                dto.setPaymentMethod(paymentMethod);
+                dto.setDate(date);
+                dto.setTime(time);
+                dto.setTotalCost(totalCost);
+                dto.setDescription(description);
 
+                mailService.sendMail(dto);
+
+                //Return user to "Home" page
+                redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Order added successfully"));
+                mv.setViewName("redirect:/home-customer");
+            }
+        }catch (ExpressDeliveryException e){
             //Return user to "Home" page
-            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Order added successfully"));
+            redirectAttributes.addFlashAttribute("error", new APIException("User is Blacklisted"));
             mv.setViewName("redirect:/home-customer");
         }
+
         return mv;
     }
-
-//    @PostMapping("/open-dispute")
-//    @PreAuthorize("hasRole('CUSTOMER')")
-//    public ModelAndView openDispute(@RequestParam int mailId, @RequestParam String disputeType, @RequestParam String description) throws ExpressDeliveryException {
-//        ModelAndView mv = HomePage();
-//
-//        DisputeDto dto = new DisputeDto();
-////        dto.setMailId(mailId);
-//        dto.setDescription(description);
-//        dto.setDisputeType(disputeType);
-//        disputeService.openDispute(dto);
-//
-//        mv.addObject("success", new SimpleMessageDto("Dispute opened Successfully for package "+ mailId));
-//
-//        return mv;
-//    }
 
     @PostMapping("/initiate-return")
     @PreAuthorize("hasRole('CUSTOMER')")

@@ -15,7 +15,7 @@ public class ServiceCenterDto {
     private String city;
     private String center;
     private String address;
-    private Set<User> users;
+    private List<User> users;
     private List<Mail> mailList;
 
     public ServiceCenterDto(int centreId, String city, String center, String address) {
@@ -23,5 +23,14 @@ public class ServiceCenterDto {
         this.city = city;
         this.center = center;
         this.address = address;
+    }
+
+    public ServiceCenterDto(int centreId, String city, String center, String address, List<User> users, List<Mail> mailList) {
+        this.centreId = centreId;
+        this.city = city;
+        this.center = center;
+        this.address = address;
+        this.users = users;
+        this.mailList = mailList;
     }
 }

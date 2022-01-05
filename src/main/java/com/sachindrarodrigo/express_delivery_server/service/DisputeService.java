@@ -34,6 +34,11 @@ public class DisputeService {
         return disputeRepository.findAllByStatusEquals("Pending").stream().map(this::mapDisputes).collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<DisputeDto> getEveryDispute() {
+        return disputeRepository.findAll().stream().map(this::mapDisputes).collect(Collectors.toList());
+    }
+
     public void openDispute(DisputeDto disputeDto, int mailId) throws ExpressDeliveryException {
         Dispute dispute = map(disputeDto, mailId);
         disputeRepository.save(dispute);

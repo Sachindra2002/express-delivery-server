@@ -16,5 +16,7 @@ public interface MailRepository extends JpaRepository<Mail, Integer> {
 
     List<Mail> findByServiceCentreAndStatusEquals(ServiceCentre serviceCentre, String status);
 
+    List<Mail> findAllByServiceCentre(ServiceCentre serviceCentre);
+
     List<Mail> findByDriverDetailAndStatusEquals(DriverDetail driverDetail, String status);
 }

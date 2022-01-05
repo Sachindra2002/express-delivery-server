@@ -19,6 +19,8 @@
 <jsp:include page="utils/navbar.jsp">
     <jsp:param name="page" value="home"/>
 </jsp:include>
+<%@ include file="utils/success_alert.jsp" %>
+<%@ include file="utils/error_alert.jsp" %>
 <div>
     <div style="float: right; margin-right: 20px">
         <button type="button" class="btn btn-warning" style="font-size: 20px; " data-toggle="modal" data-target="#openEditDetailsModal${driver.driverId}">Edit Driver Details</button>
@@ -144,7 +146,8 @@
                         <div class="card" style="border-radius: 10px; margin-top: 10px">
                             <div class="card-body">
                                 <h6 style="float: left" class="card-title">${mail.getDescription()}</h6>
-                                <button style="float: right" type="button" class="btn btn-info"><i
+                                <button style="float: right" type="button" class="btn btn-info" data-toggle="modal"
+                                        data-target="#openPackageAdminModal${mail.mailId}"><i
                                         class="fas fa-expand-alt"></i></button>
                                 <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.getTotalCost()}</h6>
                                 <h6 style="float: right; margin-right: 35px; font-weight: normal">
@@ -152,6 +155,7 @@
                                 <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.user.getLocation()}</h6>
                             </div>
                         </div>
+                        <%@ include file="modals/view-package-admin.jsp" %>
                     </c:forEach>
                 </div>
 
