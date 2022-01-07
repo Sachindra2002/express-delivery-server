@@ -126,7 +126,7 @@
     </div>
     <div class="package-stats-agent" style="text-align: center; margin-top: 30px">
         <div>
-            <h4 style="float: left">Shipments to be Assigned</h4>
+            <h4 style="float: left">New Shipments to be Assigned</h4>
             <button style="float: right" type="button" class="btn btn-primary">View All <i style="margin-left: 10px"
                                                                                            class="fas fa-expand"></i>
             </button>
@@ -193,6 +193,80 @@
                 </div>
                 <%@ include file="modals/view-package-agent.jsp" %>
                 <%@ include file="modals/assign-driver.jsp" %>
+            </c:forEach>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="package-stats-agent" style="text-align: center; margin-top: 30px">
+        <div>
+            <h4 style="float: left">In Transit Shipments</h4>
+            <button style="float: right" type="button" class="btn btn-primary">View All <i style="margin-left: 10px"
+                                                                                           class="fas fa-expand"></i>
+            </button>
+        </div>
+        <div style="margin-top: 50px">
+            <%
+                List<MailDto> transitMails = new ArrayList<>();
+                try {
+                    transitMails = (List<MailDto>) request.getAttribute("transit_packages");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (transitMails != null && transitMails.size() <= 0) {
+            %>
+            <div style="margin-right: 30px; margin-top: 30px; margin-left: 30px" class="alert alert-secondary"
+                 role="alert">
+                No Transit packages
+            </div>
+            <%
+            } else {
+            %>
+            <c:forEach var="mail" items="${transit_packages}">
+                <div class="card" style="border-radius: 10px; margin-top: 10px">
+                    <div class="card-body">
+                        <div style="width: 200px;height: 50px; float:left;">
+                            <p class="center" style="font-weight: bold">${mail.user.firstName} ${mail.user.lastName}</p>
+                        </div>
+                        <div style="width: 200px;height: 50px; float:left;">
+                            <p class="center">${mail.description}</p>
+                        </div>
+                        <div style="width: 300px; height: 50px; float:left;">
+                            <p class="center">From : ${mail.pickupAddress}</p>
+                        </div>
+                        <div style="width: 300px; height: 50px; float:left;">
+                            <p class="center">To : ${mail.receiverAddress}</p>
+                        </div>
+                        <div style="width: 200px; height: 50px; float:left;">
+                            <p class="center">${mail.parcelType}</p>
+                        </div>
+                        <div style="width: 100px;height: 50px; float:left; margin-left: 10px">
+                            <p class="center"><fmt:formatDate
+                                    type="both"
+                                    dateStyle="medium"
+                                    timeStyle="medium"
+                                    value="${mail.createdAt}"/></p>
+                        </div>
+                        <div style="width: 150px; height: 50px; float:right;">
+                            <button style="float: right; margin-left: 10px" type="button"
+                                    class="btn btn-outline-success"
+                                    data-toggle="modal" data-target="#openChangeDriverModal${mail.mailId}"
+                            >
+                                Change Driver
+                            </button>
+                        </div>
+                        <div style="width: 100px; height: 50px; float:right;">
+                            <button style="float: right; margin-left: 10px" type="button" class="btn btn-info"
+                                    data-toggle="modal" data-target="#openPackageAgentModal${mail.mailId}"
+                            >
+                                View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <%@ include file="modals/view-package-agent.jsp" %>
+                <%@ include file="modals/chnage-driver-modal.jsp" %>
             </c:forEach>
             <% } %>
         </div>

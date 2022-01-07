@@ -29,95 +29,95 @@ public class AgentController {
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-new-packages")
-    public ResponseEntity<Object> getUpcomingPackages(){
+    public ResponseEntity<Object> getUpcomingPackages() {
         try {
             List<MailDto> mailDto1 = agentService.getAllNewShipmentsAdmin();
             return new ResponseEntity<>(mailDto1, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-drivers")
-    public ResponseEntity<Object> getDrivers(){
+    public ResponseEntity<Object> getDrivers() {
         try {
             List<UserDto> userDto = agentService.getAllDrivers();
             return new ResponseEntity<>(userDto, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/accept-package-agent/{mailId}")
-    public ResponseEntity<Object> acceptPackage(@PathVariable int mailId){
-        try{
+    public ResponseEntity<Object> acceptPackage(@PathVariable int mailId) {
+        try {
             agentService.acceptParcel(mailId);
             return new ResponseEntity<>(new SimpleMessageDto("Accepted Successfully", HttpStatus.OK), HttpStatus.OK);
-        }catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/reject-package-agent/{mailId}")
-    public ResponseEntity<Object> rejectPackage(@PathVariable int mailId){
-        try{
+    public ResponseEntity<Object> rejectPackage(@PathVariable int mailId) {
+        try {
             agentService.rejectParcel(mailId);
             return new ResponseEntity<>(new SimpleMessageDto("Accepted Successfully", HttpStatus.OK), HttpStatus.OK);
-        }catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-accepted-packages-agent")
-    public ResponseEntity<Object> getAcceptedPackages(){
+    public ResponseEntity<Object> getAcceptedPackages() {
         try {
             List<MailDto> mailDto1 = agentService.getAllNewAcceptedShipmentsAdmin();
             return new ResponseEntity<>(mailDto1, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-transit-packages-agent")
-    public ResponseEntity<Object> getTransitPackages(){
+    public ResponseEntity<Object> getTransitPackages() {
         try {
             List<MailDto> mailDto1 = agentService.getTransitPackages();
             return new ResponseEntity<>(mailDto1, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/assign-driver")
-    public ResponseEntity<Object> assignDriver(@RequestBody MailDto dto){
-        try{
+    public ResponseEntity<Object> assignDriver(@RequestBody MailDto dto) {
+        try {
             agentService.assignDriver(dto.getMailId(), dto.getDriverDetail().getDriverId(), dto.getDropOffDate());
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-driver-documents/{email}")
-    public ResponseEntity<Object> getDriverDocuments(@PathVariable String email){
+    public ResponseEntity<Object> getDriverDocuments(@PathVariable String email) {
         try {
             List<DocumentsDto> documentsDto = agentService.getDriverDocuments(email);
             return new ResponseEntity<>(documentsDto, HttpStatus.OK);
-        } catch (ExpressDeliveryException e){
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName){
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = service.downloadFile(fileName);
         ByteArrayResource resource = new ByteArrayResource(data);
         return ResponseEntity

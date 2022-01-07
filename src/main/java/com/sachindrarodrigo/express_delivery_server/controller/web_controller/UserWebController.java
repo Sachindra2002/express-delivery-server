@@ -81,6 +81,7 @@ public class UserWebController {
         mv.setViewName("/home_agent.jsp");
         mv.addObject("pending_packages", agentService.getAllNewShipmentsAdmin());
         mv.addObject("accepted_packages", agentService.getAllNewAcceptedShipmentsAdmin());
+        mv.addObject("transit_packages", agentService.getTransitPackages());
         //Get list of available driver to the specific service center to be assigned
         mv.addObject("available_driver_list", agentService.getAllAvailableDrivers());
         try {

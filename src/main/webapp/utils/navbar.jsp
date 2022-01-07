@@ -25,7 +25,8 @@
                     <div class="dropdown-content">
                         <a href="/inquiries">Inquiries</a>
                         <a href="/disputes">Disputes</a>
-                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal"
+                           data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>
@@ -79,7 +80,8 @@
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal"
+                           data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>
@@ -91,27 +93,36 @@
              class="logo">
             <a style="color: white; text-decoration: none" href="/"><h4>Express Delivery</h4></a>
         </div>
-    <ul style="display: flex; width: 30%; justify-content: space-around; margin-top: 10px">
-        <li style="list-style: none">
-            <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-               href="/all-shipments">Shipments</a>
-        </li>
-        <li style="list-style: none">
-            <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-               href="#">Drivers</a>
-        </li>
-        <li style="list-style: none">
-            <div class="dropdown">
-                <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                     class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        <ul style="display: flex; width: 25%; justify-content: space-around; margin-top: 10px">
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Shipments <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="/new-shipments-center">New Shipments</a>
+                        <a href="/accepted-shipments-center">Assigned</a>
+                        <a href="/transit-shipments-center">In transit</a>
+                    </div>
                 </div>
-                <div class="dropdown-content">
-                    <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
-                    <a style="color: red" href="/logout">Log out</a>
+            </li>
+            <li style="list-style: none">
+                <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                   href="/center-drivers">Drivers</a>
+            </li>
+            <li style="list-style: none">
+                <div class="dropdown">
+                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
+                         class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal"
+                           data-target="#settingsModal">Settings</a>
+                        <a style="color: red" href="/logout">Log out</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
     </sec:authorize>
     <sec:authorize access="hasRole('DRIVER')">
         <div style="color: white; text-transform: uppercase; letter-spacing: 3px; font-size: 20px; margin-top: 5px"
@@ -129,7 +140,8 @@
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal" data-target="#settingsModal">Settings</a>
+                        <a class="btn btn-outline-secondary my-2 my-sm-0 logout-btn settings-btn" data-toggle="modal"
+                           data-target="#settingsModal">Settings</a>
                         <a style="color: red" href="/logout">Log out</a>
                     </div>
                 </div>

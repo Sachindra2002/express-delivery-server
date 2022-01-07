@@ -1,6 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.controller.web_controller;
 
 import com.sachindrarodrigo.express_delivery_server.domain.DriverDetail;
+import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
 import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.*;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
@@ -61,6 +62,7 @@ public class AdminWebController {
     public ModelAndView getAllDrivers() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("manage-drivers.jsp");
+        mv.addObject("role", "admin");
         mv.addObject("driver_list", driverService.getAllDrivers());
 
         return mv;
@@ -83,7 +85,7 @@ public class AdminWebController {
     }
 
     @GetMapping("/view-driver")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN , AGENT')")
     public ModelAndView viewDriver(@RequestParam int driverId) throws ExpressDeliveryException {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("view-driver.jsp");
@@ -273,21 +275,25 @@ public class AdminWebController {
 
     @PostMapping("/add-agent")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView addAgent(@Valid @ModelAttribute("user") User user, BindingResult bindingUser, @RequestParam String center, RedirectAttributes redirectAttributes) {
+    public ModelAndView addAgent(@Valid @ModelAttribute("user") User user, BindingResult bindingUser, @RequestParam int center, RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/agents");
         if (bindingUser.hasErrors()) {
             mv.setViewName("add-agent.jsp");
         } else {
             try {
+                ServiceCentre serviceCentre = new ServiceCentre();
+                serviceCentre.setCentreId(center);
+
                 UserDto userDto = new UserDto();
                 userDto.setFirstName(user.getFirstName());
                 userDto.setLastName(user.getLastName());
                 userDto.setEmail(user.getEmail());
                 userDto.setPhoneNumber(user.getPhoneNumber());
                 userDto.setLocation(user.getLocation());
+                userDto.setServiceCentre(serviceCentre);
 
-                agentService.addAgent(userDto, center);
+                agentService.addAgent(userDto);
 
                 redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Agent added successfully"));
                 mv.setViewName("redirect:/agents");

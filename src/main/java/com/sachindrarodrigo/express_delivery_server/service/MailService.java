@@ -122,7 +122,7 @@ public class MailService {
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        ServiceCentre serviceCentre = serviceCenterRepository.findByCityEquals(user.getLocation());
+        ServiceCentre serviceCentre = serviceCenterRepository.findByCityEquals(user.getLocation()); //Error here
 
         return Mail.builder().user(user)
                 .pickupAddress(dto.getPickupAddress())

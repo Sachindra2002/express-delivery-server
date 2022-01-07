@@ -27,6 +27,7 @@ public class AdminController {
     private AdminService adminService;
     private InquiryService inquiryService;
     private DisputeService disputeService;
+    private AgentService agentService;
     private StorageService service;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -81,6 +82,105 @@ public class AdminController {
             driverService.addDriverDetail(userDto.getDriverDetail(), userDto.getEmail(), userDto.getDriverDetail().getVehicle().getVehicleId());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ExpressDeliveryException | MessagingException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/add-agent")
+    public ResponseEntity<Object> addAgent(@RequestBody UserDto userDto) {
+        try {
+            agentService.addAgent(userDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/delete-agent")
+    public ResponseEntity<Object> deleteAgent(@RequestBody UserDto userDto) {
+        try {
+            agentService.deleteAgent(userDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/delete-driver")
+    public ResponseEntity<Object> deleteDriver(@RequestBody UserDto userDto) {
+        try {
+            driverService.removeDriver(userDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/update-center-agent")
+    public ResponseEntity<Object> updateCenterAgent(@RequestBody UserDto userDto) {
+        try {
+            agentService.updateCenterAgent(userDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/vehicles")
+    public ResponseEntity<Object> getAllVehicles() {
+        try {
+            List<VehicleDto> vehicleDtoList = vehicleService.getAllVehicles();
+            return new ResponseEntity<>(vehicleDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/set-vehicle-available")
+    public ResponseEntity<Object> setVehicleAvailable(@RequestBody VehicleDto vehicleDto) {
+        try {
+            vehicleService.setVehicleAvailable(vehicleDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/set-vehicle-unavailable")
+    public ResponseEntity<Object> setVehicleUnavailable(@RequestBody VehicleDto vehicleDto) {
+        try {
+            vehicleService.setVehicleUnAvailable(vehicleDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/set-vehicle-blacklist")
+    public ResponseEntity<Object> setVehicleBlacklist(@RequestBody VehicleDto vehicleDto) {
+        try {
+            vehicleService.setBlacklist(vehicleDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/remove-vehicle-blacklist")
+    public ResponseEntity<Object> removeVehicleBlacklist(@RequestBody VehicleDto vehicleDto) {
+        try {
+            vehicleService.removeBlacklist(vehicleDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }

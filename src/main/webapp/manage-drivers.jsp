@@ -24,11 +24,13 @@
     <div style="float: left">
         <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Drivers</h3>
     </div>
+    <c:if test="${role == 'admin'}">
     <div class="send-package-button" style="float: right">
         <div>
             <a type="button" href="/add-driver">Add Driver</a>
         </div>
     </div>
+    </c:if>
     <div style="margin-top: 120px">
         <div>
             <%

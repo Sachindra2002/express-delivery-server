@@ -67,6 +67,13 @@ public class DriverService {
         vehicleRepository.save(vehicle1);
     }
 
+    public void removeDriver(UserDto userDto) throws ExpressDeliveryException {
+        User user = userRepository.findById(userDto.getEmail()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        DriverDetail driverDetail = driverDetailRepository.findByUserEquals(user);
+        driverDetailRepository.delete(driverDetail);
+        userRepository.delete(user);
+    }
+
     @Transactional
     public DriverDetail getDriverInfo(int driverId) throws ExpressDeliveryException {
         return driverDetailRepository.findById(driverId).orElseThrow(() -> new ExpressDeliveryException("Driver not found"));

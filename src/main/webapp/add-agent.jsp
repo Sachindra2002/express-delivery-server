@@ -80,7 +80,7 @@
                             <select name="center" id="center" class="custom-select"
                                     aria-label="Default select example">
                                 <c:forEach var="center" items="${centers}">
-                                    <option value="${center.getCenter()}">${center.getCenter()}</option>
+                                    <option value="${center.centreId}">${center.getCenter()}</option>
                                 </c:forEach>
                             </select>
                         </div>
