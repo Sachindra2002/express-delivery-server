@@ -21,7 +21,7 @@ public class RegistrationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserDto registerUser(UserDto userDto) throws ExpressDeliveryException {
+    public void registerUser(UserDto userDto) throws ExpressDeliveryException {
 
         Optional<User> existing = userRepository.findById(userDto.getEmail());
 
@@ -34,7 +34,6 @@ public class RegistrationService {
         //save the new user
         userRepository.save(user);
 
-        return userDto;
     }
 
     @Transactional
@@ -65,6 +64,7 @@ public class RegistrationService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .location(userDto.getLocation())
                 .userRole("customer")
+                .isBanned(false)
                 .password(passwordEncoder.encode(userDto.getPassword())).build();
     }
 }

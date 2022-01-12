@@ -139,10 +139,10 @@
 
                         </div>
                     </c:if>
-                    <c:if test="${mail.getStatus() == 'Processing'}">
+                    <c:if test="${mail.status == 'Processing'}">
                         <div>
                             <form method="get" action="/track-parcel">
-                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <input type="hidden" name="mailId" value="${mail.mailId}">
                                 <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
                                 </button>
                             </form>

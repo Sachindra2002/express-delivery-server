@@ -30,7 +30,7 @@ public class AdminController {
     private AgentService agentService;
     private StorageService service;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN, DRIVER')")
     @GetMapping("/get-service-centers")
     public ResponseEntity<Object> getServiceCenters() {
         try {

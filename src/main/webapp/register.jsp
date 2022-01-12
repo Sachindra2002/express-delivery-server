@@ -26,26 +26,26 @@
                 <div class="form-group">
                     <form:label path="email">Enter Email Address</form:label>
                     <form:input type="text" name="email" id="email" class="form-control" placeholder="Email"
-                                path="email" required="required"/>
+                                path="email"/>
                     <form:errors cssStyle="color: red" path="email"/>
                 </div>
                 <div style="color: red">${emailError}</div>
                 <div class="form-group">
                     <form:label for="firstName" path="firstName">Enter First Name</form:label>
                     <form:input type="text" name="firstName" id="firstName" class="form-control"
-                                placeholder="First Name" required="First Name Required" path="firstName"/>
+                                placeholder="First Name" path="firstName"/>
                     <form:errors cssStyle="color: red" path="firstName"/>
                 </div>
                 <div class="form-group">
                     <form:label for="lastName" path="lastName">Enter Last Name</form:label>
                     <form:input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name"
-                                required="last Name Required" path="lastName"/>
+                                path="lastName"/>
                     <form:errors cssStyle="color: red" path="lastName"/>
                 </div>
                 <div class="form-group">
                     <form:label for="city" path="location">Select City</form:label>
                     <form:select name="location" id="city" class="custom-select" aria-label="Default select example"
-                                 required="Location Required" path="location">
+                                 path="location">
                         <option value="Colombo">Colombo</option>
                         <option value="Negombo">Negombo</option>
                         <option value="Galle">Galle</option>
@@ -55,19 +55,19 @@
                 <div class="form-group">
                     <form:label for="phoneNumber" path="phoneNumber">Enter Phone Number</form:label>
                     <form:input type="text" name="phoneNumber" id="phoneNumber" class="form-control"
-                                placeholder="Phone Number" required="Phone Number Required" path="phoneNumber"/>
+                                placeholder="Phone Number" path="phoneNumber"/>
                     <form:errors cssStyle="color: red" path="phoneNumber"/>
                 </div>
                 <div class="form-group">
                     <form:label for="password" path="password">Enter Password</form:label>
                     <form:input type="password" name="password" id="password" class="form-control"
-                                placeholder="Password" required="Password required" path="password"/>
+                                placeholder="Password" path="password"/>
                     <form:errors cssStyle="color: red" path="password"/>
                 </div>
                 <div class="form-group">
                     <form:label for="matchingPassword" path="matchingPassword">Re-Enter Password</form:label>
                     <form:input type="password" name="matchingPassword" id="matchingPassword" class="form-control"
-                           placeholder="Re-Enter Password" required="confinrm password is required" path="matchingPassword"/>
+                                placeholder="Re-Enter Password" path="matchingPassword"/>
                     <p class="errors" style="margin-top: 10px; color: red">${passwordError}</p>
                 </div>
 

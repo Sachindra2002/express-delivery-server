@@ -193,6 +193,58 @@ public class DriverService {
         return list;
     }
 
+    public List<MailDto> getTransitPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "In Transit").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
+    public List<MailDto> getOutForDeliveryPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Out for Delivery").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
+    public List<MailDto> getAllDriverPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findAllByDriverDetail(user.getDriverDetail()).stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
+    public List<MailDto> getDeliveredPackages() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Delivered").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
     public Optional<UserDto> getUserDetails() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -269,6 +321,13 @@ public class DriverService {
         mailRepository.save(mail);
     }
 
+    public void rejectPackage(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Accepted");
+        mail.setDriverDetail(null);
+        mailRepository.save(mail);
+    }
+
     public void startPackage(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mail.setStatus("Delivery Started");
@@ -279,5 +338,38 @@ public class DriverService {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         mail.setStatus("Package picked up");
         mailRepository.save(mail);
+    }
+
+    public void confirmPackageDelivered(int mailId) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Delivered");
+        mailRepository.save(mail);
+    }
+
+    public void transitPackage(MailDto mailDto) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(mail.getServiceCentre().getCentreId()).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
+        mail.setStatus("In Transit");
+        mail.setTransportationStatus("Drop Off");
+        mail.setServiceCentre(serviceCentre);
+        mailRepository.save(mail);
+    }
+
+    public void startDelivery(MailDto mailDto) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        mail.setStatus("Out for Delivery");
+        mailRepository.save(mail);
+    }
+
+    public void updateStatus(UserDto userDto) throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+
+        DriverDetail driverDetail = driverDetailRepository.findByUserEquals(user);
+        driverDetail.setStatus(userDto.getDriverDetail().getStatus());
+        driverDetailRepository.save(driverDetail);
     }
 }

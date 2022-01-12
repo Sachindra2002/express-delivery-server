@@ -11,7 +11,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.List;
-import java.util.Set;
 
 @EqualsAndHashCode(exclude = "mails")
 @ToString(exclude = "mails")
@@ -43,7 +42,8 @@ public class User {
 
     @NotEmpty(message = "Phone number is required")
     @Column(nullable = false, length = 15)
-    @Pattern(regexp="(^$|[0-9]{10})",message = "Incorrect Mobile Number")
+//    @Pattern(regexp="(^$|[0-9]{10})",message = "Incorrect Mobile Number")
+    @Pattern(regexp="(^(?:0|94|\\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\\d)\\d{6}$)?$",message = "*Invalid Mobile Number format")
     private String phoneNumber;
 
     @NotEmpty(message = "Password is required")

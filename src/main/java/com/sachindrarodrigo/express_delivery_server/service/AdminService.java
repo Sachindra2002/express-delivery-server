@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class AdminService {
     private final UserRepository userRepository;
@@ -51,7 +52,6 @@ public class AdminService {
         return _user.getFirstName() + " " + _user.getLastName();
     }
 
-    @Transactional
     public List<MailDto> getAllNewShipmentsAdmin() {
 
         List<MailDto> list = mailRepository.findAll().stream().map(this::mapDto).collect(Collectors.toList());
@@ -71,7 +71,6 @@ public class AdminService {
         return mailRepository.findAllByServiceCentre(serviceCentre).stream().map(this::mapDto).collect(Collectors.toList());
     }
 
-    @Transactional
     public List<UserDto> getAllDrivers() throws ExpressDeliveryException {
 
         return userRepository.findByUserRoleEquals("driver").stream().map(this::mapUsers).collect(Collectors.toList());
@@ -84,7 +83,6 @@ public class AdminService {
         return userRepository.findAllByServiceCentre(serviceCentre).stream().map(this::mapUsers).collect(Collectors.toList());
     }
 
-    @Transactional
     public List<UserDto> getAllAgents() throws ExpressDeliveryException {
 
         return userRepository.findByUserRoleEquals("agent").stream().map(this::mapUsers).collect(Collectors.toList());

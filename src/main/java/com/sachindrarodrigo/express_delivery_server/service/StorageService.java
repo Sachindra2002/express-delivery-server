@@ -14,6 +14,7 @@ import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,7 @@ public class StorageService {
         this.userRepository = userRepository;
     }
 
+    @Async
     public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -50,6 +52,7 @@ public class StorageService {
         return "File uploaded : " + fileName;
     }
 
+    @Async
     public void uploadNicFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
@@ -60,6 +63,7 @@ public class StorageService {
         saveDocument(fileName, fileSize, email, "NIC");
     }
 
+    @Async
     public void uploadLicenceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
@@ -70,7 +74,8 @@ public class StorageService {
         saveDocument(fileName, fileSize, email, "License");
     }
 
-    public void uploadInsuaranceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
+    @Async
+    public void uploadInsuranceFile(MultipartFile file, String email, DocumentsDto dto) throws ExpressDeliveryException {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         Long fileSize = file.getSize();

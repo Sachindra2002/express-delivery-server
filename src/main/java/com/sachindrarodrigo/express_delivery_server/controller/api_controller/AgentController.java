@@ -105,6 +105,17 @@ public class AgentController {
     }
 
     @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/change-driver")
+    public ResponseEntity<Object> changeDriver(@RequestBody MailDto mailDto) {
+        try {
+            agentService.changeDriver(mailDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('AGENT')")
     @GetMapping("/get-driver-documents/{email}")
     public ResponseEntity<Object> getDriverDocuments(@PathVariable String email) {
         try {

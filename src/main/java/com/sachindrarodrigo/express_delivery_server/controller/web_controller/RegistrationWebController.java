@@ -41,6 +41,7 @@ public class RegistrationWebController {
             mv.addObject("passwordError", "Passwords do not match!");
         } else if (!bindingResult.hasErrors()) {
             try {
+
                 registrationService.registerUserWeb(user);
                 redirectAttributes.addFlashAttribute("success", "Successfully Registered");
                 mv.setViewName("redirect:/login");

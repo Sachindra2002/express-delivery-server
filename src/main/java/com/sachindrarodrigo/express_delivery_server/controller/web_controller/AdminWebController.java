@@ -9,6 +9,7 @@ import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryExc
 import com.sachindrarodrigo.express_delivery_server.repository.DriverDetailRepository;
 import com.sachindrarodrigo.express_delivery_server.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,15 +30,18 @@ import java.util.Objects;
 @AllArgsConstructor
 public class AdminWebController {
 
-    private final DriverService driverService;
+    @Autowired
+    private final DriverService driverService; //DriverService class is injected using @Autowired annotation
+
     private final AgentService agentService;
+
     private final ServiceCenterService serviceCenterService;
+
     private final VehicleService vehicleService;
     private final DisputeService disputeService;
     private final InquiryService inquiryService;
     private final StorageService storageService;
     private final MailService mailService;
-    private final AdminService adminService;
     private final CustomerService customerService;
     private final DriverDetailRepository driverDetailRepository;
 
@@ -160,7 +164,7 @@ public class AdminWebController {
 
                 storageService.uploadNicFile(nicImage, user.getEmail(), dto);
                 storageService.uploadLicenceFile(licence, user.getEmail(), dto);
-                storageService.uploadInsuaranceFile(insurance, user.getEmail(), dto);
+                storageService.uploadInsuranceFile(insurance, user.getEmail(), dto);
 
                 redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Driver added successfully"));
                 mv.setViewName("redirect:/drivers");
@@ -187,7 +191,7 @@ public class AdminWebController {
 
             storageService.uploadNicFile(nicImage, driverDetail.getUser().getEmail(), dto);
             storageService.uploadLicenceFile(licence, driverDetail.getUser().getEmail(), dto);
-            storageService.uploadInsuaranceFile(insurance, driverDetail.getUser().getEmail(), dto);
+            storageService.uploadInsuranceFile(insurance, driverDetail.getUser().getEmail(), dto);
             redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Documents uploaded successfully"));
             redirectAttributes.addAttribute("driverId", driverId);
             mv.setViewName("redirect:/view-driver");

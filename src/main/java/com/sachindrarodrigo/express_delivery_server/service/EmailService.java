@@ -3,6 +3,7 @@ package com.sachindrarodrigo.express_delivery_server.service;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -14,6 +15,7 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
+    @Async
     public void sendSimpleMessage(String email, String body) throws MessagingException {
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();

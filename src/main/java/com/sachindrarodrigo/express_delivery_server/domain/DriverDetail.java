@@ -40,6 +40,7 @@ public class DriverDetail {
 
     @NotEmpty(message = "NIC cannot be empty")
     @Column(length = 15, unique = true, nullable = false)
+    @Pattern(regexp="(^([0-9]{9}[x|X|v|V]|[0-9]{12}))",message = "Incorrect NIC Number")
     private String NIC;
 
     @NotEmpty(message = "Date of birth cannot be empty")
