@@ -28,7 +28,7 @@ public class AgentWebController {
 
     @PostMapping("/accept-parcel")
     @PreAuthorize("hasRole('AGENT')")
-    public ModelAndView cancelParcel(@RequestParam int mailId, RedirectAttributes redirectAttributes) throws ExpressDeliveryException {
+    public ModelAndView acceptParcel(@RequestParam int mailId, RedirectAttributes redirectAttributes) throws ExpressDeliveryException {
         ModelAndView mv = new ModelAndView();
         agentService.acceptParcel(mailId);
         redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Package Accepted Successfully"));

@@ -46,12 +46,14 @@
                             <form:input class="form-control select-filter" name="email"
                                         id="email" path="email"/>
                             <form:errors cssStyle="color: red" path="email"/>
+                            <p style="color: red">${emailError}</p>
                         </div>
                         <div class="col">
                             <form:label for="phoneNumber" path="phoneNumber">Driver Phone Number</form:label>
                             <form:input class="form-control select-filter" name="phone"
                                         id="phone" path="phoneNumber"/>
                             <form:errors cssStyle="color: red" path="phoneNumber"/>
+                            <p style="color: red">${phoneError}</p>
                         </div>
                     </div>
                     <div class="form-row">
@@ -99,6 +101,8 @@
                                 <form:input class="form-control select-filter" name="nic"
                                             id="nic" maxlength="12" path="NIC"/>
                                 <form:errors cssStyle="color: red" path="NIC"/>
+                                <p style="color: red">${nicError}</p>
+                                <p style="color: red">${error}</p>
                             </div>
                         </div>
                         <div class="form-row">

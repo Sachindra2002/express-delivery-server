@@ -129,10 +129,10 @@
              class="logo">
             <a style="color: white; text-decoration: none" href="/"><h4>Express Delivery</h4></a>
         </div>
-        <ul style="display: flex; width: 30%; justify-content: space-around; margin-top: 10px">
+        <ul style="display: flex; width: 20%; justify-content: space-around; margin-top: 10px">
             <li style="list-style: none">
                 <a style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                   href="#">Shipments</a>
+                   href="/past-shipments">Past Shipments</a>
             </li>
             <li style="list-style: none">
                 <div class="dropdown">

@@ -90,11 +90,11 @@
                                             <input type="hidden" name="email" value="${agent.email}">
                                             <div class="form-row" style="margin-top: 20px">
                                                 <div class="col">
-                                                    <label for="center">Assign Service Center</label>
-                                                    <select name="center" id="center" class="custom-select"
+                                                    <label for="centerId">Assign Service Center</label>
+                                                    <select name="centerId" id="centerId" class="custom-select"
                                                             aria-label="Default select example">
                                                         <c:forEach var="center" items="${centers}">
-                                                            <option value="${center.center}">${center.center}</option>
+                                                            <option value="${center.centreId}">${center.center}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>

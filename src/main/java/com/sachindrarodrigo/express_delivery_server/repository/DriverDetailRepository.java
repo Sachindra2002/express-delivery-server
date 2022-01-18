@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DriverDetailRepository extends JpaRepository<DriverDetail, Integer> {
@@ -14,4 +15,6 @@ public interface DriverDetailRepository extends JpaRepository<DriverDetail, Inte
     List<DriverDetail> findByStatusAndUserServiceCentre(String status, ServiceCentre serviceCentre);
 
     DriverDetail findByUserEquals(User user);
+
+    Optional<DriverDetail> findByNICEquals(String nic);
 }

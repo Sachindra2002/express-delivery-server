@@ -68,7 +68,7 @@ public class User {
     private DriverDetail driverDetail;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", orphanRemoval = true ,fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Documents> documents;
 
     @JsonIgnore

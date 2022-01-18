@@ -24,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -98,7 +100,7 @@ public class AdminWebController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/add-driver")
+    @GetMapping("/add-driver-web")
     public ModelAndView addDriver() {
         ModelAndView mv = new ModelAndView();
         DriverDetail driverDetail = new DriverDetail();
@@ -136,12 +138,17 @@ public class AdminWebController {
                                   @RequestParam(value = "licence") MultipartFile licence, @RequestParam(value = "insurance") MultipartFile insurance,
                                   RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView();
+        Pattern p = Pattern.compile("^([0-9]{9}[x|X|v|V]|[0-9]{12})$");
+        Matcher matcher = p.matcher(NIC);
         if (bindingUser.hasErrors()) {
             mv.setViewName("add-driver.jsp");
             System.out.println("errors" + bindingUser.hasErrors() + bindingUser.getAllErrors());
         } else if (bindingDriver.hasErrors()) {
             mv.setViewName("add-driver.jsp");
             System.out.println("errors" + bindingDriver.hasErrors() + bindingDriver.getAllErrors());
+        } else if (!matcher.find()) {
+            mv.setViewName("redirect:/add-driver-web");
+            redirectAttributes.addFlashAttribute("error", "NIC is not valid");
         } else {
             try {
 
@@ -171,7 +178,19 @@ public class AdminWebController {
 
 
             } catch (ExpressDeliveryException | MessagingException e) {
-                mv.addObject("error", new APIException(e.getMessage()));
+                if (Objects.equals(e.getMessage(), "Email already in use")) {
+                    mv.setViewName("redirect:/add-driver-web");
+                    redirectAttributes.addFlashAttribute("emailError", "Email already in use");
+                } else if (Objects.equals(e.getMessage(), "NIC already exists")) {
+                    mv.setViewName("redirect:/add-driver-web");
+                    redirectAttributes.addFlashAttribute("nicError", "NIC already exists");
+                } else if (Objects.equals(e.getMessage(), "Phone number already exists")) {
+                    mv.setViewName("redirect:/add-driver-web");
+                    redirectAttributes.addFlashAttribute("phoneError", "Phone number already exists");
+                } else {
+                    mv.setViewName("redirect:/add-driver-web");
+                    redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+                }
             }
         }
         return mv;
@@ -639,6 +658,47 @@ public class AdminWebController {
 
         return mv;
 
+    }
+
+    @PostMapping("/update-center-agent")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView updateCenterAgent(@RequestParam int centerId, @RequestParam String email, RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        try {
+            ServiceCentre serviceCentre = new ServiceCentre();
+            serviceCentre.setCentreId(centerId);
+
+            UserDto userDto = new UserDto();
+            userDto.setEmail(email);
+            userDto.setServiceCentre(serviceCentre);
+
+            agentService.updateCenterAgent(userDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Agent service center updated successfully"));
+            mv.setViewName("redirect:/agents");
+        } catch (ExpressDeliveryException e) {
+            mv.setViewName("redirect:/agents");
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+        }
+        return mv;
+    }
+
+    @PostMapping("/remove-driver")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView deleteDriver(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        try {
+            UserDto userDto = new UserDto();
+            userDto.setEmail(email);
+
+            driverService.removeDriver(userDto);
+            redirectAttributes.addFlashAttribute("success", new SimpleMessageDto("Driver removed successfully"));
+            mv.setViewName("redirect:/drivers");
+        } catch (ExpressDeliveryException e) {
+            redirectAttributes.addFlashAttribute("error", new APIException(e.getMessage()));
+            mv.setViewName("redirect:/drivers");
+        }
+
+        return mv;
     }
 
 }

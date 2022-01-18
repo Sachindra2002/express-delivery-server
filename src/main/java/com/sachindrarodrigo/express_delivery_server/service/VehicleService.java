@@ -6,12 +6,15 @@ import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryExc
 import com.sachindrarodrigo.express_delivery_server.repository.VehicleRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -19,7 +22,7 @@ public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
 
-    public void addVehicle(VehicleDto vehicleDto) throws ExpressDeliveryException {
+    public VehicleDto addVehicle(VehicleDto vehicleDto) throws ExpressDeliveryException {
         Optional<Vehicle> existing = vehicleRepository.findByVehicleNumberEquals(vehicleDto.getVehicleNumber());
 
         if (existing.isPresent()) {
@@ -28,6 +31,9 @@ public class VehicleService {
 
         Vehicle vehicle = map(vehicleDto);
         vehicleRepository.save(vehicle);
+        VehicleDto dto = new VehicleDto();
+        dto.setVehicleId(vehicle.getVehicleId());
+        return dto;
     }
 
     private Vehicle map(VehicleDto vehicleDto) {
@@ -37,36 +43,44 @@ public class VehicleService {
                 .status("available").build();
     }
 
-    public void deleteVehicle(VehicleDto vehicleDto){
-        vehicleRepository.deleteById(vehicleDto.getVehicleId());
+    public void deleteVehicle(VehicleDto vehicleDto) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressionException("Vehicle not found"));
+        vehicleRepository.delete(vehicle);
+//        vehicleRepository.deleteById(vehicleDto.getVehicleId());
     }
 
-    public void setBlacklist(VehicleDto vehicleDto) throws ExpressDeliveryException {
+    public VehicleDto setBlacklist(VehicleDto vehicleDto) throws ExpressDeliveryException {
         Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
 
         vehicle.setStatus("Blacklisted");
         vehicleRepository.save(vehicle);
+        return vehicleDto;
     }
 
-    public void removeBlacklist(VehicleDto vehicleDto) throws ExpressDeliveryException {
+    public VehicleDto removeBlacklist(VehicleDto vehicleDto) throws ExpressDeliveryException {
         Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
 
         vehicle.setStatus("available");
         vehicleRepository.save(vehicle);
+        return vehicleDto;
     }
 
-    public void setVehicleAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
+    public VehicleDto setVehicleAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
         Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
 
         vehicle.setStatus("available");
         vehicleRepository.save(vehicle);
+        return vehicleDto;
     }
 
-    public void setVehicleUnAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
+    public VehicleDto setVehicleUnAvailable(VehicleDto vehicleDto) throws ExpressDeliveryException {
         Vehicle vehicle = vehicleRepository.findById(vehicleDto.getVehicleId()).orElseThrow(() -> new ExpressDeliveryException("Vehicle Not found!"));
 
         vehicle.setStatus("taken");
         vehicleRepository.save(vehicle);
+        VehicleDto dto = new VehicleDto();
+        dto.setVehicleId(vehicle.getVehicleId());
+        return dto;
     }
 
     public List<VehicleDto> getAvailableVehicles() {

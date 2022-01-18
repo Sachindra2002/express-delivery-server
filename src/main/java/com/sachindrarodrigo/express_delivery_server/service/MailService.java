@@ -31,10 +31,11 @@ public class MailService {
     private final ServiceCenterRepository serviceCenterRepository;
 
     @Transactional
-    public void sendMail(MailDto dto) throws ExpressDeliveryException {
+    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
+        System.out.println(auth.getName());
         User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
 
         if (user.getIsBanned()) {
@@ -44,6 +45,10 @@ public class MailService {
         Mail mail = map(dto);
         mailRepository.save(mail);
         createTracking(mail.getMailId());
+
+        MailDto mailDto = new MailDto();
+        mailDto.setMailId(mail.getMailId());
+        return mailDto;
     }
 
     public void createTracking(int mailId) throws ExpressDeliveryException {
@@ -54,7 +59,7 @@ public class MailService {
                 .build());
     }
 
-    public void cancelParcel(int mailId) throws ExpressDeliveryException {
+    public MailDto cancelParcel(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
         MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         mailTracking.setStatus2("Order cancelled successfully");
@@ -62,6 +67,9 @@ public class MailService {
         mail.setStatus("Cancelled");
         mailTrackingRepository.save(mailTracking);
         mailRepository.save(mail);
+        MailDto mailDto = new MailDto();
+        mailDto.setMailId(mail.getMailId());
+        return mailDto;
     }
 
     public List<MailDto> getAllRecentUpcomingPackages() throws ExpressDeliveryException {

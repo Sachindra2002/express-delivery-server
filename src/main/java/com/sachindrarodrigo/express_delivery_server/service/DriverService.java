@@ -1,11 +1,13 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.*;
+import com.sachindrarodrigo.express_delivery_server.dto.DocumentsDto;
 import com.sachindrarodrigo.express_delivery_server.dto.DriverDetailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.*;
+import jdk.jfr.Event;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -14,11 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +28,7 @@ public class DriverService {
 
     private final UserRepository userRepository;
     private final DriverDetailRepository driverDetailRepository;
+    private final DocumentsRepository documentsRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailRepository mailRepository;
     private final ServiceCenterRepository serviceCenterRepository;
@@ -70,6 +71,13 @@ public class DriverService {
     public void removeDriver(UserDto userDto) throws ExpressDeliveryException {
         User user = userRepository.findById(userDto.getEmail()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
         DriverDetail driverDetail = driverDetailRepository.findByUserEquals(user);
+
+        List<MailDto> mailDto = mailRepository.findAllByDriverDetail(driverDetail).stream().map(this::mapDto).collect(Collectors.toList());
+
+        if(mailDto.size() > 0){
+            throw new ExpressDeliveryException("Driver has ongoing shipments");
+        }
+
         driverDetailRepository.delete(driverDetail);
         userRepository.delete(user);
     }
@@ -107,7 +115,7 @@ public class DriverService {
     }
 
     @Transactional
-    public void addDriver(UserDto dto, int centerId) throws ExpressDeliveryException, MessagingException {
+    public UserDto addDriver(UserDto dto, int centerId) throws ExpressDeliveryException, MessagingException {
 
         Optional<User> existing = userRepository.findById(dto.getEmail());
 
@@ -115,23 +123,58 @@ public class DriverService {
             throw new ExpressDeliveryException("Email already in use");
         }
 
+        if (isPhoneExist(dto)) {
+            throw new ExpressDeliveryException("Phone number already exists");
+        }
+
         User user = map(dto, centerId);
         emailService.sendSimpleMessage(dto.getEmail(), "Driver account registered, password is the email");
         userRepository.save(user);
 
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        return userDto;
+    }
+
+    private boolean isPhoneExist(UserDto dto) {
+        Optional<User> existing = userRepository.findByPhoneNumberEquals(dto.getPhoneNumber());
+
+        return existing.isPresent();
+    }
+
+    private boolean nicExists(DriverDetailDto dto) {
+        Optional<DriverDetail> existing = driverDetailRepository.findByNICEquals(dto.getNIC());
+
+        return existing.isPresent();
     }
 
     @Transactional
-    public void addDriverDetails(DriverDetailDto driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
+    public DriverDetailDto addDriverDetails(DriverDetailDto driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
         DriverDetail driver = mapDriverDetail(driverDetailDto, email, vehicleId);
+        if (nicExists(driverDetailDto)) {
+            throw new ExpressDeliveryException("NIC already exists");
+        }
         driverDetailRepository.save(driver);
 
+        DriverDetailDto dto = new DriverDetailDto();
+        dto.setDriverId(driver.getDriverId());
+        return dto;
     }
 
     @Transactional
     public void addDriverDetail(DriverDetail driverDetailDto, String email, int vehicleId) throws ExpressDeliveryException {
         DriverDetail driver = mapDriverDetails(driverDetailDto, email, vehicleId);
+
+        if (nicExists1(driverDetailDto)) {
+            throw new ExpressDeliveryException("NIC already exists");
+        }
         driverDetailRepository.save(driver);
+    }
+
+    private boolean nicExists1(DriverDetail driverDetailDto) {
+        Optional<DriverDetail> existing = driverDetailRepository.findByNICEquals(driverDetailDto.getNIC());
+
+        return existing.isPresent();
     }
 
 
@@ -232,6 +275,19 @@ public class DriverService {
         return list;
     }
 
+    public List<MailDto> getAllDeliveredShipments() throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+        List<MailDto> list = mailRepository.findByDriverDetailAndStatusEquals(user.getDriverDetail(), "Delivered").stream().map(this::mapDto).collect(Collectors.toList());
+
+        Collections.reverse(list);
+
+        return list;
+    }
+
     public List<MailDto> getDeliveredPackages() throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -313,6 +369,10 @@ public class DriverService {
                 mail.getReceiverPhoneNumber(), mail.getReceiverEmail(), mail.getReceiverCity(), mail.getParcelType(), mail.getWeight(),
                 mail.getPieces(), mail.getPaymentMethod(), mail.getDate(), mail.getTime(), mail.getTotalCost(), mail.getStatus(), mail.getDescription(),
                 mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(), mail.getServiceCentre(), mail.getDropOffDate(), mail.getCreatedAt());
+    }
+
+    private DocumentsDto mapDocuments(Documents documents){
+        return new DocumentsDto(documents.getDocumentId(), documents.getDescription(), documents.getFileName(), documents.getFileSize(), documents.getUser());
     }
 
     public void acceptPackage(int mailId) throws ExpressDeliveryException {

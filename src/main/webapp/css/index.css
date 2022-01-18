@@ -133,3 +133,13 @@ body {
 .card:hover{
     cursor: pointer;
 }
+
+.driver-scroll{
+    border: 2px solid black;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: auto;
+    height: auto;
+    overflow-y: hidden;
+}

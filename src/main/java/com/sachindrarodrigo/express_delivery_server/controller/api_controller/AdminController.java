@@ -56,7 +56,7 @@ public class AdminController {
     @GetMapping("/get-inquiries")
     public ResponseEntity<Object> getAllInquiries() {
         try {
-            List<InquiryDto> inquiryDtoList = inquiryService.getEveryInquiries();
+            List<InquiryDto> inquiryDtoList = inquiryService.getAllInquiries();
             return new ResponseEntity<>(inquiryDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class AdminController {
     @GetMapping("/get-disputes")
     public ResponseEntity<Object> getAllDisputes() {
         try {
-            List<DisputeDto> disputeDtoList = disputeService.getEveryDispute();
+            List<DisputeDto> disputeDtoList = disputeService.getAllDisputes();
             return new ResponseEntity<>(disputeDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);

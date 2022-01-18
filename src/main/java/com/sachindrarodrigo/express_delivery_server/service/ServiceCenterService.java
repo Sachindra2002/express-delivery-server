@@ -1,7 +1,6 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.ServiceCentre;
-import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.ServiceCenterDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.ServiceCenterRepository;
@@ -26,16 +25,21 @@ public class ServiceCenterService {
         return serviceCenterRepository.findById(serviceCenterDto.getCentreId()).map(this::mapDto2).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
     }
 
-    public void addServiceCenter(ServiceCenterDto serviceCenterDto) throws ExpressDeliveryException {
+    public ServiceCenterDto addServiceCenter(ServiceCenterDto serviceCenterDto) throws ExpressDeliveryException {
         Optional<ServiceCentre> existing = Optional.ofNullable(serviceCenterRepository.findByCenterEquals(serviceCenterDto.getCenter()));
 
         if (existing.isPresent()) {
             throw new ExpressDeliveryException("Center Name already exists");
         }
 
-        serviceCenterRepository.save(ServiceCentre.builder().address(serviceCenterDto.getAddress())
+        ServiceCentre serviceCentre = serviceCenterRepository.save(ServiceCentre.builder().address(serviceCenterDto.getAddress())
                 .city(serviceCenterDto.getCity())
                 .center(serviceCenterDto.getCenter()).build());
+
+
+        ServiceCenterDto centerDto = new ServiceCenterDto();
+        centerDto.setCentreId(serviceCentre.getCentreId());
+        return centerDto;
     }
 
     public void removeServiceCenter(ServiceCenterDto serviceCenterDto) throws ExpressDeliveryException {

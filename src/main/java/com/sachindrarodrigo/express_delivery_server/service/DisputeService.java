@@ -1,20 +1,14 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
 import com.sachindrarodrigo.express_delivery_server.domain.Dispute;
-import com.sachindrarodrigo.express_delivery_server.domain.Inquiry;
 import com.sachindrarodrigo.express_delivery_server.domain.Mail;
-import com.sachindrarodrigo.express_delivery_server.domain.User;
 import com.sachindrarodrigo.express_delivery_server.dto.DisputeDto;
-import com.sachindrarodrigo.express_delivery_server.dto.InquiryDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.DisputeRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.MailRepository;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +33,13 @@ public class DisputeService {
         return disputeRepository.findAll().stream().map(this::mapDisputes).collect(Collectors.toList());
     }
 
-    public void openDispute(DisputeDto disputeDto, int mailId) throws ExpressDeliveryException {
+    public DisputeDto openDispute(DisputeDto disputeDto, int mailId) throws ExpressDeliveryException {
         Dispute dispute = map(disputeDto, mailId);
         disputeRepository.save(dispute);
+
+        DisputeDto dto = new DisputeDto();
+        dto.setDisputeId(dispute.getDisputeId());
+        return dto;
     }
 
     public void respondDispute(DisputeDto disputeDto) throws ExpressDeliveryException {

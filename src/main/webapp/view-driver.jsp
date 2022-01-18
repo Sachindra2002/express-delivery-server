@@ -25,6 +25,9 @@
     <div style="float: right; margin-right: 20px">
         <button type="button" class="btn btn-warning" style="font-size: 20px; " data-toggle="modal" data-target="#openEditDetailsModal${driver.driverId}">Edit Driver Details</button>
     </div>
+    <div style="float: right; margin-right: 20px">
+        <button type="button" class="btn btn-danger" style="font-size: 20px; " data-toggle="modal" data-target="#openRemoveDriverModal${driver.user.phoneNumber}">Remove Driver</button>
+    </div>
     <c:if test="${driver.user.documents.size() == 0}">
         <div style="float: right; margin-right: 20px">
             <button type="button" class="btn btn-warning" style="font-size: 20px; " data-toggle="modal" data-target="#openUploadDocumentsModal${driver.driverId}">Upload driver documents</button>
@@ -186,6 +189,7 @@
         </div>
     </div>
 </div>
+<%@ include file="modals/remove-driver.jsp" %>
 <%@ include file="modals/edit-driver-details.jsp" %>
 <%@ include file="modals/upload-driver-documents.jsp" %>
 <%@ include file="modals/update-driver-phone-number.jsp" %>

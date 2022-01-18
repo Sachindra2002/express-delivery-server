@@ -21,7 +21,7 @@ import java.util.Set;
 public class ServiceCentre {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true, length = 45)
     private int centreId;
 
@@ -36,11 +36,11 @@ public class ServiceCentre {
     private String address;
 
     @JsonBackReference(value = "user-center")
-    @OneToMany(mappedBy = "serviceCentre")
+    @OneToMany(mappedBy = "serviceCentre", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<User> users;
 
     @JsonBackReference(value = "center")
-    @OneToMany(mappedBy = "serviceCentre")
+    @OneToMany(mappedBy = "serviceCentre", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Mail> mailList;
 
 }

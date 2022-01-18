@@ -98,7 +98,7 @@ public class AgentController {
     public ResponseEntity<Object> assignDriver(@RequestBody MailDto dto) {
         try {
             agentService.assignDriver(dto.getMailId(), dto.getDriverDetail().getDriverId(), dto.getDropOffDate());
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }

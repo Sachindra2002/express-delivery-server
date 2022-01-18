@@ -5,7 +5,6 @@ import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +25,16 @@ public class CustomerService {
         return userRepository.findById(userDto.getEmail()).map(this::mapUsers2).orElseThrow(() -> new ExpressDeliveryException("User not found"));
     }
 
-    public void toggleBlacklist(UserDto userDto) throws ExpressDeliveryException {
+    public UserDto toggleBlacklist(UserDto userDto) throws ExpressDeliveryException {
         User user = userRepository.findById(userDto.getEmail()).orElseThrow(() -> new ExpressDeliveryException("User not found"));
 
         user.setIsBanned(!user.getIsBanned());
 
         userRepository.save(user);
 
+        UserDto dto = new UserDto();
+        dto.setEmail(user.getEmail());
+        return dto;
     }
 
     //Method to map data transfer object to domain class

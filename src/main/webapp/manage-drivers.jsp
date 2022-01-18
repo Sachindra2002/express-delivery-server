@@ -21,13 +21,14 @@
         <jsp:param name="page" value="home"/>
     </jsp:include>
     <%@ include file="utils/success_alert.jsp" %>
+    <%@ include file="utils/error_alert.jsp" %>
     <div style="float: left">
         <h3 style="padding: 20px 30px 20px 30px; color: grey">Manage Drivers</h3>
     </div>
     <c:if test="${role == 'admin'}">
     <div class="send-package-button" style="float: right">
         <div>
-            <a type="button" href="/add-driver">Add Driver</a>
+            <a type="button" href="/add-driver-web">Add Driver</a>
         </div>
     </div>
     </c:if>

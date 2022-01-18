@@ -25,6 +25,7 @@ public class UserWebController {
     DriverService driverService;
     DocumentsService documentsService;
     private final AuthService authService;
+    private final ServiceCenterService serviceCenterService;
 
     @GetMapping("/login")
     public ModelAndView login(String error) {
@@ -99,6 +100,11 @@ public class UserWebController {
         mv.setViewName("/home_driver.jsp");
         mv.addObject("assigned_packages", driverService.getAllAssignedPackages());
         mv.addObject("accepted_packages", driverService.getAllAcceptedPackages());
+        mv.addObject("started_packages", driverService.getAllStartedPackages());
+        mv.addObject("picked_up_packages", driverService.getPickedUpPackages());
+        mv.addObject("in_transit_packages", driverService.getTransitPackages());
+        mv.addObject("out_for_delivery_packages", driverService.getOutForDeliveryPackages());
+        mv.addObject("center_list", serviceCenterService.getAllServiceCenters());
         try {
             mv.addObject("name", driverService.getName());
         } catch (ExpressDeliveryException e) {
