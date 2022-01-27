@@ -191,7 +191,7 @@ public class DriverController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER, CUSTOMER')")
     public ResponseEntity<Object> getUser() {
         try {
             Optional<UserDto> user = driverService.getUserDetails();

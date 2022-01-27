@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,7 +37,7 @@ public class MailServiceTests {
     @Test
     @Order(1)
     @WithCustomUser()
-    public void testSendMail() throws ExpressDeliveryException {
+    public void testSendMail() throws ExpressDeliveryException, MessagingException {
         MailDto mailDto = new MailDto();
         mailDto.setPickupAddress("TestPickUpAddress");
         mailDto.setReceiverAddress("TestReceiverAddress");

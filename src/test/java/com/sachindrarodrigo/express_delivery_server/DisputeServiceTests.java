@@ -10,6 +10,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.mail.MessagingException;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -34,7 +36,7 @@ public class DisputeServiceTests {
     }
 
     @WithCustomUser
-    public void testSendMail() throws ExpressDeliveryException {
+    public void testSendMail() throws ExpressDeliveryException, MessagingException {
         MailDto mailDto = new MailDto();
         mailDto.setPickupAddress("TestPickUpAddress");
         mailDto.setReceiverAddress("TestReceiverAddress");
@@ -59,7 +61,7 @@ public class DisputeServiceTests {
 
     @Test
     @Order(1)
-    public void testAddDispute() throws ExpressDeliveryException {
+    public void testAddDispute() throws ExpressDeliveryException, MessagingException {
         testSendMail();
 
         DisputeDto disputeDto = new DisputeDto();

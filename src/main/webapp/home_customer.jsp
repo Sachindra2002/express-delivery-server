@@ -45,11 +45,6 @@
 <div>
     <div class="send-package-button" style="float: right">
         <div>
-            <a type="button" data-toggle="modal" data-target="#openDisputeModal">Track Package</a>
-        </div>
-    </div>
-    <div class="send-package-button" style="float: right">
-        <div>
             <a type="button" style="text-decoration: none" href="/send-package">Send a Package</a>
         </div>
     </div>
@@ -107,6 +102,10 @@
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
                         <c:if test="${mail.getStatus() == 'Delivered'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
+                        <c:if test="${mail.getStatus() == 'In Transit'}">
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
@@ -220,6 +219,15 @@
                             </form>
                         </div>
                     </c:if>
+                    <c:if test="${mail.getStatus() == 'In Transit'}">
+                        <div>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
                     <div class="card-header" style="border-radius: 10px">
                         <p class="card-text" style="float: right; font-weight: bold; margin-top: 5px">
                             #${mail.getMailId()}</p>
@@ -303,6 +311,10 @@
                             <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
                                   class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
                         </c:if>
+                        <c:if test="${mail.getStatus() == 'In Transit'}">
+                            <span style="float: right; font-size: 15px; margin-left: 30px; background-color: orange; color: white"
+                                  class="badge badge-pill badge-success">${mail.getStatus()}</span><br/><br/>
+                        </c:if>
                         <p style="font-weight: bold" class="card-text">Address : <span
                                 style="font-weight: normal">${mail.getReceiverAddress()} [${mail.getReceiverCity()}]</span>
                         </p>
@@ -320,8 +332,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Package picked up'}">
@@ -329,8 +344,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Driver Accepted'}">
@@ -338,8 +356,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Delivery Started'}">
@@ -347,8 +368,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Rejected'}">
@@ -356,8 +380,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Accepted'}">
@@ -365,8 +392,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Assigned'}">
@@ -374,8 +404,11 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <c:if test="${mail.getStatus() == 'Shipped'}">
@@ -383,19 +416,22 @@
                             <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
                                     data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
-                    <c:if test="${mail.getStatus() == 'Cancelled'}">
-                        <div>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
-                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
-                            </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
-                            </button>
-                        </div>
-                    </c:if>
+<%--                    <c:if test="${mail.getStatus() == 'Cancelled'}">--%>
+<%--                        <div>--%>
+<%--                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"--%>
+<%--                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute--%>
+<%--                            </button>--%>
+<%--                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel--%>
+<%--                            </button>--%>
+<%--                        </div>--%>
+<%--                    </c:if>--%>
                     <c:if test="${mail.getStatus() == 'Processing'}">
                         <div>
                             <button style="float: right; margin: 10px" type="button" class="btn btn-warning"
@@ -404,8 +440,23 @@
                                     style="color: black; margin-right: 10px" class="fa fa-exclamation-circle"
                                     aria-hidden="true"></i> Cancel
                             </button>
-                            <button style="float: right; margin: 10px" type="button" class="btn btn-primary">Track Parcel
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:if test="${mail.getStatus() == 'Delivered'}">
+                        <div>
+                            <button style="float: right; margin: 10px" type="button" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#openDisputeModal${mail.mailId}">Open Dispute
                             </button>
+                            <form method="get" action="/track-parcel">
+                                <input type="hidden" name="mailId" value="${mail.getMailId()}">
+                                <button style="float: right; margin: 10px" type="submit" class="btn btn-primary">Track Parcel
+                                </button>
+                            </form>
                         </div>
                     </c:if>
                     <div class="card-header" style="border-radius: 10px">

@@ -1,5 +1,7 @@
 package com.sachindrarodrigo.express_delivery_server.service;
 
+import com.sachindrarodrigo.express_delivery_server.domain.User;
+import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,7 +18,7 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
     @Async
-    public void sendSimpleMessage(String email, String body) throws MessagingException {
+    public void sendPackageReceipt(MailDto mailDto, User user) throws MessagingException {
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -56,21 +58,22 @@ public class EmailService {
                 "    </style>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
-                "    <h2>Creation of Driver account</h2>\n" +
+                "    <h2>" + "Package Receipt" + mailDto.getMailId() +"</h2>\n" +
                 "\n" +
                 "    <table>\n" +
                 "      <tr>\n" +
                 "        <th>Body</th>\n" +
-                "        <td>"+body+"</td>\n" +
+                "        <td>" + "Total Cost" +mailDto.getTotalCost() + "</td>\n" +
                 "      </tr>\n" +
                 "    </table>\n" +
                 "  </body>\n" +
                 "</html>";
+
         try {
 
             // Set other attributes
             helper.setText(htmlMsg, true); // Use this or above line.
-            helper.setTo(email);
+            helper.setTo(user.getEmail());
             helper.setSubject("Express Delivery Notification Service");
             helper.setFrom("doorstepdeliverieslk@gmail.com");
         } catch (MessagingException e) {

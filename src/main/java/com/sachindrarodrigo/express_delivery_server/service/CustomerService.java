@@ -5,10 +5,12 @@ import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,17 @@ public class CustomerService {
 
     public UserDto getCustomer(UserDto userDto) throws ExpressDeliveryException {
         return userRepository.findById(userDto.getEmail()).map(this::mapUsers2).orElseThrow(() -> new ExpressDeliveryException("User not found"));
+    }
+
+    public void updatePhoneNumber(UserDto userDto) throws ExpressDeliveryException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Find user from database
+        Optional<User> userOptional = userRepository.findById(auth.getName());
+        User user = userOptional.orElseThrow(() -> new ExpressDeliveryException("User not found"));
+
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        userRepository.save(user);
     }
 
     public UserDto toggleBlacklist(UserDto userDto) throws ExpressDeliveryException {

@@ -7,7 +7,6 @@ import com.sachindrarodrigo.express_delivery_server.dto.MailDto;
 import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
 import com.sachindrarodrigo.express_delivery_server.repository.*;
-import jdk.jfr.Event;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -16,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +33,7 @@ public class DriverService {
     private final ServiceCenterRepository serviceCenterRepository;
     private final VehicleRepository vehicleRepository;
     private final EmailService emailService;
+    private final MailTrackingRepository mailTrackingRepository;
 
     public String getName() throws ExpressDeliveryException {
         //User object from security context holder to obtain current user
@@ -74,7 +74,7 @@ public class DriverService {
 
         List<MailDto> mailDto = mailRepository.findAllByDriverDetail(driverDetail).stream().map(this::mapDto).collect(Collectors.toList());
 
-        if(mailDto.size() > 0){
+        if (mailDto.size() > 0) {
             throw new ExpressDeliveryException("Driver has ongoing shipments");
         }
 
@@ -128,7 +128,7 @@ public class DriverService {
         }
 
         User user = map(dto, centerId);
-        emailService.sendSimpleMessage(dto.getEmail(), "Driver account registered, password is the email");
+//        emailService.sendSimpleMessage(dto.getEmail(), "Driver account registered, password is the email");
         userRepository.save(user);
 
         UserDto userDto = new UserDto();
@@ -371,7 +371,7 @@ public class DriverService {
                 mail.getUser(), mail.getMailTracking(), mail.getDriverDetail(), mail.getTransportationStatus(), mail.getServiceCentre(), mail.getDropOffDate(), mail.getCreatedAt());
     }
 
-    private DocumentsDto mapDocuments(Documents documents){
+    private DocumentsDto mapDocuments(Documents documents) {
         return new DocumentsDto(documents.getDocumentId(), documents.getDescription(), documents.getFileName(), documents.getFileSize(), documents.getUser());
     }
 
@@ -390,35 +390,55 @@ public class DriverService {
 
     public void startPackage(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         mail.setStatus("Delivery Started");
+        mailTracking.setStatus4("Driver on the way to pickup package");
+        mailTracking.setStatus4Date(Date.from(Instant.now()));
         mailRepository.save(mail);
+        mailTrackingRepository.save(mailTracking);
     }
 
     public void confirmPickupPackage(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         mail.setStatus("Package picked up");
+        mailTracking.setStatus5("Driver has picked up package");
+        mailTracking.setStatus5Date(Date.from(Instant.now()));
         mailRepository.save(mail);
+        mailTrackingRepository.save(mailTracking);
     }
 
     public void confirmPackageDelivered(int mailId) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailId).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
+        mailTracking.setStatus8("Package delivered - Thank you for using Express Delivery");
+        mailTracking.setStatus8Date(Date.from(Instant.now()));
         mail.setStatus("Delivered");
         mailRepository.save(mail);
+        mailTrackingRepository.save(mailTracking);
     }
 
     public void transitPackage(MailDto mailDto) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         ServiceCentre serviceCentre = serviceCenterRepository.findById(mail.getServiceCentre().getCentreId()).orElseThrow(() -> new ExpressDeliveryException("Center not found"));
         mail.setStatus("In Transit");
         mail.setTransportationStatus("Drop Off");
         mail.setServiceCentre(serviceCentre);
+        mailTracking.setStatus6("Package arrived at warehouse");
+        mailTracking.setStatus6Date(Date.from(Instant.now()));
         mailRepository.save(mail);
+        mailTrackingRepository.save(mailTracking);
     }
 
     public void startDelivery(MailDto mailDto) throws ExpressDeliveryException {
         Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException("Mail not found"));
+        MailTracking mailTracking = mailTrackingRepository.findByMail(mail);
         mail.setStatus("Out for Delivery");
+        mailTracking.setStatus7("Driver on the way to deliver package");
+        mailTracking.setStatus7Date(Date.from(Instant.now()));
         mailRepository.save(mail);
+        mailTrackingRepository.save(mailTracking);
     }
 
     public void updateStatus(UserDto userDto) throws ExpressDeliveryException {

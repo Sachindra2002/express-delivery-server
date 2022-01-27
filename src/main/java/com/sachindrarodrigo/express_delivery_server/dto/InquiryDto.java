@@ -18,12 +18,13 @@ public class InquiryDto {
     private Date createdAt;
     private User user;
 
-    public InquiryDto(int inquiryId, String inquiryType, String description, String status, Date createdAt, User user) {
+    public InquiryDto(int inquiryId, String inquiryType, String description, String status, Date createdAt, String response, User user) {
         this.inquiryId = inquiryId;
         this.inquiryType = inquiryType;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
+        this.response = response;
         this.user = user;
     }
 }

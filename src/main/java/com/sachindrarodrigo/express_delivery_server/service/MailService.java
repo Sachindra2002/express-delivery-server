@@ -16,12 +16,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class MailService {
 
@@ -29,9 +31,10 @@ public class MailService {
     private final UserRepository userRepository;
     private final MailTrackingRepository mailTrackingRepository;
     private final ServiceCenterRepository serviceCenterRepository;
+    private final EmailService emailService;
 
     @Transactional
-    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException {
+    public MailDto sendMail(MailDto dto) throws ExpressDeliveryException, MessagingException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
@@ -48,6 +51,8 @@ public class MailService {
 
         MailDto mailDto = new MailDto();
         mailDto.setMailId(mail.getMailId());
+        emailService.sendPackageReceipt(mailDto, user);
+
         return mailDto;
     }
 
@@ -70,6 +75,21 @@ public class MailService {
         MailDto mailDto = new MailDto();
         mailDto.setMailId(mail.getMailId());
         return mailDto;
+    }
+
+    public void updateReceiverDetails(MailDto mailDto) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException(("Mail not found")));
+        mail.setReceiverPhoneNumber(mailDto.getReceiverPhoneNumber());
+        mail.setReceiverAddress(mailDto.getReceiverAddress());
+        mailRepository.save(mail);
+    }
+
+    public void updatePackageDetails(MailDto mailDto) throws ExpressDeliveryException {
+        Mail mail = mailRepository.findById(mailDto.getMailId()).orElseThrow(() -> new ExpressDeliveryException(("Mail not found")));
+        mail.setWeight(mailDto.getWeight());
+        mail.setParcelType(mailDto.getParcelType());
+        mail.setDescription(mailDto.getDescription());
+        mailRepository.save(mail);
     }
 
     public List<MailDto> getAllRecentUpcomingPackages() throws ExpressDeliveryException {
@@ -124,13 +144,13 @@ public class MailService {
         return _user.getEmail();
     }
 
-    private Mail map(MailDto dto) {
+    private Mail map(MailDto dto) throws ExpressDeliveryException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         //Find user from database
         Optional<User> userOptional = userRepository.findById(auth.getName());
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        ServiceCentre serviceCentre = serviceCenterRepository.findByCityEquals(user.getLocation()); //Error here
+        ServiceCentre serviceCentre = serviceCenterRepository.findById(dto.getServiceCentre().getCentreId()).orElseThrow(() -> new ExpressDeliveryException(("Center not found"))); //Error here
 
         return Mail.builder().user(user)
                 .pickupAddress(dto.getPickupAddress())

@@ -9,17 +9,6 @@
             <li style="list-style: none">
                 <div class="dropdown">
                     <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
-                         class="dropbtn">Shipments <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="#">For You</a>
-                        <a href="#">From You</a>
-                    </div>
-                </div>
-            </li>
-            <li style="list-style: none">
-                <div class="dropdown">
-                    <div style="color: black; text-decoration: none; letter-spacing: 1px; font-weight: bold; font-size: 17px"
                          class="dropbtn">Account <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                     <div class="dropdown-content">

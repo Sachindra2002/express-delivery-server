@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class ParcelController {
         try {
             mailService.sendMail(dto);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (ExpressDeliveryException e){
+        }catch (ExpressDeliveryException | MessagingException e){
             return new ResponseEntity<>((new APIException(e.getMessage(), HttpStatus.BAD_REQUEST)),HttpStatus.BAD_REQUEST);
         }
     }

@@ -2,8 +2,10 @@ package com.sachindrarodrigo.express_delivery_server.controller.api_controller;
 
 import com.sachindrarodrigo.express_delivery_server.dto.DisputeDto;
 import com.sachindrarodrigo.express_delivery_server.dto.SimpleMessageDto;
+import com.sachindrarodrigo.express_delivery_server.dto.UserDto;
 import com.sachindrarodrigo.express_delivery_server.exception.APIException;
 import com.sachindrarodrigo.express_delivery_server.exception.ExpressDeliveryException;
+import com.sachindrarodrigo.express_delivery_server.service.CustomerService;
 import com.sachindrarodrigo.express_delivery_server.service.DisputeService;
 import com.sachindrarodrigo.express_delivery_server.service.MailService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class CustomerController {
 
     private MailService mailService;
     private DisputeService disputeService;
+    private CustomerService customerService;
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/cancel-package/{mailId}")
@@ -39,6 +42,17 @@ public class CustomerController {
         try {
             disputeService.openDispute(disputeDto, disputeDto.getMail().getMailId());
             return new ResponseEntity<>(new SimpleMessageDto("Dispute opened Successfully", HttpStatus.OK), HttpStatus.OK);
+        } catch (ExpressDeliveryException e) {
+            return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/change-phone-number")
+    public ResponseEntity<Object> updatePhoneNumber(@RequestBody UserDto userDto) {
+        try {
+            customerService.updatePhoneNumber(userDto);
+            return new ResponseEntity<>(new SimpleMessageDto("Phone number changed successfully", HttpStatus.OK), HttpStatus.OK);
         } catch (ExpressDeliveryException e) {
             return new ResponseEntity<>(new APIException(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }

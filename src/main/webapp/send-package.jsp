@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -142,6 +143,15 @@
                                 <option value="Express Delivery Flyer">Express Delivery Flyer</option>
                             </form:select>
                             <form:errors cssStyle="color: red" path="parcelType"/>
+                        </div>
+                        <div class="col">
+                            <label for="centreId">Select nearest service center</label>
+                            <select name="centreId" id="centreId" class="custom-select"
+                                    aria-label="Default select example">
+                                <c:forEach var="center" items="${centers}">
+                                    <option value="${center.centreId}">${center.center}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">

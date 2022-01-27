@@ -31,7 +31,8 @@
 <div>
     <div class="send-package-button" style="float: right; margin-bottom: 30px">
         <div>
-            <a type="button" data-toggle="modal" data-target="#openInquiryModal" style="text-decoration: none; margin-bottom: 30px">New Inquiry</a>
+            <a type="button" data-toggle="modal" data-target="#openInquiryModal"
+               style="text-decoration: none; margin-bottom: 30px">New Inquiry</a>
         </div>
     </div>
     <h3 style="margin-top: 40px; margin-bottom: -20px; margin-left: 35px">Inquiries</h3>
@@ -65,14 +66,17 @@
                     } else {
                     %>
                     <c:forEach var="inquiry" items="${inquiry_list}">
-                    <tr>
-                        <td>${inquiry.inquiryId}</td>
-                        <td>${inquiry.inquiryType}</td>
-                        <td>${inquiry.description}</td>
-                        <td>${inquiry.createdAt}</td>
-                        <td>${inquiry.status}</td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                    </tr>
+                        <tr>
+                            <td>${inquiry.inquiryId}</td>
+                            <td>${inquiry.inquiryType}</td>
+                            <td>${inquiry.description}</td>
+                            <td>${inquiry.createdAt}</td>
+                            <td>${inquiry.status}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#openViewResponseModal${inquiry.inquiryId}">View</button>
+                            </td>
+                        </tr>
+                        <%@ include file="modals/view-inquiry.jsp" %>
                     </c:forEach>
                     <% } %>
                     </tbody>

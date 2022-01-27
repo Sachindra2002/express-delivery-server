@@ -69,8 +69,9 @@
                             <td>${dispute.createdAt}</td>
                             <td>${dispute.status}</td>
                             <td>${dispute.mail.mailId}</td>
-                            <td><button type="button" class="btn btn-primary">View</button></td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#openViewResponseDisputeModal${dispute.disputeId}">View</button></td>
                         </tr>
+                        <%@ include file="modals/view-dispute.jsp" %>
                     </c:forEach>
                     <% } %>
                     </tbody>

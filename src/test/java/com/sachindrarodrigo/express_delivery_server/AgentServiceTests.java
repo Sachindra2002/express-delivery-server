@@ -128,7 +128,7 @@ public class AgentServiceTests {
     }
 
     @WithCustomUser(username = "lahiruagent@gmail.com")
-    public void testSendMail() throws ExpressDeliveryException {
+    public void testSendMail() throws ExpressDeliveryException, MessagingException {
         MailDto mailDto = new MailDto();
         mailDto.setPickupAddress("TestPickUpAddress");
         mailDto.setReceiverAddress("TestReceiverAddress");
@@ -158,7 +158,7 @@ public class AgentServiceTests {
     @Test
     @Order(5)
     @WithCustomUser(username = "lahiruagent@gmail.com")
-    public void testGetAllNewShipments() throws ExpressDeliveryException {
+    public void testGetAllNewShipments() throws ExpressDeliveryException, MessagingException {
         testSendMail();
         List<MailDto> results = agentService.getAllNewShipmentsAdmin();
 
@@ -184,7 +184,7 @@ public class AgentServiceTests {
     @Test
     @Order(7)
     @WithCustomUser(username = "lahiruagent@gmail.com")
-    public void testGetAllAcceptedShipments() throws ExpressDeliveryException {
+    public void testGetAllAcceptedShipments() throws ExpressDeliveryException, MessagingException {
         testSendMail();
         List<MailDto> results = agentService.getAllNewAcceptedShipmentsAdmin();
 

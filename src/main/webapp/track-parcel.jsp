@@ -25,7 +25,17 @@
 <jsp:include page="utils/navbar.jsp">
     <jsp:param name="page" value="home"/>
 </jsp:include>
+<%@ include file="utils/success_alert.jsp" %>
+<%@ include file="utils/error_alert.jsp" %>
 <div>
+    <c:if test="${tracking.mail.status == 'Processing'}">
+        <div class="send-package-button" style="float: right; margin-bottom: 30px">
+            <div>
+                <a type="button" data-toggle="modal" data-target="#openEditPackageDetailsModal${tracking.mail.mailId}"
+                   style="text-decoration: none; margin-bottom: 30px">Edit Details</a>
+            </div>
+        </div>
+    </c:if>
     <div class="center-header">
         <h2>Delivery Details for Parcel ID #<c:out value="${tracking.mail.mailId}"/></h2>
     </div>
@@ -36,6 +46,7 @@
     <div class="center-header">
         <h4>Tracking ID #<c:out value="${tracking.mail.mailTracking.trackingId}"/></h4>
     </div>
+
     <div class="left">
         <div class="receiverInfo">
             <div style="display: flex;">
@@ -241,7 +252,7 @@
                                 Delivered
                             </li>
                         </c:if>
-                        <c:if test="${tracking.mail.status == 'transit'}">
+                        <c:if test="${tracking.mail.status == 'In Transit'}">
                             <li class="step active">
                                 <div><i class="fas fa-check-circle"></i></div>
                                 Order Placed
@@ -513,6 +524,9 @@
     </div>
 
 </div>
-<%@ include file="utils/script_imports.jsp" %>
 
+<%@ include file="modals/edit-package-details.jsp" %>
+<%@ include file="modals/edit receiver-details.jsp" %>
+<%@ include file="modals/update-package-details.jsp" %>
+<%@ include file="utils/script_imports.jsp" %>
 </body>

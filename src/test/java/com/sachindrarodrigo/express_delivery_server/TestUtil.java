@@ -105,7 +105,7 @@ public class TestUtil {
     }
 
     @WithCustomUser(username = "lahiruagent@gmail.com")
-    public void createShipment() throws ExpressDeliveryException {
+    public void createShipment() throws ExpressDeliveryException, MessagingException {
         MailDto mailDto = new MailDto();
         mailDto.setPickupAddress("TestPickUpAddress");
         mailDto.setReceiverAddress("TestReceiverAddress");

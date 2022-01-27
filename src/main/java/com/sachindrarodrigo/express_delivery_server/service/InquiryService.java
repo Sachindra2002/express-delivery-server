@@ -39,7 +39,7 @@ public class InquiryService {
 
     public void respondInquiry(InquiryDto inquiryDto) throws ExpressDeliveryException {
         Inquiry inquiry = inquiryRepository.findById(inquiryDto.getInquiryId()).orElseThrow(() -> new ExpressDeliveryException("Inquiry not found"));
-        inquiry.setResponse(inquiry.getResponse());
+        inquiry.setResponse(inquiryDto.getResponse());
         inquiry.setStatus("responded");
         inquiryRepository.save(inquiry);
     }
@@ -67,6 +67,6 @@ public class InquiryService {
 
     //Method to map data transfer object to domain class
     private InquiryDto mapInquiries(Inquiry inquiry) {
-        return new InquiryDto(inquiry.getInquiryId(), inquiry.getInquiryType(), inquiry.getDescription(), inquiry.getStatus(), inquiry.getCreatedAt(), inquiry.getUser());
+        return new InquiryDto(inquiry.getInquiryId(), inquiry.getInquiryType(), inquiry.getDescription(), inquiry.getStatus(), inquiry.getCreatedAt(), inquiry.getResponse(),inquiry.getUser());
     }
 }
