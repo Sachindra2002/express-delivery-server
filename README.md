@@ -1,5 +1,5 @@
 # Express Delivery
-Web app and Back-end for a parcel delivery system
+Web app and Back-end for a courier/parcel delivery system
 
 [Mobile Application](https://github.com/Sachindra2002/express-delivery-mobile)
 
