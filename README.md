@@ -1,4 +1,4 @@
-# express-delivery-server
+# Express Delivery
 Web app and Back-end for a parcel delivery system
 
 [Mobile Application](https://github.com/Sachindra2002/express-delivery-mobile)
