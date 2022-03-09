@@ -278,7 +278,33 @@
                                 Delivered
                             </li>
                         </c:if>
-                        <c:if test="${tracking.mail.status == 'out for delivery'}">
+                        <c:if test="${tracking.mail.status == 'Delivery Started'}">
+                            <li class="step active">
+                                <div><i class="fas fa-check-circle"></i></div>
+                                Order Placed
+                            </li>
+                            <li class="step active">
+                                <div><i class="fas fa-check-double"></i></div>
+                                Order Accepted
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-box"></i></div>
+                                Pick up package
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-warehouse"></i></div>
+                                In Transit
+                            </li>
+                            <li class="step">
+                                <div><i class="fas fa-truck"></i></div>
+                                Out for delivery
+                            </li>
+                            <li class="step ">
+                                <div><i class="fas fa-house-user"></i></div>
+                                Delivered
+                            </li>
+                        </c:if>
+                        <c:if test="${tracking.mail.status == 'Out for Delivery'}">
                             <li class="step active">
                                 <div><i class="fas fa-check-circle"></i></div>
                                 Order Placed
@@ -380,12 +406,12 @@
             </c:if>
             <c:if test="${tracking.status10 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status10Date}"/></div>
-                    <div style="float: left; margin-left: 20px"><c:out value="${tracking.status10}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status10}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -393,12 +419,12 @@
             </c:if>
             <c:if test="${tracking.status9 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status9Date}"/></div>
-                    <div style="float: left; margin-left: 20px"><c:out value="${tracking.status9}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status9}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -406,12 +432,12 @@
             </c:if>
             <c:if test="${tracking.status8 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status8Date}"/></div>
-                    <div style="float: left; margin-left: 20px"><c:out value="${tracking.status8}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status8}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -419,12 +445,12 @@
             </c:if>
             <c:if test="${tracking.status7 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status7Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status7}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status7}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -432,12 +458,12 @@
             </c:if>
             <c:if test="${tracking.status6 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status6Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status6}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status6}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -445,12 +471,12 @@
             </c:if>
             <c:if test="${tracking.status5 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status5Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status5}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status5}"/></div>
                 </div>
                 <br/>
             </c:if>
@@ -458,12 +484,12 @@
             </c:if>
             <c:if test="${tracking.status4 != null}">
                 <div class="status1">
-                    <div style="float: left; font-weight: bold; color: black; margin-left: 30px"><fmt:formatDate
+                    <div style="float: left; font-weight: bold; color: black; margin-left: 350px"><fmt:formatDate
                             type="both"
                             dateStyle="medium"
                             timeStyle="medium"
                             value="${tracking.status4Date}"/></div>
-                    <div style="float: left; margin-left: 30px"><c:out value="${tracking.status4}"/></div>
+                    <div style="float: left; margin-left: 80px"><c:out value="${tracking.status4}"/></div>
                 </div>
                 <br/>
             </c:if>

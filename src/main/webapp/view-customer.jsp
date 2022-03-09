@@ -85,6 +85,7 @@
                                     class="fas fa-expand-alt" data-toggle="modal"
                                     data-target="#openPackageAdminModal${mail.mailId}"></i></button>
                             <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.totalCost}</h6>
+                            <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.user.email}</h6>
                             <h6 style="float: right; margin-right: 35px; font-weight: normal">
                                 #000${mail.mailId}</h6>
                             <h6 style="float: right; margin-right: 35px; font-weight: normal">${mail.user.location}</h6>
