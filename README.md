@@ -1,5 +1,16 @@
 # Express Delivery
-Web app and Back-end for a courier/parcel delivery system
+Express Delivery is an attractive, powerful and scalable courier/parcel delivery system with support for multiple types of users.
+
+Solution is made up of many J2EE and SE features including but not limited to
+
+- Contect and Dependency Injection
+- Interceptors
+- Bean Validation
+- Java Security
+- Java Servlets including JSP and JSTL
+- Java Persistense API
+- Java transaction API
+- Java mail
 
 [Mobile Application](https://github.com/Sachindra2002/express-delivery-mobile)
 
